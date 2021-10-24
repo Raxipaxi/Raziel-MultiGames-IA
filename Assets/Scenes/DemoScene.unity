@@ -639,21 +639,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7562056711298716140, guid: 8f2db820977725c4fb5d46bd3246bdd2,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7562056711298716140, guid: 8f2db820977725c4fb5d46bd3246bdd2,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7562056711298716140, guid: 8f2db820977725c4fb5d46bd3246bdd2,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7562056711298716140, guid: 8f2db820977725c4fb5d46bd3246bdd2,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.8
       objectReference: {fileID: 0}
@@ -705,7 +690,7 @@ PrefabInstance:
     - target: {fileID: 9083658293857876575, guid: 8f2db820977725c4fb5d46bd3246bdd2,
         type: 3}
       propertyPath: m_Name
-      value: Raziel_low
+      value: Player_Raziel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f2db820977725c4fb5d46bd3246bdd2, type: 3}
