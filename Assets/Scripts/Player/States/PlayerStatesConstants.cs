@@ -1,5 +1,5 @@
 ﻿
-public enum PlayerStateConstants
+public enum PlayerStatesConstants
 {
     Idle,
     Interact,
