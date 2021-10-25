@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Player.States
+public class PlayerJumpState<T> : State<T>
 {
-    public class PlayerJumpState : MonoBehaviour
-    {
-        
-    }
+    
 }

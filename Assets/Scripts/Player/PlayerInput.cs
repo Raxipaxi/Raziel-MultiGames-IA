@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace Player
+
+public class PlayerInput : MonoBehaviour
 {
-    public class PlayerInput : MonoBehaviour
-    {
-        
-    }
+    
 }
