@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class PlayerAnimationConstants
+﻿public static class PlayerAnimationConstants
 {
 
     public const string PLAYER_PUNCH_BELL_ANIMATION_HASH = "PunchBell";

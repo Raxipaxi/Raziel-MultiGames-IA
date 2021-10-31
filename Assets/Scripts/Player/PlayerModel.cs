@@ -9,8 +9,7 @@ public class PlayerModel : MonoBehaviour
      private Rigidbody _rb;
 
     private PlayerData _playerData;
-
-
+    
     private void Awake()
     {
         BakeReferences();
@@ -20,4 +19,5 @@ public class PlayerModel : MonoBehaviour
         _playerView = GetComponent<PlayerView>();
         _rb = GetComponent<Rigidbody>();
     }
+    
 }
