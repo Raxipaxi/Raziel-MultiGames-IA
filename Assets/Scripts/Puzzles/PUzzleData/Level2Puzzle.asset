@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb8857898bb8124c89c4b1e3fd02b40, type: 3}
+  m_Name: Level2Puzzle
+  m_EditorClassIdentifier: 
+  buttonSolveOrder: 0100000002000000030000000400000005000000060000000700000008000000
+  pressedMaterial: {fileID: 2100000, guid: 35c0d70787275b245a4bb1b368bbb960, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: c9ddd98f55793854a860319187b486c0, type: 2}
+  correctMaterial: {fileID: 2100000, guid: d850cf2e103c77e48956987f90349c85, type: 2}
+  clickedSound: {fileID: 8300000, guid: a5666af7f33922b45ac4abfdeff83468, type: 3}
+  incorrectSound: {fileID: 8300000, guid: bc9d1db156e5d5347844b87ed3b827ae, type: 3}
+  correctSound: {fileID: 8300000, guid: cbec1c754e01c9a428af215b03deb469, type: 3}
