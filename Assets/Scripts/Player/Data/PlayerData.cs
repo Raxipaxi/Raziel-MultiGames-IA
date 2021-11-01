@@ -7,14 +7,22 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
 
+    [Header ("Interaction")]
+    public float tryInteractRadius;
+    public LayerMask tryInteractLayers;
+    
+    [Header ("Movement")]
     public float walkSpeed;
-    public float runSpeed;
-    public float interactionRadius;
+    public float runSpeed;   
+
+    [Header ("Jump")]
     public float jumpHeight;
+    public float isGroundedRadius;
+    public LayerMask groundMask;
+
+    [Header ("Others")]
+
     public float maxLifes;
-
-  
-
 
 
 }

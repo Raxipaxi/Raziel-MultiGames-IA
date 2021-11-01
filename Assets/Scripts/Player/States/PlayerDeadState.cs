@@ -3,8 +3,10 @@
 
 public class PlayerDeadState<T> : State<T>
 {
-    public override void Execute()
+    //Works as an interrumpt to other FSM states
+
+    public override void Awake()
     {
-        base.Execute();
+        Debug.Log("Exploto el cerebro");
     }
 }

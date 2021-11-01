@@ -29,12 +29,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (GameManager.Instance != null) Destroy(gameObject);
-
         else
         {
             Instance = this;
             DontDestroyOnLoad(this);
             //Wake up managers            
+            _sceneManagement = new SceneManagement(LockCursor, UnlockCursor);
             Application.targetFrameRate = 144;
             PauseForce(false);
         }

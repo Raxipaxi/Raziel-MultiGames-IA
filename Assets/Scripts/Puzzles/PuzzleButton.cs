@@ -35,10 +35,10 @@ public class PuzzleButton : MonoBehaviour, IInteractable
         _parentSolver = instance;
         if (_audioSrc != null) _audioSrc.clip = _parentSolver.PuzzleData.clickedSound;
     }
-    public void OnInteract()
+    public bool OnInteract()
     {
         Debug.LogError("Interacted button");
-        if (!_interactable) return;
+        if (!_interactable) return false;
 
         if (_parentSolver != null)
         {
@@ -47,6 +47,8 @@ public class PuzzleButton : MonoBehaviour, IInteractable
             _myRenderer.material = _parentSolver.PuzzleData.pressedMaterial;
             _parentSolver.CheckPuzzleState(buttonID);
         }
+
+        return false;
     }
 
     public void CorrectAll()
@@ -65,5 +67,12 @@ public class PuzzleButton : MonoBehaviour, IInteractable
             _interactable = true;
             _myRenderer.material = _parentSolver.PuzzleData.defaultMaterial;
         }
+    }
+
+   
+
+    public bool OnTriggerContinueInteract()
+    {
+        return false;
     }
 }

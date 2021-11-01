@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    void OnInteract();
+    bool OnInteract(); //Initial interactions. Returns if there's only 1 interaction possible
+
+    bool OnTriggerContinueInteract();// Continued interactions
 
     Canvas InteractCanvas { get; }
 
