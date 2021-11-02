@@ -1,17 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyModel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private EnemyView _enemyView;
+    private Rigidbody _rb;
+    private float _currSpeed;
+
+    [SerializeField] private PlayerData _enemyData;
+
+    private void Awake()
+    {
+        BakeReferences();
+    }
+
+
+    void BakeReferences()
+    {
+        _enemyView = GetComponent<EnemyView>();
+        _rb = GetComponent<Rigidbody>();
+    }
+
+    private void Move(Vector3 dir)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Die()
+    {
+        
+    }
+
+    private void Attack()
     {
         
     }

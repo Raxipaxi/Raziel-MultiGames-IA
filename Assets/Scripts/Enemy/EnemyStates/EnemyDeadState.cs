@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDeadState : MonoBehaviour
+public class EnemyDeadState<T> : State<T>
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public EnemyDeadState()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+   
+    void Execute()
     {
         
     }

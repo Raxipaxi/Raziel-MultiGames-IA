@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyWalkState : MonoBehaviour
+public class EnemyWalkState<T> : State<T>
 {
-    // Start is called before the first frame update
-    void Start()
+    public EnemyWalkState()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+   
+    void Execute()
     {
         
     }

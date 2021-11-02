@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     private FSM<PlayerStatesConstants> _fsm;
 
 
-    private PlayerControllerData _controllerData;
+    private PlayerControllerData _controllerData; // No se usa aun
 
 
     public event Action<Vector3> OnMove;
