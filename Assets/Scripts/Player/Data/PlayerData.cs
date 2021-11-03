@@ -13,7 +13,8 @@ public class PlayerData : ScriptableObject
     
     [Header ("Movement")]
     public float walkSpeed;
-    public float runSpeed;   
+    public float runSpeed;
+    public float rotationSmoothTime = 0.12f;
 
     [Header ("Jump")]
     public float jumpHeight;

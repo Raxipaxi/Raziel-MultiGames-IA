@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager Instance;
-
+   
     public bool IsPaused { get; private set; }
     public event Action<bool> OnPause;
 

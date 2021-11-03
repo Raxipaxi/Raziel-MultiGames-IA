@@ -20,8 +20,8 @@ public class PlayerMoveState<T> : State<T>
 
     public override void Execute()
     {
-        var x = Input.GetAxis("Horizontal");
-        var z = Input.GetAxis("Vertical");
+        var x = Input.GetAxisRaw("Horizontal");
+        var z = Input.GetAxisRaw("Vertical");
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {

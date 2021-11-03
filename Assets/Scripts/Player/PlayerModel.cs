@@ -1,66 +1,66 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 [RequireComponent (typeof (Rigidbody))]
 
-public class PlayerModel : MonoBehaviour
+public class PlayerModel : MonoBehaviour, IMove
 {
     private PlayerView _playerView;
     private Rigidbody _rb;
     private float _currentSpeed;
+    [SerializeField] private Transform interactPoint;
 
     [SerializeField] private Transform groundCheck;
 
-    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private PlayerData playerData;
+
+    private Transform _selfTransform;
 
     public void SubscribeToEvents(PlayerController controller)
     {
-        controller.OnMove += OnMoveHandler;
+        controller.OnMove += Move;
         controller.OnJump += OnJumpHandler;
     }
-
-    
-
     private void OnJumpHandler()
     {
         Debug.Log("Jump");
     }
-    private void OnMoveHandler(Vector3 moveDir)
-    {
-        var newPosition = transform.position + _currentSpeed * Time.deltaTime * moveDir;
-        _rb.MovePosition(newPosition);
-    }
+   
     
     private void Awake()
     {
-        BakeReferences();
+        BakeReferences(); 
         ResetState();
     }
 
     private void ResetState()
     {
-        _currentSpeed = _playerData.walkSpeed;
+        _currentSpeed = playerData.walkSpeed;
     }
     public bool IsGrounded()
     {
-        return Physics.CheckSphere(groundCheck.position, _playerData.isGroundedRadius, _playerData.groundMask);
+        return Physics.CheckSphere(groundCheck.position, playerData.isGroundedRadius, playerData.groundMask);
     }
    
 
     public void ChangeMoveSpeed(bool isRunSpeed)
     {
-        _currentSpeed = isRunSpeed ? _playerData.runSpeed : _playerData.walkSpeed;
+        _currentSpeed = isRunSpeed ? playerData.runSpeed : playerData.walkSpeed;
     }
-    public void BakeReferences()
+
+    private void BakeReferences()
     {
         _playerView = GetComponent<PlayerView>();
         _rb = GetComponent<Rigidbody>();
+        _selfTransform = transform;
     }
 
     private Collider[] _interactablesArray = new Collider[10];
     private Collider InteractableAtReach()
     {
-        var interactablesLength = Physics.OverlapSphereNonAlloc(transform.position, _playerData.tryInteractRadius, _interactablesArray, _playerData.tryInteractLayers);
+        var interactablesLength = Physics.OverlapSphereNonAlloc(transform.position, playerData.tryInteractRadius, _interactablesArray, playerData.tryInteractLayers);
 
         if (interactablesLength != 0) return _interactablesArray[0];
         return default;
@@ -68,13 +68,46 @@ public class PlayerModel : MonoBehaviour
     public bool TryInteract()
     {
         var collidedInteractable = InteractableAtReach();
-        if (collidedInteractable != null) return true;
-        return false;
+        return collidedInteractable != null;
     }
     public IInteractable GetInteractable()
     {   
         var interactable = _interactablesArray[0].GetComponent<IInteractable>();
-        if (interactable != null) return interactable;
-        return default;
+        return interactable;
+    }
+    private float _rotationVelocity;
+    private void CorrectRotation(Vector3 moveDir)
+    {
+        
+        if (moveDir == Vector3.zero) return;
+        var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg  + GameManager.Instance.MainCamera.transform.eulerAngles.y;
+        var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, playerData.rotationSmoothTime);
+        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+
+    }
+
+    public void Move(Vector3 dir)
+    {
+        CorrectRotation(dir);
+        var newPosition = transform.position + _currentSpeed * Time.deltaTime * _selfTransform.forward;
+        
+        _rb.MovePosition(newPosition);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (playerData == null) return;
+
+        if (groundCheck != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(groundCheck.position,playerData.isGroundedRadius);
+        }
+
+        if (interactPoint == null) return;
+        
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(interactPoint.position, playerData.tryInteractRadius);
+       
     }
 }
