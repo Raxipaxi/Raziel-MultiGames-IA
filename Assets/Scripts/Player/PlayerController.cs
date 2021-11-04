@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new PlayerIdleState<PlayerStatesConstants>(PlayerStatesConstants.Move, PlayerStatesConstants.Jump, PlayerStatesConstants.Dead, PlayerStatesConstants.Interact, TryInteraction,this);
+        var idle = new PlayerIdleState<PlayerStatesConstants>(PlayerStatesConstants.Move, PlayerStatesConstants.Jump, PlayerStatesConstants.Dead, PlayerStatesConstants.Interact, TryInteraction,this,IsRunning);
         var move = new PlayerMoveState<PlayerStatesConstants>(OnMoveCommand, PlayerStatesConstants.Idle, PlayerStatesConstants.Jump, PlayerStatesConstants.Interact, TryInteraction, IsRunning);
         var interact = new PlayerInteractAndWait<PlayerStatesConstants>(GetInteractable, PlayerStatesConstants.Idle);
         var jump = new PlayerJumpState<PlayerStatesConstants>(PlayerStatesConstants.Idle, PlayerStatesConstants.Move, OnJumpCommand, IsGrounded, OnMoveCommand, IsRunning);

@@ -80,18 +80,19 @@ public class PlayerModel : MonoBehaviour, IMove
     {
         
         if (moveDir == Vector3.zero) return;
-        var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg  + GameManager.Instance.MainCamera.transform.eulerAngles.y;
+        var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg + GameManager.Instance.MainCamera.transform.eulerAngles.y;
         var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, playerData.rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-
     }
 
     public void Move(Vector3 dir)
     {
-        CorrectRotation(dir);
+        CorrectRotation(dir.normalized);
         var newPosition = transform.position + _currentSpeed * Time.deltaTime * _selfTransform.forward;
         
         _rb.MovePosition(newPosition);
+        var dirMagnitude = dir.normalized.magnitude;
+        _playerView.SetWalkAnimation(_currentSpeed * dirMagnitude);
     }
 
     private void OnDrawGizmosSelected()

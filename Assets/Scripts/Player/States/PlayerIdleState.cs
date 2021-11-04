@@ -6,7 +6,7 @@ public class PlayerIdleState<T> : State<T>
     private T _transitionToJump;
     private T _transitionToInteract;
 
-    
+    private Action <bool>_isRunning;
 
     
     private Func<bool> _tryInteract;
@@ -15,7 +15,7 @@ public class PlayerIdleState<T> : State<T>
     private T _transitionToDead;
 
  
-    public PlayerIdleState(T transitionToMove, T transitionToJump, T transitionToDead, T transitionToInterract, Func <bool> TryInteract, PlayerController controller )
+    public PlayerIdleState(T transitionToMove, T transitionToJump, T transitionToDead, T transitionToInterract, Func <bool> TryInteract, PlayerController controller, Action <bool> isRunning)
     {
         _transitionToMove = transitionToMove;
         _transitionToInteract = transitionToInterract;
@@ -23,10 +23,21 @@ public class PlayerIdleState<T> : State<T>
         _transitionToJump = transitionToJump;
         _tryInteract = TryInteract;
         _controller = controller;
+        _isRunning = isRunning;
     }
 
     public override void Execute()
     {
+        
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            _isRunning?.Invoke(true);
+        }
+
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            _isRunning?.Invoke(false);
+        }
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {        
             parentFSM.Transition(_transitionToMove);

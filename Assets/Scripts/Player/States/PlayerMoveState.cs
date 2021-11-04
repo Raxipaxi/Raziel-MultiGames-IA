@@ -33,7 +33,7 @@ public class PlayerMoveState<T> : State<T>
             _isRunning?.Invoke(false);
         }
 
-        Vector3 moveVector = new Vector3(x,0,z);        
+        var moveVector = new Vector3(x,0,z);        
         _onMove?.Invoke(moveVector); 
 
         if (x == 0 && z == 0)
@@ -42,7 +42,6 @@ public class PlayerMoveState<T> : State<T>
             return;
         }
 
-        
         if (Input.GetKeyDown(KeyCode.Space))
         {
             parentFSM.Transition (_transitionToJump);
