@@ -26,6 +26,8 @@ public class PlayerModel : MonoBehaviour, IMove
     private void OnJumpHandler()
     {
         Debug.Log("Jump");
+        
+        _rb.AddForce(Vector3.up * playerData.jumpHeight, ForceMode.Impulse);
     }
    
     
@@ -79,20 +81,24 @@ public class PlayerModel : MonoBehaviour, IMove
     private void CorrectRotation(Vector3 moveDir)
     {
         
-        if (moveDir == Vector3.zero) return;
+        //if (moveDir == Vector3.zero) return;
         var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg + GameManager.Instance.MainCamera.transform.eulerAngles.y;
         var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, playerData.rotationSmoothTime);
-        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+         transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+       
     }
 
     public void Move(Vector3 dir)
     {
-        CorrectRotation(dir.normalized);
-        var newPosition = transform.position + _currentSpeed * Time.deltaTime * _selfTransform.forward;
+       
         
-        _rb.MovePosition(newPosition);
-        var dirMagnitude = dir.normalized.magnitude;
+        var normalizedDir = dir.normalized;
+        CorrectRotation(normalizedDir);
+        transform.position += normalizedDir * Time.deltaTime * _currentSpeed;
+     
+        var dirMagnitude = normalizedDir.magnitude;
         _playerView.SetWalkAnimation(_currentSpeed * dirMagnitude);
+        Debug.Log(transform.forward);
     }
 
     private void OnDrawGizmosSelected()

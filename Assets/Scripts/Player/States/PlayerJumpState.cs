@@ -9,11 +9,11 @@ public class PlayerJumpState<T> : State<T>
     private Func<bool> _isGrounded;
     private Action<bool> _isRunning;
     private Action<Vector3> _onMove;
-    public PlayerJumpState (T transitionToIdle, T transitionToMove, Action OnJump, Func <bool> isGrounded,  Action <Vector3> onMove, Action <bool> isRunning)
+    public PlayerJumpState (T transitionToIdle, T transitionToMove, Action onJump, Func <bool> isGrounded,  Action <Vector3> onMove, Action <bool> isRunning)
     {
         _transitionToIdle = transitionToIdle;
         _transitionToMove = transitionToMove;
-        _onJump = OnJump;
+        _onJump = onJump;
         _isGrounded = isGrounded;
         _isRunning = isRunning;
         _onMove = onMove;
@@ -29,17 +29,17 @@ public class PlayerJumpState<T> : State<T>
 
     public override void Execute()
     {
-        var x = Input.GetAxis("Horizontal");
-        var z = Input.GetAxis("Vertical");
+        
+        var x = Input.GetAxisRaw("Horizontal");
+        var z = Input.GetAxisRaw("Vertical");
 
-        Vector3 moveDir = new Vector3(x, 0, z);
+        var moveDir = new Vector3(x, 0, z);
 
         _onMove?.Invoke(moveDir);
 
         if (_isGrounded())
         {
-            if (moveDir != Vector3.zero) parentFSM.Transition(_transitionToMove);
-            else parentFSM.Transition(_transitionToIdle);
+            parentFSM.Transition(moveDir != Vector3.zero ? _transitionToMove : _transitionToIdle);
         }
     }
 
