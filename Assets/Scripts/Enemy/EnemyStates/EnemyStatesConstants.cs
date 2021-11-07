@@ -2,7 +2,7 @@
 public enum EnemyStatesConstants
 {
     Idle,
-    Walk,
+    Patrol,
     Dead,
     Attack,
     Chase,

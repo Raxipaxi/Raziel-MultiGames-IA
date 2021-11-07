@@ -6,6 +6,10 @@ public class EnemyController : MonoBehaviour
     private EnemyModel _enemyModel;
     private FSM<EnemyStatesConstants> _fsm;
     private INode _root;
+    [SerializeField] private PlayerModel target;
+    [SerializeField] private Transform[] waypoints;
+    private LineOfSightAI _lineOfSightAI;
+    
 
     // Start is called before the first frame update
     void Awake()
@@ -25,24 +29,24 @@ public class EnemyController : MonoBehaviour
         //--------------- FSM Creation -------------------//                
         // States Creation
         var idle = new EnemyIdleState<EnemyStatesConstants>();
-        var walk = new EnemyWalkState<EnemyStatesConstants>();
+        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,waypoints,_root);
         var chase = new EnemyChaseState<EnemyStatesConstants>();
         var dead = new EnemyDeadState<EnemyStatesConstants>();
         var attack = new EnemyAttackState<EnemyStatesConstants>();
         var stun = new EnemyStunState<EnemyStatesConstants>();
         
         //Idle State
-        idle.AddTransition(EnemyStatesConstants.Walk,walk);
+        idle.AddTransition(EnemyStatesConstants.Patrol,patrol);
         idle.AddTransition(EnemyStatesConstants.Attack,attack);
         idle.AddTransition(EnemyStatesConstants.Dead,dead);
         idle.AddTransition(EnemyStatesConstants.Chase,chase);
         idle.AddTransition(EnemyStatesConstants.Stun,stun);
         
-        //Walk
-        walk.AddTransition(EnemyStatesConstants.Chase,chase);
-        walk.AddTransition(EnemyStatesConstants.Idle,idle);
-        walk.AddTransition(EnemyStatesConstants.Dead,dead);
-        walk.AddTransition(EnemyStatesConstants.Stun,stun);
+        //Patrol
+        patrol.AddTransition(EnemyStatesConstants.Chase,chase);
+        patrol.AddTransition(EnemyStatesConstants.Idle,idle);
+        patrol.AddTransition(EnemyStatesConstants.Dead,dead);
+        patrol.AddTransition(EnemyStatesConstants.Stun,stun);
         
         //Stun
         stun.AddTransition(EnemyStatesConstants.Idle,idle);
@@ -59,9 +63,9 @@ public class EnemyController : MonoBehaviour
         attack.AddTransition(EnemyStatesConstants.Dead,dead);
         attack.AddTransition(EnemyStatesConstants.Stun,stun);
         attack.AddTransition(EnemyStatesConstants.Idle,idle);
-
+        
         _fsm = new FSM<EnemyStatesConstants>(idle);
-
+        
     }
 
     void InitDecisionTree()
@@ -69,7 +73,7 @@ public class EnemyController : MonoBehaviour
         // Actions
 
         INode follow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
-        INode walk = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Walk));
+        INode walk = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
         INode attack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
         INode idle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
         INode stun = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Stun));
@@ -84,6 +88,7 @@ public class EnemyController : MonoBehaviour
     public void BakeReferences()
     {
         _enemyModel = GetComponent<EnemyModel>();
+        _lineOfSightAI = GetComponent<LineOfSightAI>();
     }
     // Update is called once per frame
     void Update()
