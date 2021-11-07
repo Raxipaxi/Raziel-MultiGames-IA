@@ -16,69 +16,54 @@ public class InteractableBoard : MonoBehaviour, IInteractable
    
     public Canvas InteractCanvas => missionCanvas;
 
-    private Coroutine _deactivateCanvasCoroutine;
 
+
+    [SerializeField] private MainCanvas mainCanvas;
     [SerializeField] private Canvas missionCanvas;
     
     [SerializeField] private UnityEvent OnInteractionEnd;
-    private WaitForSecondsRealtime _timeBetweenMessage;
+   
 
-    private void Awake()
-    {
-        _timeBetweenMessage = new WaitForSecondsRealtime(data.finalMessageTimeToDissapear);
-    }
+  
 
     public bool OnInteract()
     {
-        if (_deactivateCanvasCoroutine != null)
-        {
-            return true;
-        }
+       
         
-        missionText.text = data.message[_textIndex]; 
-        missionCanvas.gameObject.SetActive(true);
+        mainCanvas.ChangeCurrentMission(data.message[_textIndex]);
+        
         _textIndex++;
+        var endInteraction = _textIndex >= data.message.Length;
+        if (!endInteraction) return false;
+        _textIndex = 0;
+        OnInteractionEnd?.Invoke();
+        mainCanvas.EndCurrentMissionCanvas();
+        return true;
 
-        if (_textIndex >= data.message.Length)
-        {
-          _deactivateCanvasCoroutine = StartCoroutine(DeactivateCanvas());
-            _textIndex = 0;
-            return true;
-        }
-
-        return false;
     }
+
+   
 
     public bool OnTriggerContinueInteract()
     {
+        
         if (_textIndex >= data.message.Length)
         {
             _textIndex = 0;
-            _deactivateCanvasCoroutine = StartCoroutine(DeactivateCanvas());
+            OnInteractionEnd?.Invoke();
+            mainCanvas.EndCurrentMissionCanvas();
             return true;
         }
-        missionText.text = data.message[_textIndex];
+
+        mainCanvas.ChangeCurrentMission(data.message [_textIndex]);
         _textIndex++;
         return false;
     }
 
-    private IEnumerator DeactivateCanvas()
-    {
-        yield return _timeBetweenMessage;
-        
-        InteractCanvas.gameObject.SetActive(false);
-
-        _deactivateCanvasCoroutine = null;
-    }
 
     public void BakeReferences()
     {
-        var tempMissionCanvas = GameObject.FindGameObjectWithTag("MissionCanvas");
-
-        if (tempMissionCanvas == null) return;
-
-        missionCanvas = tempMissionCanvas.GetComponent<Canvas>();
-        missionText = missionCanvas.GetComponentInChildren<TextMeshProUGUI>(true);
+        mainCanvas = FindObjectOfType<MainCanvas>();
     }
 }
 #if UNITY_EDITOR
@@ -94,6 +79,7 @@ internal class InteractableBoardEditor : Editor
        if(GUILayout.Button("Bake References"))
         {
             curr.BakeReferences();
+            EditorUtility.SetDirty(curr);
         }
     }
 }

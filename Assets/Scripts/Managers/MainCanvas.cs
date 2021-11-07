@@ -16,6 +16,7 @@ public class MainCanvas : MonoBehaviour
     private WaitForSeconds _waitForSeconds;
     [SerializeField] private TextMeshProUGUI _missionTextComponent;
 
+    [SerializeField] private GameObject hintCanvas;
     [SerializeField] private Animator transition; 
 
     public enum TransitionStates
@@ -31,16 +32,28 @@ public class MainCanvas : MonoBehaviour
     
     private void Start()
     {       
+        InitialState();
+    }
+
+
+    private void InitialState()
+    {
         _missionCanvas.SetActive(false);     
         //ActivateEnemiesLeftCanvas(false);
         _waitForSeconds = new WaitForSeconds(timeToFadeMissionCanvas);        
         GameManager.Instance.GetcanvasRef(this);  
+        SetActiveHintCanvas(false);
     }
-
-
     public void ChangeCurrentMission(string newMission)
     {
+        
         _missionTextComponent.text = newMission;
+        _missionCanvas.SetActive(true);
+       
+    }
+
+    public void EndCurrentMissionCanvas()
+    {
         StartCoroutine(MissionCanvasFader());
     }
     public void UpdateHealth(float newFillAmount)
@@ -76,8 +89,7 @@ public class MainCanvas : MonoBehaviour
     }
 
     private IEnumerator MissionCanvasFader()
-    {       
-        _missionCanvas.SetActive(true);
+    {
         yield return _waitForSeconds;        
         _missionCanvas.SetActive(false);
     }
@@ -91,6 +103,17 @@ public class MainCanvas : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
+    }
+
+    public void SetHintCanvas()
+    {
+        
+    }
+
+    public void SetActiveHintCanvas(bool newState)
+    {
+        hintCanvas.SetActive(newState);
+        //Maybe play sound
     }
 
     /*
