@@ -9,19 +9,24 @@ public class EnemyPatrolState<T> : State<T>
     private Transform _target;
     private Transform[] _waypoints;
     private Action<Vector3> _onWalk;
+    private float _minDistance;
+    
     private LineOfSightAI _lineOfSightAI;
+    private ObstacleAvoidance _obstacleAvoidance;
     private INode _root;
     private Transform _currpatrolPoint =null;
     private HashSet<Transform> visitedWP = new HashSet<Transform>();
     
     
-    public EnemyPatrolState(Transform enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk ,LineOfSightAI lineOfSightAI, INode root)
+    public EnemyPatrolState(EnemyModel enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk , float minDistance,INode root)
     {
-        _enemyModel = enemyModel;
+        _enemyModel = enemyModel.transform;
         _target = target;
         _waypoints = waypoints;
-        _lineOfSightAI = lineOfSightAI;
+        _lineOfSightAI = enemyModel.LineOfSightAI;
         _onWalk = OnWalk;
+        _obstacleAvoidance = enemyModel.ObstacleAvoidance;
+        _minDistance = minDistance;
         _root = root;
     }
 
@@ -30,8 +35,10 @@ public class EnemyPatrolState<T> : State<T>
         if (_currpatrolPoint == null)
         {
             _currpatrolPoint = NearestPatPoint();
+            _obstacleAvoidance.SetTarget = _currpatrolPoint;
             if (!visitedWP.Contains(_currpatrolPoint)) visitedWP.Add(_currpatrolPoint);
         }    
+        _obstacleAvoidance.SetNewBehaviour(ObstacleAvoidance.DesiredBehaviour.Seek);
     }
     private Transform NearestPatPoint()
     {
@@ -48,7 +55,6 @@ public class EnemyPatrolState<T> : State<T>
                 {
                     if (currDist>Vector3.Distance(_enemyModel.position,_currpatrolPoint.position)&&!visitedWP.Contains(_waypoints[i]))
                     {
-                        
                         minDist = currDist;
                         nearestPatrolpt = _waypoints[i]; 
                     }
@@ -60,28 +66,29 @@ public class EnemyPatrolState<T> : State<T>
                 }
             }
         }
-        if (visitedWP.Count.Equals(_waypoints.Length)) CleanVisitedWP();
+        if (visitedWP.Count.Equals(_waypoints.Length)) CleanVisitedWp();
         
         return nearestPatrolpt;
     }
 
-    private void CleanVisitedWP()
+    private void CleanVisitedWp()
     {
         visitedWP.Clear();
     }
 
     public override void Execute()
     {
-        _onWalk?.Invoke(_currpatrolPoint.position);
+        
+        _onWalk?.Invoke(_obstacleAvoidance.GetDir());
+        
         if (!_lineOfSightAI.SingleTargetInSight(_target))
         {
-            if (Vector3.Distance(_enemyModel.position, _currpatrolPoint.position) < 0.5f)
+            if (Vector3.Distance(_enemyModel.position, _currpatrolPoint.position) < _minDistance)
             {
                 _currpatrolPoint = NearestPatPoint();
                 visitedWP.Add(_currpatrolPoint);
                 _root.Execute();
             }
-
         }
         else
         {

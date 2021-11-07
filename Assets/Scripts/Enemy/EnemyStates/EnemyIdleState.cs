@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EnemyIdleState<T> : State<T>
 {
-    public EnemyIdleState()
+    private INode _root;
+    public EnemyIdleState(INode root)
     {
-        
+        _root = root;
     }
 
    

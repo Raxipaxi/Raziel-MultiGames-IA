@@ -5,6 +5,12 @@ public class EnemyModel : MonoBehaviour
     private EnemyView _enemyView;
     private Rigidbody _rb;
     private float _currSpeed;
+    
+    private ObstacleAvoidance _obstacleAvoidance;
+    private LineOfSightAI _lineOfSightAI;
+
+    public ObstacleAvoidance ObstacleAvoidance => _obstacleAvoidance;
+    public LineOfSightAI LineOfSightAI => _lineOfSightAI;
 
     [SerializeField] private PlayerData _enemyData;
 
