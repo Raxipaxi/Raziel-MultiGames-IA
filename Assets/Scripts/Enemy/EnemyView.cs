@@ -1,17 +1,40 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyView : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private Animator _animator;
+    private void Awake()
+    {
+        BakeReferences();
+    }
+
+    public void BakeReferences()
+    {
+        _animator = GetComponent<Animator>();
+    }
+
+    public void SetWalkAnimation()
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void SetStunAnimation()
+    {
+        
+    } 
+    public void SetRunAnimation()
+    {
+        
+    }    
+    public void SetIdleAnimation()
+    {
+        
+    }    
+    public void SetAttackAnimation()
     {
         
     }

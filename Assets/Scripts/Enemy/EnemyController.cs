@@ -10,13 +10,18 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform[] waypoints;
     private LineOfSightAI _lineOfSightAI;
     
+    public event Action<Vector3> OnWalk;
+    
 
     // Start is called before the first frame update
     void Awake()
     {
         BakeReferences();
     }
-
+    private void OnWalkCommand(Vector3 moveDir)
+    {
+        OnWalk.Invoke(moveDir);
+    }
     private void Start()
     {
         InitFSM();
@@ -29,7 +34,7 @@ public class EnemyController : MonoBehaviour
         //--------------- FSM Creation -------------------//                
         // States Creation
         var idle = new EnemyIdleState<EnemyStatesConstants>();
-        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,waypoints,_root);
+        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel.transform,target.transform,waypoints, OnWalkCommand, _lineOfSightAI,_root);
         var chase = new EnemyChaseState<EnemyStatesConstants>();
         var dead = new EnemyDeadState<EnemyStatesConstants>();
         var attack = new EnemyAttackState<EnemyStatesConstants>();

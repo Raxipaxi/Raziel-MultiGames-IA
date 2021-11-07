@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAnimationConstants : MonoBehaviour
+public static class EnemyAnimationConstants 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public const string ENEMY_VELOCITY_ANIMATION_HASH = "Velocity";
+    public const string ENEMY_DEATH_ANIMATION_HASH = "Death";
+    public const string ENEMY_STUN_ANIMATION_HASH = "Stun";
 }

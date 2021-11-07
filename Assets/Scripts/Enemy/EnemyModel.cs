@@ -11,8 +11,14 @@ public class EnemyModel : MonoBehaviour
     private void Awake()
     {
         BakeReferences();
+ 
     }
 
+    public void SubscribeToEvents(EnemyController controller)
+    {
+        controller.OnWalk += Move;
+
+    }
 
     void BakeReferences()
     {
@@ -22,6 +28,8 @@ public class EnemyModel : MonoBehaviour
 
     private void Move(Vector3 dir)
     {
+        _rb.velocity = dir * _currSpeed;
+        transform.forward = dir.normalized;
         
     }
 
