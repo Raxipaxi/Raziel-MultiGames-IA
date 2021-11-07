@@ -28,9 +28,9 @@ public class InteractableBoard : MonoBehaviour, IInteractable
 
     public bool OnInteract()
     {
-       
-        
         mainCanvas.ChangeCurrentMission(data.message[_textIndex]);
+        
+        mainCanvas.SetHintText(data.hint);
         
         _textIndex++;
         var endInteraction = _textIndex >= data.message.Length;
@@ -39,7 +39,6 @@ public class InteractableBoard : MonoBehaviour, IInteractable
         OnInteractionEnd?.Invoke();
         mainCanvas.EndCurrentMissionCanvas();
         return true;
-
     }
 
    

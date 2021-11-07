@@ -23,8 +23,6 @@ public class PlayerJumpState<T> : State<T>
     public override void Awake()
     {
         _onJump?.Invoke();
-        //Set speed to not running? Check afterwards
-        _isRunning?.Invoke(false);
     }
 
     public override void Execute()

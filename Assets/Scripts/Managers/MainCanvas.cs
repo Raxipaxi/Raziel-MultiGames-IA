@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class MainCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _missionTextComponent;
 
     [SerializeField] private GameObject hintCanvas;
+    [SerializeField] private Text hintText;
     [SerializeField] private Animator transition; 
 
     public enum TransitionStates
@@ -44,12 +46,15 @@ public class MainCanvas : MonoBehaviour
         GameManager.Instance.GetcanvasRef(this);  
         SetActiveHintCanvas(false);
     }
+
+    public void SetHintText(string hint)
+    {
+        hintText.text = hint;
+    }
     public void ChangeCurrentMission(string newMission)
     {
-        
         _missionTextComponent.text = newMission;
         _missionCanvas.SetActive(true);
-       
     }
 
     public void EndCurrentMissionCanvas()
@@ -61,7 +66,14 @@ public class MainCanvas : MonoBehaviour
         _playerHealth.fillAmount = newFillAmount;     
     }
 
-  
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+          SetActiveHintCanvas(!hintCanvas.activeSelf);
+        }
+    }
+
     public void OnPauseHandler(bool state)
     {
         Debug.Log("On Pause handled");
@@ -105,10 +117,7 @@ public class MainCanvas : MonoBehaviour
         Application.Quit();
     }
 
-    public void SetHintCanvas()
-    {
-        
-    }
+  
 
     public void SetActiveHintCanvas(bool newState)
     {

@@ -17,7 +17,9 @@ public class SceneManagement
     {
         MainMenu,
         Level1,
-        Level2
+        Level2,
+        Level3,
+        Level4,
     }
 
     public SceneManagement(Action lockCursor, Action unlockCursor)

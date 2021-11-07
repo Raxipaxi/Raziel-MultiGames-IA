@@ -1,0 +1,20 @@
+newmtl ProBuilderDefault
+map_Kd GridBox_Default.png
+Kd 1 1 1
+d 1
+
+newmtl Grass
+map_Kd Grassy Ground 1 Albedo.png
+map_Pm Grassy Ground 1 Metalic.png
+bump Grassy Ground 1 Normal.png
+Kd 1 1 1
+d 1
+
+newmtl 1080PStoneBricksWithMosslvl2
+map_Kd 1080pStonebricksWithMoss_AlbedoTransparency.png
+map_Pm 1080pStonebricksWithMoss_MetallicSmoothness.png
+bump 1080pStonebricksWithMoss_Normal.png
+disp 1080pStonebricksWithMoss_Height.png
+Kd 1 1 1
+d 1
+

@@ -8,4 +8,5 @@ public class InteractableBoardData : ScriptableObject
 {
     public string[] message;
     public float finalMessageTimeToDissapear;
+[TextArea (20,20)]    public string hint;
 }

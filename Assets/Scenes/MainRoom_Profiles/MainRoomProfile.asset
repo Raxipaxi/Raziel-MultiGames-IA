@@ -1332,7 +1332,7 @@ MonoBehaviour:
     value: 256
   _PixelY:
     overrideState: 1
-    value: 144
+    value: 224
   _EffectIntensity:
     overrideState: 1
     value: 1
