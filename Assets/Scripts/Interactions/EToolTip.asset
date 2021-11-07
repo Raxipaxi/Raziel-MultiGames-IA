@@ -17,7 +17,7 @@ MonoBehaviour:
   maxInteractionDistance: 5
   alphaMultiplier: 2
   dissapearLerp: 0.5
-  FaceColor: {r: 1, g: 1, b: 1, a: 1}
-  GlowColor: {r: 0, g: 1, b: 0.9725491, a: 0.5}
+  FaceColor: {r: 1, g: 0, b: 0, a: 1}
+  GlowColor: {r: 0, g: 1, b: 0.9725491, a: 0.63529414}
   UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5019608}
-  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  OutlineColor: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}

@@ -7,16 +7,4 @@ public class InteractionToolTipScriptableObject : ScriptableObject
 {
     public float rotationSpeed;
     public string charToDisplay;
-    public float maxInteractionDistance;
-    public float alphaMultiplier;
-    public float dissapearLerp;
-
-    [Header ("Colors")]
-
-    public Color FaceColor;
-    public Color GlowColor;
-    public Color UnderlayColor;
-    public Color OutlineColor;
-
-
 }

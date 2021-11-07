@@ -1981,6 +1981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be78a1d4cea54ca597e269b3e3bbceb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controllerData: {fileID: 11400000, guid: f6dd2f2599eb30442b48508006b357df, type: 2}
 --- !u!114 &5969553481939518306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2022,8 +2023,8 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 2
-  m_Constraints: 80
-  m_CollisionDetection: 1
+  m_Constraints: 112
+  m_CollisionDetection: 2
 --- !u!136 &855373929
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -6,7 +6,11 @@ using UnityEngine;
 public class PlayerControllerData : ScriptableObject
 {
 
-    public float tryInteractRadius;
+  [Header("Inputs")]
+  public KeyCode jump;
+  public KeyCode run;
+  public KeyCode interact;
+  
 
 
 }

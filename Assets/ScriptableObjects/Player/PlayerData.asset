@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad22a61a6199c145a66c250dfac35de, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  tryInteractRadius: 1.09
+  tryInteractRadius: 0.66
   tryInteractLayers:
     serializedVersion: 2
     m_Bits: 1024
@@ -20,6 +20,7 @@ MonoBehaviour:
   runSpeed: 10
   rotationSmoothTime: 0.12
   jumpHeight: 4
+  jumpCooldown: 0.5
   isGroundedRadius: 0.15
   groundMask:
     serializedVersion: 2

@@ -18,6 +18,8 @@ public class PlayerData : ScriptableObject
 
     [Header ("Jump")]
     public float jumpHeight;
+
+    public float jumpCooldown;
     public float isGroundedRadius;
     public LayerMask groundMask;
 

@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
     public void PauseForce(bool state)
     {
         IsPaused = state;
-        Debug.Log("Paused from gamemanager");
         OnPause?.Invoke(state);
         Time.timeScale = state ? 0 : 1;
         if (state) UnlockCursor();

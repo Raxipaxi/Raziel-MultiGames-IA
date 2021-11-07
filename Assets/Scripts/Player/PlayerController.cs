@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour
     private FSM<PlayerStatesConstants> _fsm;
 
 
-    private PlayerControllerData _controllerData; // No se usa aun
+   [SerializeField] private PlayerControllerData _controllerData;
 
-
+    
     public event Action<Vector3> OnMove;
     public event Action OnJump;
 
@@ -32,11 +32,13 @@ public class PlayerController : MonoBehaviour
 
     private bool TryInteraction()
     {
+        Debug.Log("Try interaction");
         return _playerModel.TryInteract();
     }
 
     private IInteractable GetInteractable()
     {
+        Debug.Log("GetInteractable");
         return _playerModel.GetInteractable();
     }
     private void OnMoveCommand(Vector3 moveDir)
@@ -57,8 +59,8 @@ public class PlayerController : MonoBehaviour
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new PlayerIdleState<PlayerStatesConstants>(PlayerStatesConstants.Move, PlayerStatesConstants.Jump, PlayerStatesConstants.Dead, PlayerStatesConstants.Interact, TryInteraction,this,IsRunning);
-        var move = new PlayerMoveState<PlayerStatesConstants>(OnMoveCommand, PlayerStatesConstants.Idle, PlayerStatesConstants.Jump, PlayerStatesConstants.Interact, TryInteraction, IsRunning);
+        var idle = new PlayerIdleState<PlayerStatesConstants>(PlayerStatesConstants.Move, PlayerStatesConstants.Jump, PlayerStatesConstants.Dead, PlayerStatesConstants.Interact, TryInteraction,_controllerData,IsRunning);
+        var move = new PlayerMoveState<PlayerStatesConstants>(OnMoveCommand, PlayerStatesConstants.Idle, PlayerStatesConstants.Jump, PlayerStatesConstants.Interact, TryInteraction, IsRunning,_controllerData);
         var interact = new PlayerInteractAndWait<PlayerStatesConstants>(GetInteractable, PlayerStatesConstants.Idle);
         var jump = new PlayerJumpState<PlayerStatesConstants>(PlayerStatesConstants.Idle, PlayerStatesConstants.Move, OnJumpCommand, IsGrounded, OnMoveCommand, IsRunning);
         var dead = new PlayerDeadState<PlayerStatesConstants>();
