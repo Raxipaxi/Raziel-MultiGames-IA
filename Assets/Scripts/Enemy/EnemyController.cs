@@ -6,11 +6,19 @@ public class EnemyController : MonoBehaviour
     private EnemyModel _enemyModel;
     private FSM<EnemyStatesConstants> _fsm;
     private INode _root;
+
+
+
+    #region Steering Properties
     [SerializeField] private PlayerModel target;
     [SerializeField] private Transform[] waypoints;
     [SerializeField] private float minDistance;
-    private ObstacleAvoidance _obstacleAvoidance;
+    [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidance;
+    public ObstacleAvoidance Behaviour { get; private set; }
     private LineOfSightAI _lineOfSightAI;
+
+    #endregion
+    
     
     private bool _previousInSightState;
     private bool _currentInSightState;
@@ -120,13 +128,16 @@ public class EnemyController : MonoBehaviour
     {
         _enemyModel = GetComponent<EnemyModel>();
         _lineOfSightAI = GetComponent<LineOfSightAI>();
-        _obstacleAvoidance = GetComponent<ObstacleAvoidance>();
+        Behaviour = new ObstacleAvoidance(transform, target.transform, obstacleAvoidance.radius,
+            obstacleAvoidance.maxObjs, obstacleAvoidance.obstaclesMask,
+            obstacleAvoidance.multiplier, _enemyModel, obstacleAvoidance.timePrediction,
+            ObstacleAvoidance.DesiredBehaviour.Seek);
+
     }
     // Update is called once per frame
     void Update()
     {
-        // How we get player reference to stop?
-        _fsm.UpdateState();
+        if(target!=null) _fsm.UpdateState();
 
     }
 }

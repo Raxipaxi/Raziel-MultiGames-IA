@@ -25,7 +25,7 @@ public class EnemyPatrolState<T> : State<T>
         _waypoints = waypoints;
         _lineOfSightAI = enemyModel.LineOfSightAI;
         _onWalk = OnWalk;
-        _obstacleAvoidance = enemyModel.ObstacleAvoidance;
+        //_obstacleAvoidance = enemyModel.ObstacleAvoidance;
         _minDistance = minDistance;
         _root = root;
     }

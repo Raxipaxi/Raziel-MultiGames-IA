@@ -9,14 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da89391ed95dd6046ad14407e974c444, type: 3}
-  m_Name: EnemyLineOfSighData
+  m_Script: {fileID: 11500000, guid: dc0ae60200c640d29f769a3a571c30cd, type: 3}
+  m_Name: EnemyObstacleAvoidance
   m_EditorClassIdentifier: 
-  range: 10
-  angle: 90
+  self: {fileID: 0}
+  target: {fileID: 0}
+  radius: 0
+  maxObjs: 0
   obstaclesMask:
     serializedVersion: 2
-    m_Bits: 2048
-  targetMask:
-    serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
+  multiplier: 0
+  targetVel: 0
+  timePrediction: 0
+  _defaultBehaviour: 0

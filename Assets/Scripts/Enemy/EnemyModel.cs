@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 
-public class EnemyModel : MonoBehaviour
+public class EnemyModel : MonoBehaviour, IVel
 {
     private EnemyView _enemyView;
     private Rigidbody _rb;
-    private float _currSpeed;
+    public float Vel { get; }
     
-    private ObstacleAvoidance _obstacleAvoidance;
+    private float _currSpeed;
+
+
+ 
     private LineOfSightAI _lineOfSightAI;
 
-    public ObstacleAvoidance ObstacleAvoidance => _obstacleAvoidance;
+
     public LineOfSightAI LineOfSightAI => _lineOfSightAI;
 
     [SerializeField] private PlayerData _enemyData;
@@ -17,7 +20,6 @@ public class EnemyModel : MonoBehaviour
     private void Awake()
     {
         BakeReferences();
- 
     }
 
     public void SubscribeToEvents(EnemyController controller)
@@ -30,6 +32,8 @@ public class EnemyModel : MonoBehaviour
     {
         _enemyView = GetComponent<EnemyView>();
         _rb = GetComponent<Rigidbody>();
+
+
     }
 
     private void Move(Vector3 dir)
@@ -48,4 +52,6 @@ public class EnemyModel : MonoBehaviour
     {
         
     }
+
+
 }
