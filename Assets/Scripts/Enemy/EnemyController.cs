@@ -18,7 +18,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float minDistance;
     [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidance;
     public ObstacleAvoidance Behaviour { get; private set; }
-    private LineOfSightAI _lineOfSightAI;
 
     #endregion
     
@@ -68,8 +67,9 @@ public class EnemyController : MonoBehaviour
     #endregion
     private void Start()
     {
-        InitFSM();
+        _enemyModel.SubscribeToEvents(this);
         InitDecisionTree();
+        InitFSM();
         //Events subs??
     }
 
@@ -77,9 +77,9 @@ public class EnemyController : MonoBehaviour
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _lineOfSightAI, target.transform, OnIdleCommand, _root);
-        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,_root);
-        var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _lineOfSightAI, OnChaseCommand);
+        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _enemyModel.LineOfSightAI, target.transform, OnIdleCommand, _root);
+        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,Behaviour,_root);
+        var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _enemyModel.LineOfSightAI, OnChaseCommand);
         var dead = new EnemyDeadState<EnemyStatesConstants>();
         var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand);
         var stun = new EnemyStunState<EnemyStatesConstants>();
@@ -121,28 +121,35 @@ public class EnemyController : MonoBehaviour
     {
         // Actions
 
-        INode goToFollow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
-        INode goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
-        INode goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
-        INode goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
+        var goToFollow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
+        var goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
+        var goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
+        var goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
 
         
         //Questions
-       
-        // QuestionNode PatrolCycleFinished = new QuestionNode(HasFinishedPatrolCycles, goToIdle, goToPatrol);
-        // QuestionNode IsInCooldown = new QuestionNode(IsInCooldownIdle, goToIdle, PatrolCycleFinished);
-         QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, goToPatrol);
-         QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
-         QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
-         QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
 
-          _root = IsInSight;
+         var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, goToPatrol);
+         var attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
+         var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+         var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
+         
+         
+         //Root 
+         QuestionNode IsPlayerAlive = new QuestionNode(() => target != null, IsInSight, goToPatrol);
+         
+         Debug.Log("Init tree");   
+          _root = IsPlayerAlive;
     }
     
     private bool SightStateChanged()
     {
-      
-        return (_currentInSightState != _previousInSightState);
+        Debug.Log("cambio");
+   
+       var changedSight = (_currentInSightState != _previousInSightState);
+       Debug.Log(changedSight);
+ 
+        return changedSight ;
     }
 
     private bool LastInSightState()
@@ -156,15 +163,14 @@ public class EnemyController : MonoBehaviour
         //Checks distance to player. If within kill range, kill the player. Else starts pursuit state
         float rawDistance = (target.transform.position - transform.position).magnitude;
         //float rawDistance = (_player.transform.position - transform.position).sqrMagnitude;        
-        return rawDistance <= 3f; //_enemyModel.EnemyData.attemptToKillDistance; //HACER EL SCRIPTABLE OBJECT
+        return rawDistance <= minDistance; //_enemyModel.EnemyData.attemptToKillDistance; //HACER EL SCRIPTABLE OBJECT
         //return rawDistance <=_enemyModel.EnemyData.attemptToKillDistance * _enemyModel.EnemyData.attemptToKillDistance;
     }   
     public void BakeReferences()
     {
         _enemyModel = GetComponent<EnemyModel>();
         _enemyView = GetComponent<EnemyView>();
-        _lineOfSightAI = GetComponent<LineOfSightAI>();
-        
+
         Behaviour = new ObstacleAvoidance(transform, target.transform, obstacleAvoidance.radius,
             obstacleAvoidance.maxObjs, obstacleAvoidance.obstaclesMask,
             obstacleAvoidance.multiplier, _enemyModel, obstacleAvoidance.timePrediction,

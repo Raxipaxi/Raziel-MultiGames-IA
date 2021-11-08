@@ -18,7 +18,7 @@ public class EnemyPatrolState<T> : State<T>
     private HashSet<Transform> visitedWP = new HashSet<Transform>();
     
     
-    public EnemyPatrolState(EnemyModel enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk , float minDistance,INode root)
+    public EnemyPatrolState(EnemyModel enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk , float minDistance,ObstacleAvoidance behaAvoid, INode root)
     {
         _enemyModel = enemyModel.transform;
         _target = target;
@@ -27,10 +27,12 @@ public class EnemyPatrolState<T> : State<T>
         _onWalk = OnWalk;
         _minDistance = minDistance;
         _root = root;
+        _obstacleAvoidance = behaAvoid;
     }
 
     public override void Awake()
     {
+        Debug.Log("Patrol");
         if (_currpatrolPoint == null)
         {
             _currpatrolPoint = NearestPatPoint();
@@ -65,7 +67,7 @@ public class EnemyPatrolState<T> : State<T>
                 }
             }
         }
-        if (visitedWP.Count.Equals(_waypoints.Length)) CleanVisitedWp();
+        if (visitedWP.Count==_waypoints.Length) CleanVisitedWp();
         
         return nearestPatrolpt;
     }
@@ -79,11 +81,12 @@ public class EnemyPatrolState<T> : State<T>
     {
         
         _onWalk?.Invoke(_obstacleAvoidance.GetDir());
-        
+        Debug.Log("Patrol execute");
         if (!_lineOfSightAI.SingleTargetInSight(_target))
         {
             if (Vector3.Distance(_enemyModel.position, _currpatrolPoint.position) < _minDistance)
             {
+                Debug.Log("Patrol NANI!?");
                 _currpatrolPoint = NearestPatPoint();
                 visitedWP.Add(_currpatrolPoint);
                 _root.Execute();
@@ -91,6 +94,7 @@ public class EnemyPatrolState<T> : State<T>
         }
         else
         {
+            
             _root.Execute();
         }
         
