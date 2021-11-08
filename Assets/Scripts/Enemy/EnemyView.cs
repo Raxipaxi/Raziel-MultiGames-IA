@@ -32,7 +32,7 @@ public class EnemyView : MonoBehaviour
     }    
     public void SetIdleAnimation()
     {
-        
+        _animator.Play("Idle");
     }    
     public void SetAttackAnimation()
     {

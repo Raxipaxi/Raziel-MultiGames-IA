@@ -4,10 +4,13 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     private EnemyModel _enemyModel;
+    private EnemyView _enemyView;
     private FSM<EnemyStatesConstants> _fsm;
+    
     private INode _root;
 
-
+    [SerializeField] private float idleLenght;
+    
 
     #region Steering Properties
     [SerializeField] private PlayerModel target;
@@ -22,9 +25,14 @@ public class EnemyController : MonoBehaviour
     
     private bool _previousInSightState;
     private bool _currentInSightState;
-    
+
+    #region Actions
+
     public event Action<Vector3> OnWalk;
+    public event Action OnIdle;
     
+
+    #endregion
 
     // Start is called before the first frame update
     void Awake()
@@ -34,6 +42,10 @@ public class EnemyController : MonoBehaviour
     private void OnWalkCommand(Vector3 moveDir)
     {
         OnWalk.Invoke(moveDir);
+    }    
+    private void OnIdleCommand()
+    {
+        OnIdle.Invoke();
     }
     private void Start()
     {
@@ -46,7 +58,7 @@ public class EnemyController : MonoBehaviour
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new EnemyIdleState<EnemyStatesConstants>(_root);
+        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _lineOfSightAI, target.transform, OnIdleCommand, _root);
         var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,_root);
         var chase = new EnemyChaseState<EnemyStatesConstants>();
         var dead = new EnemyDeadState<EnemyStatesConstants>();
@@ -127,7 +139,9 @@ public class EnemyController : MonoBehaviour
     public void BakeReferences()
     {
         _enemyModel = GetComponent<EnemyModel>();
+        _enemyView = GetComponent<EnemyView>();
         _lineOfSightAI = GetComponent<LineOfSightAI>();
+        
         Behaviour = new ObstacleAvoidance(transform, target.transform, obstacleAvoidance.radius,
             obstacleAvoidance.maxObjs, obstacleAvoidance.obstaclesMask,
             obstacleAvoidance.multiplier, _enemyModel, obstacleAvoidance.timePrediction,

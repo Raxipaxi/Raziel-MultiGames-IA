@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   self: {fileID: 0}
   target: {fileID: 0}
-  radius: 0
-  maxObjs: 0
+  radius: 3
+  maxObjs: 5
   obstaclesMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   multiplier: 0
   targetVel: 0
-  timePrediction: 0
+  timePrediction: 0.5
   _defaultBehaviour: 0

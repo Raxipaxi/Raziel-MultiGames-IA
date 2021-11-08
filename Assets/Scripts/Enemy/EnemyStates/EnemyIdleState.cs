@@ -1,18 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class EnemyIdleState<T> : State<T>
 {
     private INode _root;
-    public EnemyIdleState(INode root)
+    private LineOfSightAI _lineOfSightAI;
+    private Transform _target;
+    private float _idleLenght;
+    private float _cooldown;
+
+    private Action _onIdle;
+    public EnemyIdleState(float idleLenght,LineOfSightAI lineOfSightAI, Transform target,Action onIdle, INode root)
     {
         _root = root;
+        _lineOfSightAI = lineOfSightAI;
+        _target = target;
+        _idleLenght = idleLenght;
+        _onIdle = onIdle;
+    }
+
+    public override void Awake()
+    {
+        _cooldown = Time.time + _idleLenght;
+        _onIdle?.Invoke();
+    }
+
+    void Execute()
+    {
+        if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
+        {
+            _root.Execute();
+        }   
     }
 
    
-    void Execute()
-    {
-        
-    }
 }

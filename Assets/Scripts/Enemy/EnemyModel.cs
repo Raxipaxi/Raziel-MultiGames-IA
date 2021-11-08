@@ -25,6 +25,7 @@ public class EnemyModel : MonoBehaviour, IVel
     public void SubscribeToEvents(EnemyController controller)
     {
         controller.OnWalk += Move;
+        controller.OnIdle += Idle;
 
     }
 
@@ -41,6 +42,11 @@ public class EnemyModel : MonoBehaviour, IVel
         _rb.velocity = dir * _currSpeed;
         transform.forward = dir.normalized;
         
+    }
+
+    private void Idle()
+    {
+        _enemyView.SetIdleAnimation();
     }
 
     private void Die()
