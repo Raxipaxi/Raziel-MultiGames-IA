@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WavesBigSection
+  m_Shader: {fileID: 4800000, guid: c98116d25c9e7014eb6a20229bfb078d, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BigNormalMap:
+        m_Texture: {fileID: 2800000, guid: d39fd28d79579814382bf865d8b0e584, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SmallNormalMap:
+        m_Texture: {fileID: 2800000, guid: 4c06e28a171e3844e9621276cef0c932, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularHDRi:
+        m_Texture: {fileID: 8900000, guid: 3977a445bc0cbf1498161e4f4b99b771, type: 2}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 8900000, guid: e473dbacbfa124446abf04abd0c1c41b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: b956aab09d0e9da45b423cdca8cba6d0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: c0decc2d7c2755d41935a601e528171d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Amplitude: 0.11
+    - _AmplitudeDivider: 6.76
+    - _BigNormalIntensity: 0.58
+    - _BigNormalTiling: 5
+    - _CrestVariation: 32.47
+    - _CrestVariation1: 5.55
+    - _DepthFadeColorIntensity: 0.199
+    - _DepthFadeDistance: 0.52
+    - _EdgeLength: 2
+    - _FakeNormalOffset: 0
+    - _FakeNormalTransformation: 1
+    - _Float0: 5.6
+    - _FoamIntesnity: 0.251
+    - _FoamMask: 4.96
+    - _FoamMaskFalloff: 4
+    - _FoamMaskHardness: 1.14
+    - _FoamMoveSpeed: 0.37
+    - _FoamScale: 3
+    - _FoamTopLayerMaskFalloff: 1
+    - _FresnelBias: 0.615
+    - _FresnelPower: 4.58
+    - _FresnelScale: 2.37
+    - _NumberOfWaves: 126.08
+    - _SmallNormalIntensity: 0.83
+    - _SmallNormalTiling: 6
+    - _Smoothness: 0.18
+    - _SpecularIntensity: 0.206
+    - _Steepness: 0
+    - _WaveAttenuation: 2
+    - _WaveLengthMultiplier: 62
+    - _WaveSpeedMultiplier: 8
+    - _Wavelenght: 80
+    - _Wavespeed: 18.7
+    - __dirty: 0
+    m_Colors:
+    - _BigNormalSpeed: {r: 0.1, g: -0.08, b: 0, a: 0}
+    - _CrestColor: {r: 1, g: 0.83267355, b: 0, a: 0}
+    - _Direction: {r: 0.48, g: 0, b: -0.21, a: 0}
+    - _Direction1: {r: 0.34, g: 0, b: 0.27, a: 0}
+    - _Direction2: {r: -0.06, g: 0, b: -0.61, a: 0}
+    - _Direction3: {r: 0.24, g: 0, b: 0.09, a: 0}
+    - _FoamColor: {r: 0.6792453, g: 0, b: 0.13760312, a: 0}
+    - _FoamMoveDirection: {r: 0.5, g: 0, b: 0, a: 0}
+    - _MainColor: {r: 1, g: 0.26704967, b: 0, a: 0}
+    - _MainDirection: {r: 0, g: 0, b: 0, a: 0}
+    - _SmallNormalSpeed: {r: 0.11, g: -0.03, b: 0, a: 0}
+    - _Vector0: {r: 0.3, g: 0.1, b: 0, a: 0}
+    - _Wave0Dir: {r: 1, g: 0, b: 0.18, a: 0}
+    - _Wave1Dir: {r: 0.4, g: 0, b: 0.3, a: 0}
+    - _Wave2Dir: {r: 0, g: 0, b: 1.05, a: 0}
+    - _Wave3Dir: {r: 0.4, g: 0, b: -3.31, a: 0}

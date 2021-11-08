@@ -2077,7 +2077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactPoint: {fileID: 1822950978168915477}
-  groundCheck: {fileID: 0}
+  groundCheck: {fileID: 4477664619802719600}
   playerData: {fileID: 11400000, guid: 4ac472c2a9da19c4bac31693cb9da8b4, type: 2}
 --- !u!114 &5658435237889426194
 MonoBehaviour:
