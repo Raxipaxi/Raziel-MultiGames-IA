@@ -27,13 +27,11 @@ public class EnemyController : MonoBehaviour
     private bool _currentInSightState;
 
     #region Actions
-
     public event Action<Vector3> OnWalk;
     public event Action<Vector3> OnChase;
     public event Action OnIdle;
     public event Action OnAttack;
-    
-
+    public event Action OnStun;
     #endregion
 
     // Start is called before the first frame update
@@ -61,6 +59,11 @@ public class EnemyController : MonoBehaviour
     private void OnAttackCommand()
     {
         OnAttack?.Invoke();
+    }
+
+    private void OnStunCommand()
+    {
+        OnStun?.Invoke();
     }
     #endregion
     private void Start()
@@ -128,15 +131,12 @@ public class EnemyController : MonoBehaviour
        
         // QuestionNode PatrolCycleFinished = new QuestionNode(HasFinishedPatrolCycles, goToIdle, goToPatrol);
         // QuestionNode IsInCooldown = new QuestionNode(IsInCooldownIdle, goToIdle, PatrolCycleFinished);
-        // QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, IsInCooldown);
-        // QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
-        // QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
-        // QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-        //
-        // //Root Node
-        // QuestionNode IsPlayerAlive = new QuestionNode(() => PlayerRef.LifeController.IsAlive, IsInSight, goToPatrol);
+         QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, goToPatrol);
+         QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
+         QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+         QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
 
-     //   _root = IsPlayerAlive;
+          _root = IsInSight;
     }
     
     private bool SightStateChanged()

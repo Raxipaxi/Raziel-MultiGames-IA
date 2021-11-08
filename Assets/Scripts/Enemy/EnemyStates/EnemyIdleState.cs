@@ -25,13 +25,12 @@ public class EnemyIdleState<T> : State<T>
         _onIdle?.Invoke();
     }
 
-    void Execute()
+    public override void Execute()
     {
         if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
         {
             _root.Execute();
         }   
     }
-
-   
+    
 }
