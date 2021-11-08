@@ -102,18 +102,25 @@ public class EnemyController : MonoBehaviour
     {
         // Actions
 
-        INode follow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
-        INode patrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
-        INode attack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
-        INode idle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
-        INode stun = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Stun));
+        INode goToFollow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
+        INode goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
+        INode goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
+        INode goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
 
+        
         //Questions
-        // INode isInIdle = new QuestionNode(IsInIdle, patrol, idle); 
-        // INode isInSight = new QuestionNode(IsInSight,chase,isInIdle); // Is the player in sight?      
-        // INode isInRange = new QuestionNode(IsInRange,attack,isInSight); // Is in range to attack?
+       
+        QuestionNode PatrolCycleFinished = new QuestionNode(HasFinishedPatrolCycles, goToIdle, goToPatrol);
+        QuestionNode IsInCooldown = new QuestionNode(IsInCooldownIdle, goToIdle, PatrolCycleFinished);
+        QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, IsInCooldown);
+        QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
+        QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+        QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
+        
+        //Root Node
+        QuestionNode IsPlayerAlive = new QuestionNode(() => PlayerRef.LifeController.IsAlive, IsInSight, goToPatrol);
 
-        //_root = isInRange;
+        _root = IsPlayerAlive;
     }
     
     private bool SightStateChanged()
