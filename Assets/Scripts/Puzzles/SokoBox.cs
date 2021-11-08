@@ -59,11 +59,12 @@ public class SokoBox : MonoBehaviour
 
         if (other.gameObject.CompareTag("Player"))
         {
-            var dir = other.contacts[0].normal.normalized;
+            var dir = other.contacts[0].normal;
             dir.y = 0;
-            if (dir.x > dir.z) dir.z = 0;
-            else if (dir.x < dir.z) dir.x = 0;
-            InitiateMove(other.contacts[0].normal.normalized);
+            if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.z)) dir.z = 0;
+            else dir.x = 0;
+            dir = dir.normalized;
+            InitiateMove(dir);
         }
     }
 }
