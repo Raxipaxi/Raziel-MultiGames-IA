@@ -29,7 +29,9 @@ public class EnemyController : MonoBehaviour
     #region Actions
 
     public event Action<Vector3> OnWalk;
+    public event Action<Vector3> OnChase;
     public event Action OnIdle;
+    public event Action OnAttack;
     
 
     #endregion
@@ -39,14 +41,28 @@ public class EnemyController : MonoBehaviour
     {
         BakeReferences();
     }
+
+    #region Commands
+
     private void OnWalkCommand(Vector3 moveDir)
     {
-        OnWalk.Invoke(moveDir);
+        OnWalk?.Invoke(moveDir);
     }    
     private void OnIdleCommand()
     {
-        OnIdle.Invoke();
+        OnIdle?.Invoke();
     }
+
+    private void OnChaseCommand(Vector3 chaseDir)
+    {
+        OnChase?.Invoke(chaseDir);
+    }
+
+    private void OnAttackCommand()
+    {
+        OnAttack?.Invoke();
+    }
+    #endregion
     private void Start()
     {
         InitFSM();
@@ -60,9 +76,9 @@ public class EnemyController : MonoBehaviour
         // States Creation
         var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _lineOfSightAI, target.transform, OnIdleCommand, _root);
         var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,_root);
-        var chase = new EnemyChaseState<EnemyStatesConstants>();
+        var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _lineOfSightAI, OnChaseCommand);
         var dead = new EnemyDeadState<EnemyStatesConstants>();
-        var attack = new EnemyAttackState<EnemyStatesConstants>();
+        var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand);
         var stun = new EnemyStunState<EnemyStatesConstants>();
         
         //Idle State
@@ -110,17 +126,17 @@ public class EnemyController : MonoBehaviour
         
         //Questions
        
-        QuestionNode PatrolCycleFinished = new QuestionNode(HasFinishedPatrolCycles, goToIdle, goToPatrol);
-        QuestionNode IsInCooldown = new QuestionNode(IsInCooldownIdle, goToIdle, PatrolCycleFinished);
-        QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, IsInCooldown);
-        QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
-        QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
-        QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-        
-        //Root Node
-        QuestionNode IsPlayerAlive = new QuestionNode(() => PlayerRef.LifeController.IsAlive, IsInSight, goToPatrol);
+        // QuestionNode PatrolCycleFinished = new QuestionNode(HasFinishedPatrolCycles, goToIdle, goToPatrol);
+        // QuestionNode IsInCooldown = new QuestionNode(IsInCooldownIdle, goToIdle, PatrolCycleFinished);
+        // QuestionNode DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, IsInCooldown);
+        // QuestionNode attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
+        // QuestionNode DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+        // QuestionNode IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
+        //
+        // //Root Node
+        // QuestionNode IsPlayerAlive = new QuestionNode(() => PlayerRef.LifeController.IsAlive, IsInSight, goToPatrol);
 
-        _root = IsPlayerAlive;
+     //   _root = IsPlayerAlive;
     }
     
     private bool SightStateChanged()

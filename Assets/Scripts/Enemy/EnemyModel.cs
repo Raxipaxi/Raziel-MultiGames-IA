@@ -8,8 +8,6 @@ public class EnemyModel : MonoBehaviour, IVel
     
     private float _currSpeed;
 
-
- 
     private LineOfSightAI _lineOfSightAI;
 
 
@@ -25,7 +23,9 @@ public class EnemyModel : MonoBehaviour, IVel
     public void SubscribeToEvents(EnemyController controller)
     {
         controller.OnWalk += Move;
+        controller.OnChase += Chase;
         controller.OnIdle += Idle;
+        controller.OnAttack += Attack;
 
     }
 
@@ -34,13 +34,21 @@ public class EnemyModel : MonoBehaviour, IVel
         _enemyView = GetComponent<EnemyView>();
         _rb = GetComponent<Rigidbody>();
 
-
     }
 
     private void Move(Vector3 dir)
     {
         _rb.velocity = dir * _currSpeed;
         transform.forward = dir.normalized;
+        _enemyView.SetWalkAnimation();
+        
+    }   
+    private void Chase(Vector3 dir)
+    {
+        //TODO Ver lo del scriptable object con la data del enemigo
+        _rb.velocity = dir * _currSpeed;
+        transform.forward = dir.normalized;
+        _enemyView.SetRunAnimation();
         
     }
 
@@ -56,7 +64,7 @@ public class EnemyModel : MonoBehaviour, IVel
 
     private void Attack()
     {
-        
+        _enemyView.SetAttackAnimation();
     }
 
 
