@@ -69,6 +69,7 @@ public class EnemyPatrolState<T> : State<T>
         }
         if (visitedWP.Count==_waypoints.Length) CleanVisitedWp();
         
+        
         return nearestPatrolpt;
     }
 
@@ -88,6 +89,7 @@ public class EnemyPatrolState<T> : State<T>
             {
                 Debug.Log("Patrol NANI!?");
                 _currpatrolPoint = NearestPatPoint();
+                _obstacleAvoidance.SetTarget = _currpatrolPoint;
                 visitedWP.Add(_currpatrolPoint);
                 _root.Execute();
             }

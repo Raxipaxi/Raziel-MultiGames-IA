@@ -128,7 +128,6 @@ public class EnemyController : MonoBehaviour
 
         
         //Questions
-
          var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, goToPatrol);
          var attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
          var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
