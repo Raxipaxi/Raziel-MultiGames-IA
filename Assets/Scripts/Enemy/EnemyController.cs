@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IStunable
 {
     private EnemyModel _enemyModel;
     private EnemyView _enemyView;
@@ -76,6 +76,10 @@ public class EnemyController : MonoBehaviour
         //Events subs??
     }
 
+    public void GetStun()
+    {
+        OnStunCommand();
+    }
     private bool IsIdleStateCooldown()
     {
         return _waitForIdleState;
