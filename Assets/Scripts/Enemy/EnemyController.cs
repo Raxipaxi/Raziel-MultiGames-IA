@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour, IStunable
     [SerializeField] private float minDistance;
     [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidance;
     private bool _waitForIdleState;
+    private bool _isStunned;
     public ObstacleAvoidance Behaviour { get; private set; }
 
     #endregion
@@ -79,6 +80,16 @@ public class EnemyController : MonoBehaviour, IStunable
     public void GetStun()
     {
         OnStunCommand();
+    }
+
+    private void SetStun(bool newState)
+    {
+        _isStunned = newState;
+    }
+
+    private bool IsStunned()
+    {
+        return _isStunned;
     }
     private bool IsIdleStateCooldown()
     {
@@ -142,7 +153,7 @@ public class EnemyController : MonoBehaviour, IStunable
         var goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
         var goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
         var goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
-
+        var goToStun = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Stun));
         
         //Questions
         var CheckIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
@@ -151,10 +162,10 @@ public class EnemyController : MonoBehaviour, IStunable
          var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
       
          var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-         
+         var IsStunned = new QuestionNode(this.IsStunned, goToStun, IsInSight);
          
          //Root 
-         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsInSight, goToPatrol);
+         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsStunned, goToPatrol);
          
          Debug.Log("Init tree");   
           _root = IsPlayerAlive;
