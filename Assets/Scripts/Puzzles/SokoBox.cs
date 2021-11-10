@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SokoBox : MonoBehaviour
 {
@@ -13,18 +14,24 @@ public class SokoBox : MonoBehaviour
 
     private Rigidbody _rb;
 
+    [SerializeField] private LayerMask goalLayerMask;
+
     [SerializeField]private HashSet<Vector3> _possibleLocations;
     [SerializeField] private LayerMask floorLayerMask;
 
+    private bool _unmovable;
+
+    [SerializeField] private UnityEvent OnGoalReach;
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        OnGoalReach.AddListener(() => _unmovable = true);
     }
 
 
     public void InitiateMove(Vector3 dir)
     {
-        if (_moveTask != null) return;
+        if (_moveTask != null || _unmovable) return;
 
         var raycastThrow = Physics.Raycast(transform.position, dir, 2);
 
@@ -52,8 +59,18 @@ public class SokoBox : MonoBehaviour
 
         transform.position = finalPos;
         _moveTask = null;
+
+        if (CheckGoalReach()) OnGoalReach?.Invoke();
     }
 
+    
+
+    private bool CheckGoalReach()
+    {
+        var isGoal = Physics.Raycast(transform.position, Vector3.down, 2, goalLayerMask);
+
+        return isGoal;
+    }
     private void OnCollisionEnter(Collision other)
     {
 

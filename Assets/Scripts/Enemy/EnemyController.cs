@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform[] waypoints;
     [SerializeField] private float minDistance;
     [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidance;
+    private bool _waitForIdleState;
     public ObstacleAvoidance Behaviour { get; private set; }
 
     #endregion
@@ -49,6 +50,7 @@ public class EnemyController : MonoBehaviour
     private void OnIdleCommand()
     {
         OnIdle?.Invoke();
+        SetIdleStateCooldown(true);
     }
 
     private void OnChaseCommand(Vector3 chaseDir)
@@ -74,12 +76,22 @@ public class EnemyController : MonoBehaviour
         //Events subs??
     }
 
+    private bool IsIdleStateCooldown()
+    {
+        return _waitForIdleState;
+    }
+
+    private void SetIdleStateCooldown(bool newState)
+    {
+        _waitForIdleState = newState;
+    }
+
     void InitFSM()
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _enemyModel.LineOfSightAI, target.transform, OnIdleCommand, _root);
-        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,Behaviour,_root);
+        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _enemyModel.LineOfSightAI, target.transform, OnIdleCommand, _root,SetIdleStateCooldown);
+        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,Behaviour,_root,SetIdleStateCooldown);
         var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _enemyModel.LineOfSightAI, OnChaseCommand);
         var dead = new EnemyDeadState<EnemyStatesConstants>();
         var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand);
@@ -129,9 +141,11 @@ public class EnemyController : MonoBehaviour
 
         
         //Questions
-         var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, goToPatrol);
+        var CheckIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
+         var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, CheckIdleStateCooldown);
          var attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
          var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+      
          var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
          
          

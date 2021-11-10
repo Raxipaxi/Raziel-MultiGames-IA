@@ -759,7 +759,7 @@ GameObject:
   - component: {fileID: 696027857}
   - component: {fileID: 696027856}
   - component: {fileID: 696027855}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Goal
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -1166,6 +1166,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 215500927841642822, guid: ac254f37032e67e489a2e843624db642,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 699830763653493756, guid: ac254f37032e67e489a2e843624db642,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1524,7 +1529,7 @@ PrefabInstance:
     - target: {fileID: 5411233473701285172, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 7991
+      value: 40759
       objectReference: {fileID: 0}
     - target: {fileID: 5411233473701285173, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
@@ -1708,6 +1713,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1934778874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 215500927841642822, guid: ac254f37032e67e489a2e843624db642,
+    type: 3}
+  m_PrefabInstance: {fileID: 1208299789}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2086669447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1904,6 +1915,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1253742078, guid: e679265c0a6e7874a999560b0095d878, type: 3}
+      propertyPath: OnGoalReach.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1934778874}
     - target: {fileID: 3416101582696644800, guid: e679265c0a6e7874a999560b0095d878,
         type: 3}
       propertyPath: m_RootOrder

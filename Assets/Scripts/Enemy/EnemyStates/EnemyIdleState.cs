@@ -8,21 +8,25 @@ public class EnemyIdleState<T> : State<T>
     private Transform _target;
     private float _idleLenght;
     private float _cooldown;
+    private Action<bool> _setIdleCommand;
+  
 
     private Action _onIdle;
-    public EnemyIdleState(float idleLenght,LineOfSightAI lineOfSightAI, Transform target,Action onIdle, INode root)
+    public EnemyIdleState(float idleLenght,LineOfSightAI lineOfSightAI, Transform target,Action onIdle, INode root, Action <bool> setIdleCommand)
     {
         _root = root;
         _lineOfSightAI = lineOfSightAI;
         _target = target;
         _idleLenght = idleLenght;
         _onIdle = onIdle;
+        _setIdleCommand = setIdleCommand;
     }
 
     public override void Awake()
     {
         ResetCD();
         _onIdle?.Invoke();
+        _setIdleCommand?.Invoke(true);
     }
 
     public override void Execute()
@@ -30,6 +34,7 @@ public class EnemyIdleState<T> : State<T>
         if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
         {          
             ResetCD();
+            _setIdleCommand?.Invoke(false);
             _root.Execute();
         }   
     }

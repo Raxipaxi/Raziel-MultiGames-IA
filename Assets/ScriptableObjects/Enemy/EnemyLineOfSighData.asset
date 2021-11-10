@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da89391ed95dd6046ad14407e974c444, type: 3}
   m_Name: EnemyLineOfSighData
   m_EditorClassIdentifier: 
-  range: 5.32
-  angle: 90
+  range: 5.3
+  angle: 160
   obstaclesMask:
     serializedVersion: 2
     m_Bits: 32311

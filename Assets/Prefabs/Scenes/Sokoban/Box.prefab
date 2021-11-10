@@ -206,6 +206,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: af1e66a89d8533f4cb4266e4f16d1163, type: 2}
+  goalLayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
   floorLayerMask:
     serializedVersion: 2
     m_Bits: 4096
+  OnGoalReach:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
