@@ -88,11 +88,11 @@ public class EnemyPatrolState<T> : State<T>
 
         var distanceToWaypoint = Vector3.Distance(_enemyModel.position, _currpatrolPoint.position);
         
-        Debug.Log($"Distance is {distanceToWaypoint}");
+       
         if (distanceToWaypoint > _minDistance) return;
 
         ResetPatrolPoint();
-        Debug.Log("Called root");
+       
         _root.Execute();
     }
 
