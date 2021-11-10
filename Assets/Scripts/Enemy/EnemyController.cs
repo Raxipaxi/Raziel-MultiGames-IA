@@ -162,10 +162,10 @@ public class EnemyController : MonoBehaviour, IStunable
          var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
       
          var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-         var IsStunned = new QuestionNode(this.IsStunned, goToStun, IsInSight);
+         var CheckStunned = new QuestionNode(IsStunned, goToStun, IsInSight);
          
          //Root 
-         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsStunned, goToPatrol);
+         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, CheckStunned, goToPatrol);
          
          Debug.Log("Init tree");   
           _root = IsPlayerAlive;
