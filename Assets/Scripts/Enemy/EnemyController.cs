@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     
     private INode _root;
 
+    //Try and serialize with scriptable Object
     [SerializeField] private float idleLenght;
     
 
@@ -135,20 +136,15 @@ public class EnemyController : MonoBehaviour
          
          
          //Root 
-         QuestionNode IsPlayerAlive = new QuestionNode(() => target != null, IsInSight, goToPatrol);
+         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsInSight, goToPatrol);
          
          Debug.Log("Init tree");   
           _root = IsPlayerAlive;
     }
     
     private bool SightStateChanged()
-    {
-        Debug.Log("cambio");
-   
-       var changedSight = (_currentInSightState != _previousInSightState);
-       Debug.Log(changedSight);
- 
-        return changedSight ;
+    { 
+        return _currentInSightState != _previousInSightState;
     }
 
     private bool LastInSightState()
@@ -170,7 +166,7 @@ public class EnemyController : MonoBehaviour
         _enemyModel = GetComponent<EnemyModel>();
         _enemyView = GetComponent<EnemyView>();
 
-        Behaviour = new ObstacleAvoidance(transform, target.transform, obstacleAvoidance.radius,
+        Behaviour = new ObstacleAvoidance(transform, null, obstacleAvoidance.radius,
             obstacleAvoidance.maxObjs, obstacleAvoidance.obstaclesMask,
             obstacleAvoidance.multiplier, _enemyModel, obstacleAvoidance.timePrediction,
             ObstacleAvoidance.DesiredBehaviour.Seek);

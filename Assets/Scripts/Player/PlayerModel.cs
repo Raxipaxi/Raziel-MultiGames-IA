@@ -15,6 +15,8 @@ public class PlayerModel : MonoBehaviour, IMove
     [SerializeField] private Transform groundCheck;
 
     [SerializeField] private PlayerData playerData;
+    
+    public LifeController LifeControler { get; private set; }
 
     private Transform _selfTransform;
     private float _jumpCooldownCounter;
@@ -43,6 +45,7 @@ public class PlayerModel : MonoBehaviour, IMove
     {
         _currentSpeed = playerData.walkSpeed;
         _jumpCooldownCounter = playerData.jumpCooldown;
+        LifeControler = new LifeController(playerData.maxLifes,gameObject);
     }
     public bool IsGrounded()
     {

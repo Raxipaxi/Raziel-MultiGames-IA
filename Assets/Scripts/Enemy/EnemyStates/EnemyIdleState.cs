@@ -28,8 +28,7 @@ public class EnemyIdleState<T> : State<T>
     public override void Execute()
     {
         if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
-        {
-            Debug.Log("Holis");
+        {          
             ResetCD();
             _root.Execute();
         }   

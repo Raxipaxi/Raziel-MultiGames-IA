@@ -40,7 +40,7 @@ public class EnemyModel : MonoBehaviour, IVel
 
     private void Move(Vector3 dir)
     {
-        Debug.Log("ji");
+        
         _rb.velocity = dir * _currSpeed;
         transform.forward = dir.normalized;
         _enemyView.SetWalkAnimation();
