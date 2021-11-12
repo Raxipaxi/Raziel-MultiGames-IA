@@ -158,7 +158,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2320582918996302104}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0.034999847, y: 2.309, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressKey: {fileID: 5925138334246938709}
-  _data: {fileID: 11400000, guid: 9e7ad5ebbfa7dd448be6cadd7fd2cda3, type: 2}
+  data: {fileID: 11400000, guid: 9e7ad5ebbfa7dd448be6cadd7fd2cda3, type: 2}
 --- !u!135 &7050514797681445008
 SphereCollider:
   m_ObjectHideFlags: 0

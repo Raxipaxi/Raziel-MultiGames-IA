@@ -146,6 +146,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2025127400}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &908008314 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6836032522169851227, guid: 8b0e7d795743e8e499921bddc44ccb18,
+    type: 3}
+  m_PrefabInstance: {fileID: 6639409416396572798}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1406024065
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +231,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1822950978168915477, guid: 66b4aa3f666679e469b93951d0d02142,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.01089
+      objectReference: {fileID: 0}
     - target: {fileID: 7106998694486922698, guid: 66b4aa3f666679e469b93951d0d02142,
         type: 3}
       propertyPath: m_RootOrder
@@ -733,6 +744,10 @@ PrefabInstance:
       propertyPath: missionCanvas
       value: 
       objectReference: {fileID: 1799426948}
+    - target: {fileID: 268145753, guid: 35b060ff2afef7040a57903d9534a967, type: 3}
+      propertyPath: OnInteractionEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 908008314}
     - target: {fileID: 961813204010911812, guid: 35b060ff2afef7040a57903d9534a967,
         type: 3}
       propertyPath: m_Camera

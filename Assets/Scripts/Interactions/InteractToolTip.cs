@@ -27,7 +27,8 @@ public class InteractToolTip : MonoBehaviour
     }
     private void Update()
     {
-        transform.Rotate(new Vector3(0, data.rotationSpeed * Time.deltaTime, 0));
+        // var rotation = new Vector3(0, data.rotationSpeed * Time.deltaTime, 0);
+        // transform.Rotate(rotation);
     }
 
 
