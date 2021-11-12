@@ -15,6 +15,7 @@ public class SecurityCameraModel : MonoBehaviour
 
     public void BakeReferences()
     {
-        _lineOfSightAI = GetComponent<LineOfSightAI>();
+        _lineOfSightAI = GetComponent<LineOfSightAI>(); //TODO EL GIZMO VA PA CUALQUIER LAAAO NEGRO
+        
     }
 }
