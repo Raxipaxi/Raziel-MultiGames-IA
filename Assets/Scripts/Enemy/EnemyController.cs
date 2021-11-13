@@ -4,9 +4,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour, IStunable
 {
     private EnemyModel _enemyModel;
-    private EnemyView _enemyView;
     private FSM<EnemyStatesConstants> _fsm;
-    
     private INode _root;
 
     //Try and serialize with scriptable Object
@@ -108,36 +106,30 @@ public class EnemyController : MonoBehaviour, IStunable
         var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _enemyModel.LineOfSightAI, target.transform, OnIdleCommand, _root,SetIdleStateCooldown);
         var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,Behaviour,_root,SetIdleStateCooldown);
         var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _enemyModel.LineOfSightAI, OnChaseCommand);
-        var dead = new EnemyDeadState<EnemyStatesConstants>();
         var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand);
         var stun = new EnemyStunState<EnemyStatesConstants>();
         
         //Idle State
         idle.AddTransition(EnemyStatesConstants.Patrol,patrol);
         idle.AddTransition(EnemyStatesConstants.Attack,attack);
-        idle.AddTransition(EnemyStatesConstants.Dead,dead);
         idle.AddTransition(EnemyStatesConstants.Chase,chase);
         idle.AddTransition(EnemyStatesConstants.Stun,stun);
         
         //Patrol
         patrol.AddTransition(EnemyStatesConstants.Chase,chase);
         patrol.AddTransition(EnemyStatesConstants.Idle,idle);
-        patrol.AddTransition(EnemyStatesConstants.Dead,dead);
         patrol.AddTransition(EnemyStatesConstants.Stun,stun);
         
         //Stun
         stun.AddTransition(EnemyStatesConstants.Idle,idle);
-        stun.AddTransition(EnemyStatesConstants.Dead,dead);
-        
+
         //Chase 
         chase.AddTransition(EnemyStatesConstants.Idle,idle);
         chase.AddTransition(EnemyStatesConstants.Stun,stun);
-        chase.AddTransition(EnemyStatesConstants.Dead,dead);
         chase.AddTransition(EnemyStatesConstants.Attack,attack);
         
         //Attack
         attack.AddTransition(EnemyStatesConstants.Chase,chase);
-        attack.AddTransition(EnemyStatesConstants.Dead,dead);
         attack.AddTransition(EnemyStatesConstants.Stun,stun);
         attack.AddTransition(EnemyStatesConstants.Idle,idle);
         
