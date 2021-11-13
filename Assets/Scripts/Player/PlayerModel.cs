@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 [RequireComponent (typeof (Rigidbody))]
 
-public class PlayerModel : MonoBehaviour, IMove
+public class PlayerModel : MonoBehaviour, IMove,IVel
 {
     private PlayerView _playerView;
     private Rigidbody _rb;
@@ -15,6 +15,8 @@ public class PlayerModel : MonoBehaviour, IMove
     [SerializeField] private Transform groundCheck;
 
     [SerializeField] private PlayerData playerData;
+
+    private float _lastMoveMagnitude;
     
     public LifeController LifeControler { get; private set; }
 
@@ -99,7 +101,9 @@ public class PlayerModel : MonoBehaviour, IMove
         transform.position += normalizedDir * Time.deltaTime * _currentSpeed;
      
         var dirMagnitude = normalizedDir.magnitude;
-        _playerView.SetWalkAnimation(_currentSpeed * dirMagnitude);
+        var moveMagnitude = _currentSpeed * dirMagnitude;
+        Vel = moveMagnitude;
+        _playerView.SetWalkAnimation(moveMagnitude);
     }
 
     private void Update()
@@ -122,5 +126,11 @@ public class PlayerModel : MonoBehaviour, IMove
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(interactPoint.position, playerData.tryInteractRadius);
        
+    }
+
+    public float Vel
+    {
+        get => _lastMoveMagnitude;
+        private set => _lastMoveMagnitude = value;
     }
 }

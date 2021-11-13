@@ -104,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 1772539350624399908}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 5.54, y: 1.2974695, z: -2.377}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
   m_Children:
   - {fileID: 613891901200335927}
   - {fileID: 3711777834209091319}
@@ -231,6 +231,9 @@ GameObject:
   m_Component:
   - component: {fileID: 613891901200335927}
   - component: {fileID: 650278434640667677}
+  - component: {fileID: 5643681601681020340}
+  - component: {fileID: 9051066365453307835}
+  - component: {fileID: 489762904950896286}
   m_Layer: 0
   m_Name: CameraModel
   m_TagString: Untagged
@@ -272,3 +275,43 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5643681601681020340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9098784175646166073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e2ad3916e6761449f523fad03d06a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9051066365453307835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9098784175646166073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df178b3e60db0944da235588bf2728c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerModel: {fileID: 0}
+  timeToResumeAlert: 0
+--- !u!114 &489762904950896286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9098784175646166073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8402e808287d5843b5e5abe77b332b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sightData: {fileID: 11400000, guid: 2a306999a05d38148a3af7221fd8dc8c, type: 2}
+  lineOfSightOrigin: {fileID: 613891901200335927}

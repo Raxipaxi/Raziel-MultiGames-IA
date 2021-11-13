@@ -61,11 +61,6 @@ public class LineOfSightAI : MonoBehaviour
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(lineOfSightOrigin.position, _sightData.range);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(lineOfSightOrigin.position, lineOfSightOrigin.forward * _sightData.range);
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(lineOfSightOrigin.position, Quaternion.Euler (0, _sightData.angle/ 2,0) * lineOfSightOrigin.forward * _sightData.range);
-        Gizmos.DrawLine(lineOfSightOrigin.position, Quaternion.Euler(0, -_sightData.angle / 2, 0) * lineOfSightOrigin.forward * _sightData.range);
     }
 #endif
 }
