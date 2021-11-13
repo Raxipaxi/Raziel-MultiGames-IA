@@ -32,8 +32,6 @@ public class CameraAlertState <T> : State<T>
         _alert?.Invoke(_target.transform.position);
         ResetCounter();
     }
-
-  
     public override void Execute()
     {
 

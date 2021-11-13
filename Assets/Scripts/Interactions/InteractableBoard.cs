@@ -18,7 +18,7 @@ public class InteractableBoard : MonoBehaviour, IInteractable
 
 
 
-    [SerializeField] private MainCanvas mainCanvas;
+    [SerializeField,HideInInspector] private MainCanvas mainCanvas;
     [SerializeField] private Canvas missionCanvas;
     
     [SerializeField] private UnityEvent OnInteractionEnd;

@@ -7,14 +7,12 @@ public class SecurityCameraController : MonoBehaviour
 {
 
     private SecurityCameraModel _cameraModel;
-   [SerializeField] private PlayerModel _playerModel;
+    [SerializeField] private PlayerModel _playerModel;
 
     public event Action<Vector3> OnAlert;
 
-    [SerializeField] private float playerVelocityThreshold;
-
-    [SerializeField] private float timeToResumeAlert;
-    [SerializeField] private float checkPlayerMovementTime;
+    [SerializeField] private CameraData _data;
+    
 
     private FSM<CameraStates> _fsm;
     private INode _root;
@@ -47,7 +45,7 @@ public class SecurityCameraController : MonoBehaviour
     
     private bool CheckSightState()
     {
-        return  _cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform);
+        return _cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform);
     }
 
     private void InitDecisionTree()
@@ -70,9 +68,9 @@ public class SecurityCameraController : MonoBehaviour
          //--------------- FSM Creation -------------------//                
         // States Creation
         var surveillance = new CameraSurveilanceState<CameraStates>(_cameraModel.LineOfSightAI, _playerModel,
-            playerVelocityThreshold, checkPlayerMovementTime, _playerModel, _root);
+            _data.playerVelocityThreshold, _data.checkPlayerMovementTime, _playerModel, _root);
         var alert = new CameraAlertState<CameraStates>(_cameraModel.LineOfSightAI, _playerModel, _root,
-            timeToResumeAlert, OnAlertCommand);
+            _data.timeToResumeAlert, OnAlertCommand);
 
         //Surveillance
         surveillance.AddTransition(CameraStates.Alert, alert);
@@ -86,15 +84,9 @@ public class SecurityCameraController : MonoBehaviour
     {
         _cameraModel = GetComponent<SecurityCameraModel>();
     }
-
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (_cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform))
-        {
-            OnAlertCommand(_playerModel.transform.position);
-        } */
         _fsm.UpdateState();
     }
 }

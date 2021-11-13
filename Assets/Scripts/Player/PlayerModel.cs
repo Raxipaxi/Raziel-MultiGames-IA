@@ -16,7 +16,6 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
 
     [SerializeField] private PlayerData playerData;
 
-    [SerializeField] private float _asoidfhjasoifhjasdiuofh;
     private float _lastMoveMagnitude;
     
     public LifeController LifeControler { get; private set; }
@@ -31,7 +30,7 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
     }
     private void OnJumpHandler()
     {
-        Debug.Log("Jump");
+       
         if (_jumpCooldownCounter > 0 || !IsGrounded()) return;
         _jumpCooldownCounter = playerData.jumpCooldown;
         _rb.AddForce(Vector3.up * playerData.jumpHeight, ForceMode.Impulse);
@@ -104,7 +103,6 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         var dirMagnitude = normalizedDir.magnitude;
         var moveMagnitude = _currentSpeed * dirMagnitude;
         Vel = moveMagnitude;
-        _asoidfhjasoifhjasdiuofh = moveMagnitude;
         _playerView.SetWalkAnimation(moveMagnitude);
     }
 

@@ -7,9 +7,9 @@ public class PlayerController : MonoBehaviour
     private FSM<PlayerStatesConstants> _fsm;
 
 
-   [SerializeField] private PlayerControllerData _controllerData;
+    [SerializeField] private PlayerControllerData _controllerData;
 
-    
+
     public event Action<Vector3> OnMove;
     public event Action OnJump;
 

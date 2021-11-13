@@ -7,6 +7,7 @@ public class SecurityCameraModel : MonoBehaviour
 {
     private LineOfSightAI _lineOfSightAI;
 
+    [SerializeField] private CameraData _data;
     public LineOfSightAI LineOfSightAI => _lineOfSightAI;
     private void Awake()
     {
@@ -21,10 +22,26 @@ public class SecurityCameraModel : MonoBehaviour
     private void OnAlertHandler(Vector3 targetPosition)
     {
         Debug.Log("Alerted");
+        
+        //Get closest enemies, top 2
+
+        var enemiesToAlert = new List<IAlertable>();
+        enemiesToAlert = EnemyManager.Instance.GetCloseEnemies(transform.position, _data.alertRadius, _data.maxEnemiesToAlert);
+
+        if (enemiesToAlert.Count == 0) return;
+
+        for (int i = 0; i < enemiesToAlert.Count; i++)
+        {
+            Debug.Log($"Alerted an enemy");
+            enemiesToAlert [i].OnAlertedHandler(targetPosition);
+        }
+        
+        //SONIDO RANCIO
+        
+        
     }
     public void BakeReferences()
     {
-        _lineOfSightAI = GetComponent<LineOfSightAI>(); //TODO EL GIZMO VA PA CUALQUIER LAAAO NEGRO
-        
+        _lineOfSightAI = GetComponent<LineOfSightAI>();
     }
 }

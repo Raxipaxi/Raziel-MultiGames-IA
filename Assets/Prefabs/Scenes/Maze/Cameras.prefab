@@ -597,16 +597,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurveillanceCamera
       objectReference: {fileID: 0}
-    - target: {fileID: 1967646142995679466, guid: 2ed5042b5af934d40be84c06b2e7ef66,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051066365453307835, guid: 2ed5042b5af934d40be84c06b2e7ef66,
-        type: 3}
-      propertyPath: _playerModel
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ed5042b5af934d40be84c06b2e7ef66, type: 3}
 --- !u!4 &1774383700764151919 stripped
