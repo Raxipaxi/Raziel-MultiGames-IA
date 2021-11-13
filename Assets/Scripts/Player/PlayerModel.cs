@@ -16,6 +16,7 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
 
     [SerializeField] private PlayerData playerData;
 
+    [SerializeField] private float _asoidfhjasoifhjasdiuofh;
     private float _lastMoveMagnitude;
     
     public LifeController LifeControler { get; private set; }
@@ -103,6 +104,7 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         var dirMagnitude = normalizedDir.magnitude;
         var moveMagnitude = _currentSpeed * dirMagnitude;
         Vel = moveMagnitude;
+        _asoidfhjasoifhjasdiuofh = moveMagnitude;
         _playerView.SetWalkAnimation(moveMagnitude);
     }
 

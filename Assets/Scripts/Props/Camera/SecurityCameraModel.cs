@@ -15,7 +15,12 @@ public class SecurityCameraModel : MonoBehaviour
 
     public void SubscribeToEvents(SecurityCameraController controller)
     {
-        
+        controller.OnAlert += OnAlertHandler;
+    }
+
+    private void OnAlertHandler(Vector3 targetPosition)
+    {
+        Debug.Log("Alerted");
     }
     public void BakeReferences()
     {

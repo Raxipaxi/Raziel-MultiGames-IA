@@ -11,9 +11,13 @@ public class SecurityCameraController : MonoBehaviour
 
     public event Action<Vector3> OnAlert;
 
+    [SerializeField] private float playerVelocityThreshold;
+
     [SerializeField] private float timeToResumeAlert;
+    [SerializeField] private float checkPlayerMovementTime;
 
     private FSM<CameraStates> _fsm;
+    private INode _root;
     
     private bool _previousInSightState;
     private bool _currentInSightState;
@@ -22,7 +26,8 @@ public class SecurityCameraController : MonoBehaviour
         Surveillance,
         Alert
     }
-    public void OnAlertCommand(Vector3 dir)
+
+    private void OnAlertCommand(Vector3 dir)
     {
         OnAlert?.Invoke(dir);
         Debug.Log("Saw player");
@@ -39,59 +44,44 @@ public class SecurityCameraController : MonoBehaviour
         InitDecisionTree();
         InitFsm();
     }
+    
+    private bool CheckSightState()
+    {
+        return  _cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform);
+    }
 
+    private void InitDecisionTree()
+    {
+
+        //Actions
+        var goToAlert = new ActionNode(() => _fsm.Transition(CameraStates.Alert));
+        var goToSurveillance = new ActionNode(() => _fsm.Transition(CameraStates.Surveillance));
+     
+        //Question
+        var isInSight = new QuestionNode(CheckSightState, goToAlert, goToSurveillance); 
+        
+        //Root 
+        var isPlayerAlive = new QuestionNode(() => _playerModel.LifeControler.IsAlive, isInSight, goToSurveillance);
+        _root = isPlayerAlive;
+       
+    }
     private void InitFsm()
     {
          //--------------- FSM Creation -------------------//                
         // States Creation
-        //var surveillance = new CameraSurveilanceState<CameraStates> ()
-        //var alert = new CameraAlertState<CameraStates>();
+        var surveillance = new CameraSurveilanceState<CameraStates>(_cameraModel.LineOfSightAI, _playerModel,
+            playerVelocityThreshold, checkPlayerMovementTime, _playerModel, _root);
+        var alert = new CameraAlertState<CameraStates>(_cameraModel.LineOfSightAI, _playerModel, _root,
+            timeToResumeAlert, OnAlertCommand);
 
         //Surveillance
-        //surveillance.AddTransition(CameraStates.Alert, alert);
+        surveillance.AddTransition(CameraStates.Alert, alert);
         //Alert
-        //alert.AddTransition(CameraStates.Surveillance, surveillance);
+        alert.AddTransition(CameraStates.Surveillance, surveillance);
 
-        //_fsm = new FSM<CameraStates>(surveillance);
+        _fsm = new FSM<CameraStates>(surveillance);
     }
 
-    private bool SightStateChanged()
-    { 
-        return _currentInSightState != _previousInSightState;
-    }
-
-    private bool LastInSightState()
-    {     
-        _previousInSightState = _currentInSightState;    
-        _currentInSightState = _cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform);
-        return _currentInSightState;
-    }
-    private void InitDecisionTree()
-    {
-        /*
-        // Actions
-
-        var goToFollow = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Chase));
-        var goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
-        var goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
-        var goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
-        var goToStun = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Stun));
-        
-        //Questions
-        var CheckIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
-        var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, CheckIdleStateCooldown);
-        var attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
-        var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
-      
-        var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-        var CheckStunned = new QuestionNode(IsStunned, goToStun, IsInSight);
-         
-        //Root 
-        var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, CheckStunned, goToPatrol);
-         
-        Debug.Log("Init tree");   
-        _root = IsPlayerAlive;*/
-    }
     public void BakeReferences()
     {
         _cameraModel = GetComponent<SecurityCameraModel>();
@@ -100,9 +90,11 @@ public class SecurityCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (_cameraModel.LineOfSightAI.SingleTargetInSight(_playerModel.transform))
         {
             OnAlertCommand(_playerModel.transform.position);
-        }   
+        } */
+        _fsm.UpdateState();
     }
 }

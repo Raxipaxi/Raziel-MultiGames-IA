@@ -104,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 1772539350624399908}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 5.54, y: 1.2974695, z: -2.377}
-  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 613891901200335927}
   - {fileID: 3711777834209091319}
@@ -300,7 +300,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerModel: {fileID: 0}
-  timeToResumeAlert: 0
+  playerVelocityThreshold: 3
+  timeToResumeAlert: 3
+  checkPlayerMovementTime: 1.5
 --- !u!114 &489762904950896286
 MonoBehaviour:
   m_ObjectHideFlags: 0
