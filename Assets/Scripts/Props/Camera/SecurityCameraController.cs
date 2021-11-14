@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SecurityCameraController : MonoBehaviour
@@ -9,25 +10,45 @@ public class SecurityCameraController : MonoBehaviour
     private SecurityCameraModel _cameraModel;
     [SerializeField] private PlayerModel _playerModel;
 
-    public event Action<Vector3> OnAlert;
+    public event Action<Node> OnAlert;
 
     [SerializeField] private CameraData _data;
     
 
     private FSM<CameraStates> _fsm;
     private INode _root;
+
+    [SerializeField] private List<Node> closeWaypointNodes;
     
+
     private bool _previousInSightState;
     private bool _currentInSightState;
-    public enum CameraStates
+
+    private enum CameraStates
     {
         Surveillance,
         Alert
     }
 
-    private void OnAlertCommand(Vector3 dir)
+    private Node GetNodeClosestToPlayer()
     {
-        OnAlert?.Invoke(dir);
+        var minDistance = float.MaxValue;
+        var index = 0;
+        for (int i = 0; i < closeWaypointNodes.Count; i++)
+        {
+            var waypointNode = closeWaypointNodes[i];
+            var newDistance = Vector3.Distance(waypointNode.transform.position, _playerModel.transform.position);
+            if (newDistance > minDistance) continue;
+            minDistance = newDistance;
+            index = i;
+        }
+
+        return closeWaypointNodes[index];
+    }
+    private void OnAlertCommand()
+    {
+        var closesNodeToPlayer = GetNodeClosestToPlayer();
+        OnAlert?.Invoke(closesNodeToPlayer);
         Debug.Log("Saw player");
     }
 
@@ -83,10 +104,44 @@ public class SecurityCameraController : MonoBehaviour
     public void BakeReferences()
     {
         _cameraModel = GetComponent<SecurityCameraModel>();
+        
     }
-    // Update is called once per frame
+ 
     void Update()
     {
         _fsm.UpdateState();
     }
+
+    public void GetNearNodes()
+    {
+        var nodes =Physics.OverlapSphere(transform.position, _data.nodesGetRadius, _data.nodesMask);
+
+        closeWaypointNodes = new List<Node>();
+        for (int i = 0; i < nodes.Length; i++)
+        {
+            var curr = nodes[i].GetComponent<Node>();
+            closeWaypointNodes.Add(curr);
+        }
+        
+        Debug.Log($"Got {closeWaypointNodes.Count} nodes");
+    }
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(SecurityCameraController))]
+internal class CameraEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (GUILayout.Button("Get Near Nodes"))
+        {
+            var curr = target as SecurityCameraController;
+            curr.GetNearNodes();
+            EditorUtility.SetDirty(curr);
+        }
+    }
+}
+#endif

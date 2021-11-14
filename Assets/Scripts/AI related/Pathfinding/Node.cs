@@ -5,7 +5,4 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public List<Node> neighbours;
-
-   
-
 }

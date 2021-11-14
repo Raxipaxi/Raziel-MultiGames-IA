@@ -5,28 +5,62 @@ using UnityEngine;
 public class MRIModel : MonoBehaviour
 {
 
-    private LineOfSightAI _lineOfSight;
+    [SerializeField] private LineOfSightAI lineOfSight;
     private MRIView _view;
-    public LineOfSightAI LineOfSightAI => _lineOfSight;
+
+    [SerializeField] private MrIData data;
+    public LineOfSightAI LineOfSightAI => lineOfSight;
+
+
+    private float _currentSpeed;
+
+    private Transform _selfTransform;
 
     public void BakeReferences()
     {
         _view = GetComponent<MRIView>();
+        _selfTransform = transform;
     }
 
     public void SubscribeToEvents(MRIController controller)
     {
-        
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        controller.OnMove += OnMoveHandler;
+        controller.OnChaseEnter += OnChaseEnterHandler;
+        controller.OnIdleEnter += OnIdleEnterHandler;
+        controller.OnIdleSpin += OnIdleSpinHandler;
+        controller.OnEnterFastState += OnEnterFastStateHandler;
+        controller.OnPatrolEnter += OnPatrolEnterHandler;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnIdleEnterHandler()
     {
-        
+        OnMoveHandler(Vector3.zero);
     }
+
+    private void OnPatrolEnterHandler()
+    {
+        _currentSpeed = data.patrolSpeed;
+    }
+
+    private Vector3 _rotation;
+    private void OnIdleSpinHandler()
+    {
+         _rotation = new Vector3(0, data.rotationsPerSecond * Time.deltaTime, 0);
+         _selfTransform.Rotate(_rotation);
+    }
+    private void OnEnterFastStateHandler()
+    {
+        _currentSpeed = data.goToSpotSpeed;
+    }
+    private void OnChaseEnterHandler()
+    {
+        _currentSpeed = data.chaseSpeed;
+    }
+    private void OnMoveHandler(Vector3 dir)
+    {
+        dir.y = 0;
+        _selfTransform.position += dir * _currentSpeed * Time.deltaTime;
+        transform.forward = Vector3.Lerp(_selfTransform.forward, dir,Time.deltaTime * data.rotationalInput);
+    }
+
 }

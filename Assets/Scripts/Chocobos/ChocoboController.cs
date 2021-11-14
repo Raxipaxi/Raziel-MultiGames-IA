@@ -12,10 +12,9 @@ public class ChocoboController : MonoBehaviour
 
     private FSM<ChocoboStatesConstants> _fsm;
     private INode _root;
-    private FlockingManager _flocking;
-    
+  
 
-    public event Action<Vector3> OnFollow;
+    public event Action<Transform> OnFollow;
     public event Action OnIdle;
 
     private Transform _potentialLeader;
@@ -31,13 +30,14 @@ public class ChocoboController : MonoBehaviour
         OnIdle?.Invoke();
     }
 
-    private void OnFollowCommand(Vector3 dir)
+    private void OnFollowCommand(Transform dir)
     {
         OnFollow?.Invoke(dir);
     }
 
     void Start()
     {
+        
         _chocoModel.SubscribeToEvents(this);
         DecisionTreeInit();
         FSMInit();
@@ -63,8 +63,8 @@ public class ChocoboController : MonoBehaviour
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>();
-        var follow = new ChocoboFollowState<ChocoboStatesConstants>();
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(_chocoModel.LineOfSightAI, _data.secondsToFollow, OnIdleCommand, _root);
+        var follow = new ChocoboFollowState<ChocoboStatesConstants>(_actors, OnFollow,_chocoModel.LineOfSightAI, _root);
         
         // Transitions
         // Idle
@@ -78,13 +78,13 @@ public class ChocoboController : MonoBehaviour
 
     private bool PotentialLeader()
     {
-        var targets = _chocoModel.LineOfSightAI.LineOfSightMultiTarget();
-        return targets.Count > 0;
+        _actors = _chocoModel.LineOfSightAI.LineOfSightMultiTarget();
+        return _actors.Count > 0;
     }
     public void BakeReferences()
     {
         _chocoModel = GetComponent<ChocoboModel>();
-        _flocking = GetComponent<FlockingManager>();
+
     }
 
 

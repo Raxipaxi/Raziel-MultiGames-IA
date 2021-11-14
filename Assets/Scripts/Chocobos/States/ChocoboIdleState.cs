@@ -25,13 +25,16 @@ public class ChocoboIdleState<T> : State<T>
     public override void Execute()
     {
         
-        
-        
-        if (_counter <= 0)
+        _idleCommand?.Invoke();
+        if (_lineOfSightAI.LineOfSightMultiTarget().Count == 0)
         {
-            _root.Execute();
             ResetCounter();
             return;
+        }
+        if (_counter <= 0)
+        {
+            ResetCounter();
+            _root.Execute();
         }
         
     }

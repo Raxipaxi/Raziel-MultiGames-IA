@@ -44,16 +44,15 @@ public class SokoBox : MonoBehaviour
 
     public IEnumerator MoveSokoBox(Vector3 dir)
     {
-        var totalDistance = 0f;
         var initialPos = transform.position;
         var finalPos = initialPos + dir * data.totalMovement;
-        var _counter = 0f;
+        var counter = 0f;
 
-        while (_counter <= data.timeToMove)
+        while (counter <= data.timeToMove)
         {
-            var newPos = Vector3.Lerp(initialPos, finalPos, _counter / data.timeToMove);
+            var newPos = Vector3.Lerp(initialPos, finalPos, counter / data.timeToMove);
             _rb.MovePosition(newPos);
-            _counter += Time.deltaTime;
+            counter += Time.deltaTime;
             yield return null;
         }
 
