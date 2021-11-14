@@ -21,11 +21,11 @@ public class PathFinderAStar : MonoBehaviour
     private AStar<Node> _aStar;
     private Dijkstra<Node> _dijkstra;
 
-    public PathFinderAStar(Node startNode, Node finishNode,)
+    public PathFinderAStar(Node startNode, Node finishNode)
     {
         _startNode = startNode;
         _finishNode = finishNode;
-        _pathToReturn = _aStar.GetPath()
+        //_pathToReturn = _aStar.GetPath()
     }
 
     private bool SatisfiesNode(Node node)
