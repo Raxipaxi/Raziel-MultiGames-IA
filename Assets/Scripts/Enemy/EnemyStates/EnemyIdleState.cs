@@ -24,7 +24,7 @@ public class EnemyIdleState<T> : State<T>
 
     public override void Awake()
     {
-        ResetCD();
+        ResetCd();
         _onIdle?.Invoke();
         _setIdleCommand?.Invoke(true);
     }
@@ -33,14 +33,14 @@ public class EnemyIdleState<T> : State<T>
     {
         if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
         {          
-            ResetCD();
+            ResetCd();
             _setIdleCommand?.Invoke(false);
             _root.Execute();
         }   
     }
 
 
-    private void ResetCD()
+    private void ResetCd()
     {
         _cooldown = Time.time + _idleLenght;
     }

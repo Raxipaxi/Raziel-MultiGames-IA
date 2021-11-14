@@ -185,13 +185,10 @@ public class EnemyController : MonoBehaviour, IStunable
     public void BakeReferences()
     {
         _enemyModel = GetComponent<EnemyModel>();
-        _enemyView = GetComponent<EnemyView>();
-
         Behaviour = new ObstacleAvoidance(transform, null, obstacleAvoidance.radius,
             obstacleAvoidance.maxObjs, obstacleAvoidance.obstaclesMask,
-            obstacleAvoidance.multiplier, _enemyModel, obstacleAvoidance.timePrediction,
+            obstacleAvoidance.multiplier, target, obstacleAvoidance.timePrediction,
             ObstacleAvoidance.DesiredBehaviour.Seek);
-
     }
     // Update is called once per frame
     void Update()

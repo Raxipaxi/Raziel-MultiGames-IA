@@ -10,16 +10,7 @@ public class ObstacleAvoidanceScriptableObject : ScriptableObject
     public int maxObjs;
     public LayerMask obstaclesMask;
     public float multiplier;
-    public float targetVel;
     public float timePrediction;
-    public DesiredBehaviour _defaultBehaviour;
+    public ObstacleAvoidance.DesiredBehaviour _defaultBehaviour;
     
-    
-    public enum DesiredBehaviour
-    {
-        Seek,
-        Flee,
-        Pursuit,
-        Evasion,        
-    }
 }

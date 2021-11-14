@@ -9,19 +9,26 @@ public class MRIController : MonoBehaviour, IAlertable
     
     private FSM<MRIStates> _fsm;
     private INode _root;
+    public ObstacleAvoidance Behaviour { get; private set; }
 
-
-
+    [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidanceData;
     private bool _currentInSightState;
     private bool _previousInSightState;
     private bool _isAlerted;
+   
 
     private Vector3 _lastSeenPlayer;
     
     [SerializeField] private PlayerModel target;
     private bool _waitForIdleState;
 
-    public enum MRIStates
+
+    private List<Vector3> GetWaypointTrack()
+    {
+        return new List<Vector3>();
+    }
+
+    private enum MRIStates
     {
         Idle,
         Patrol,
@@ -32,6 +39,9 @@ public class MRIController : MonoBehaviour, IAlertable
     {
         _model = GetComponent<MRIModel>();
         Owner = gameObject;
+        Behaviour = new ObstacleAvoidance(transform, null, obstacleAvoidanceData.radius, obstacleAvoidanceData.maxObjs,
+            obstacleAvoidanceData.obstaclesMask, obstacleAvoidanceData.multiplier, target,
+            obstacleAvoidanceData.timePrediction, obstacleAvoidanceData._defaultBehaviour);
     }
 
     private void Start()
@@ -73,22 +83,22 @@ public class MRIController : MonoBehaviour, IAlertable
         var goToChase = new ActionNode(() => _fsm.Transition(MRIStates.Chase));
         var goToSightSpot = new ActionNode(() => _fsm.Transition(MRIStates.GoToSightSpot));
         
-        var CheckIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
-        var didSightChangeToFalse = new QuestionNode(SightStateChanged, goToIdle, CheckIdleStateCooldown);
+        var checkIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
+        var didSightChangeToFalse = new QuestionNode(SightStateChanged, goToIdle, checkIdleStateCooldown);
 
-        var IsInSight = new QuestionNode(LastInSightState, goToChase, didSightChangeToFalse);
-        var isAlerted = new QuestionNode(IsAlerted, goToSightSpot, IsInSight);
-        var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, isAlerted, goToIdle);
+        var isInSight = new QuestionNode(LastInSightState, goToChase, didSightChangeToFalse);
+        var isAlerted = new QuestionNode(IsAlerted, goToSightSpot, isInSight);
+        var isPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, isAlerted, goToIdle);
 
-        _root = IsPlayerAlive;
+        _root = isPlayerAlive;
     }
 
     private void InitFSM()
     {
         //States
-        
-        
-        
+        MrIPatrolState<>
+
+
     }
 
     private Vector3 LastSeenPlayer()

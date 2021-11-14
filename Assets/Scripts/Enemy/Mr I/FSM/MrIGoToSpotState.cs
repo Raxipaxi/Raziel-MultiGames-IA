@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour
+public class MrIGoToSpotState<T> : State<T>
 {
-    public List<Node> neighbours;
-
    
-
 }
