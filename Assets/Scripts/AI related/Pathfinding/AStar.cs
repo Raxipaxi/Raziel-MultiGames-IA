@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class AStar<N>
 {
     public delegate bool Satisfies(N item);
     public delegate List<N> GetNeighbours(N item);
     public delegate float GetCost(N parent, N child);
     public delegate float Heuristic(N curr);
+    public delegate bool InView(N from, N to);
     public List<N> GetPath(N start, Satisfies satisfies, GetNeighbours getNeighbours, GetCost getCost, Heuristic heuristic, int watchdog = 500)
     {
         HashSet<N> visited = new HashSet<N>();
@@ -55,4 +55,22 @@ public class AStar<N>
         path.Reverse();
         return path;
     }
+    public List<N> CleanPath(List<N> path, InView inView)
+    {
+        if (path == null || path.Count <= 2) return path;
+        List<N> newPath = new List<N>();
+        newPath.Add(path[0]);
+        N last = path[0];
+        for (int i = 2; i < path.Count; i++)
+        {
+            if (!inView(newPath[newPath.Count - 1], path[i]))
+            {
+                newPath.Add(last);
+            }
+            last = path[i];
+        }
+        newPath.Add(last);
+        return newPath;
+    }
 }
+

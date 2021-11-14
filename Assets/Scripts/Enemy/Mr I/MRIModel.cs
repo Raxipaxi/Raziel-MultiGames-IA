@@ -13,6 +13,11 @@ public class MRIModel : MonoBehaviour
     {
         _view = GetComponent<MRIView>();
     }
+
+    public void SubscribeToEvents(MRIController controller)
+    {
+        
+    }
     // Start is called before the first frame update
     void Start()
     {

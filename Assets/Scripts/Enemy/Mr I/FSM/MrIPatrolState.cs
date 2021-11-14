@@ -36,15 +36,20 @@ public class MrIPatrolState<T> : State<T>
     public override void Awake()
     {
         _setIdleCooldown?.Invoke(false);
+        _patrolSpotIndex = 0;
         SetNextRandomNodeAndPath();
-        
     }
 
     private void SetNextRandomNodeAndPath()
     {
+        //Gets random node from roulette wheel, with weight based on distance to player
         var nextRandomNode = _getRandomNode.Invoke();
+        //Pathfinding with AStar+
         _waypointsToPatrol = _getWaypoints?.Invoke(nextRandomNode);
+        //Set target waypoint
         if (_waypointsToPatrol != null) _obstacleAvoidance.SetNewTarget(_waypointsToPatrol[_patrolSpotIndex].transform);
+        //Set patrol mode to seek
+        _obstacleAvoidance.SetNewBehaviour(ObstacleAvoidance.DesiredBehaviour.Seek);
     }
 
     private bool NextWaypointAvailable()
