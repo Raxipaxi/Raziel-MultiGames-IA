@@ -58,7 +58,7 @@ public class MRIModel : MonoBehaviour
     }
     private void OnMoveHandler(Vector3 dir)
     {
-       
+        dir.y = 0;
         _selfTransform.position += dir * _currentSpeed * Time.deltaTime;
         transform.forward = Vector3.Lerp(_selfTransform.forward, dir,Time.deltaTime * data.rotationalInput);
     }

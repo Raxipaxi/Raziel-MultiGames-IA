@@ -6,10 +6,18 @@ using UnityEngine;
 public class MrIData : ScriptableObject
 {
 
+    [Header("Model")]
     public float patrolSpeed;
     public float chaseSpeed;
     public float goToSpotSpeed;
 
     public float rotationalInput = 0.12f;
     public float rotationsPerSecond = 90;
+
+    [Header("Controller")]
+    public float minimumWaypointDistance;
+
+    public LayerMask nodesMask;
+    public float radiusToCheckNodes;
+    public float timeToCheckOnChase;
 }

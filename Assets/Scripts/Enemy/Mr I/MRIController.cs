@@ -9,6 +9,8 @@ public class MRIController : MonoBehaviour, IAlertable
     
     private FSM<MriStates> _fsm;
     private INode _root;
+
+    [SerializeField] private MrIData data;
     private ObstacleAvoidance Behaviour { get; set; }
 
     [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidanceData;
@@ -20,11 +22,7 @@ public class MRIController : MonoBehaviour, IAlertable
 
     [SerializeField] private NodesChanceController nodesChanceController;
 
-    [SerializeField] private float minimumWaypointDistance;
-    [SerializeField] private float timeToCheckOnChase;
-
-    [SerializeField] private LayerMask nodesMask;
-    [SerializeField] private float radiusToCheckNodes;
+    
     
 
     private Node _lastSeenPlayer;
@@ -70,7 +68,7 @@ public class MRIController : MonoBehaviour, IAlertable
 
     private Node GetClosestNodeToController(Transform user)
     {
-        var nodesAmount = Physics.OverlapSphereNonAlloc(user.position, radiusToCheckNodes, _closeNodes, nodesMask);
+        var nodesAmount = Physics.OverlapSphereNonAlloc(user.position, data.radiusToCheckNodes, _closeNodes, data.nodesMask);
 
         if (nodesAmount == 0) return default;
         Node nodeToReturn;
@@ -175,11 +173,11 @@ public class MRIController : MonoBehaviour, IAlertable
 
         var idleState = new MrIIdleState<MriStates>(EnterIdle, Spin, LastInSightState, _root, SetIdleStateCooldown);
         var patrolState = new MrIPatrolState<MriStates>(LastInSightState, _root, GetWaypointsToCertainNode,
-            SetIdleStateCooldown, GetRandomNode, _model, minimumWaypointDistance);
+            SetIdleStateCooldown, GetRandomNode, _model, data.minimumWaypointDistance);
         var chaseState = new MrIChaseState<MriStates>(LastInSightState, _root, SetIdleStateCooldown, Move, Behaviour,
-            timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
+            data.timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
         var goToSighSpotState = new MrIGoToSpotState<MriStates>(_root, Move, GetWaypointsToCertainNode, Behaviour,
-            EnterGoToSpotState, () => target.LifeControler.IsAlive, minimumWaypointDistance, _model, LastSeenPlayerNode);
+            EnterGoToSpotState, () => target.LifeControler.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode);
 
         //Transitions
         

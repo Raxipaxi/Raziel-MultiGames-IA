@@ -17,3 +17,4 @@ MonoBehaviour:
   goToSpotSpeed: 8
   rotationalInput: 0.12
   rotationsPerSecond: 90
+  minimumWaypointDistance: 0.6
