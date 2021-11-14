@@ -79,6 +79,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &4860288379662878453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8066344825323586930}
+  m_Layer: 0
+  m_Name: LineOfSightOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8066344825323586930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4860288379662878453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.57, z: -0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5589093578106873193}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5105853082634977235
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +122,9 @@ GameObject:
   - component: {fileID: 8963629875121962961}
   - component: {fileID: 5026653286191461224}
   - component: {fileID: 2495677781672746257}
-  m_Layer: 0
+  - component: {fileID: 2064325514133432677}
+  - component: {fileID: 6568661133388577816}
+  m_Layer: 9
   m_Name: Mr.I
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +143,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5395111291476609615}
+  - {fileID: 8066344825323586930}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 183.456, z: 0}
@@ -126,9 +159,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3d16782139b9d0469fd466bfbb00f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleAvoidanceData: {fileID: 0}
+  obstacleAvoidanceData: {fileID: 11400000, guid: b9479c6d390e78e40a04155db3c1763a,
+    type: 2}
+  _pathFinder: {fileID: 2495677781672746257}
+  nodesChanceController: {fileID: 2064325514133432677}
   minimumWaypointDistance: 0.6
   timeToCheckOnChase: 0
+  nodesMask:
+    serializedVersion: 2
+    m_Bits: 131072
+  radiusToCheckNodes: 0
   target: {fileID: 0}
 --- !u!114 &8963629875121962961
 MonoBehaviour:
@@ -142,6 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 092d587fde79c094fa5b6ba8d9719d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineOfSight: {fileID: 6568661133388577816}
+  data: {fileID: 11400000, guid: 0ac110a42b9bf40439d9b4d88333e1d0, type: 2}
 --- !u!114 &5026653286191461224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,3 +211,32 @@ MonoBehaviour:
   obstaclesMask:
     serializedVersion: 2
     m_Bits: 2049
+--- !u!114 &2064325514133432677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5105853082634977235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3953a4b3817ce0c44855154ac744f6e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneNodes: []
+  timeToUpdate: 6
+  target: {fileID: 0}
+--- !u!114 &6568661133388577816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5105853082634977235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8402e808287d5843b5e5abe77b332b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sightData: {fileID: 11400000, guid: 8eefdf335fd9da842afc65afd11cb018, type: 2}
+  lineOfSightOrigin: {fileID: 8066344825323586930}

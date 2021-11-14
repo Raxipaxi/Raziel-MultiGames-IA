@@ -10,4 +10,7 @@ public class CameraData : ScriptableObject
    public float timeToResumeAlert = 3;
    public float checkPlayerMovementTime = 1.5f;
    public int maxEnemiesToAlert = 1;
+   public float nodesGetRadius = 10;
+   public LayerMask nodesMask;
+
 }

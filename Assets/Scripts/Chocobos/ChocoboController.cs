@@ -63,16 +63,16 @@ public class ChocoboController : MonoBehaviour
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>();
+        //var idle = new ChocoboIdleState<ChocoboStatesConstants>();
         var follow = new ChocoboFollowState<ChocoboStatesConstants>();
         
         // Transitions
         // Idle
-        idle.AddTransition(ChocoboStatesConstants.Follow,follow);
+       //idle.AddTransition(ChocoboStatesConstants.Follow,follow);
         
         
         //Follow
-        follow.AddTransition(ChocoboStatesConstants.Idle, idle);
+        //follow.AddTransition(ChocoboStatesConstants.Idle, idle);
         
     }
 

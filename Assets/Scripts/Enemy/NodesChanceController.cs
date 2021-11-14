@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class NodesChanceController : MonoBehaviour
@@ -28,6 +29,7 @@ public class NodesChanceController : MonoBehaviour
         _roulette = new RouletteWheel();
     }
 
+    
     public Node GetRandomNode()
     {
         var node = _roulette.Run(NodesChanceDictionary);
@@ -48,6 +50,16 @@ public class NodesChanceController : MonoBehaviour
         }
     }
 
+    public void GetSceneNodes()
+    {
+        var nodes = FindObjectsOfType<Node>();
+        for (int i = 0; i < nodes.Length; i++)
+        {
+            sceneNodes.Add(nodes[i]);       
+        }
+        
+        Debug.Log($"Got {sceneNodes.Count} nodes");
+    }
     private void FixedUpdate()
     {
         _counter += Time.fixedDeltaTime;
@@ -58,3 +70,21 @@ public class NodesChanceController : MonoBehaviour
         SetChancesBasedOnTargetPosition();
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(NodesChanceController))]
+internal class NodesChanceControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (GUILayout.Button("Get nodes on scene"))
+        {
+            var curr = target as NodesChanceController;
+            curr.GetSceneNodes();
+            EditorUtility.SetDirty(curr);
+        }
+    }
+}
+#endif

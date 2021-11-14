@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SecurityCameraController : MonoBehaviour
@@ -103,10 +104,44 @@ public class SecurityCameraController : MonoBehaviour
     public void BakeReferences()
     {
         _cameraModel = GetComponent<SecurityCameraModel>();
+        
     }
  
     void Update()
     {
         _fsm.UpdateState();
     }
+
+    public void GetNearNodes()
+    {
+        var nodes =Physics.OverlapSphere(transform.position, _data.nodesGetRadius, _data.nodesMask);
+
+        closeWaypointNodes = new List<Node>();
+        for (int i = 0; i < nodes.Length; i++)
+        {
+            var curr = nodes[i].GetComponent<Node>();
+            closeWaypointNodes.Add(curr);
+        }
+        
+        Debug.Log($"Got {closeWaypointNodes.Count} nodes");
+    }
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(SecurityCameraController))]
+internal class CameraEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (GUILayout.Button("Get Near Nodes"))
+        {
+            var curr = target as SecurityCameraController;
+            curr.GetNearNodes();
+            EditorUtility.SetDirty(curr);
+        }
+    }
+}
+#endif
