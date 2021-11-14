@@ -10,11 +10,11 @@ public class CameraAlertState <T> : State<T>
     private INode _root;
     private float _counter;
     private float _counterLimit;
-    private Action<Vector3> _alert;
+    private Action _alert;
 
 
     public CameraAlertState(LineOfSightAI lOSComponent, PlayerModel target, INode root, float counterLimit,
-        Action<Vector3> alert)
+        Action alert)
     {
         _lineOfSightAI = lOSComponent;
         _target = target;
@@ -29,7 +29,7 @@ public class CameraAlertState <T> : State<T>
     }
     public override void Awake()
     {
-        _alert?.Invoke(_target.transform.position);
+        _alert?.Invoke();
         ResetCounter();
     }
     public override void Execute()
@@ -47,6 +47,6 @@ public class CameraAlertState <T> : State<T>
             _root.Execute();
             return;
         }
-        _alert?.Invoke(_target.transform.position);
+        _alert?.Invoke();
     }
 }

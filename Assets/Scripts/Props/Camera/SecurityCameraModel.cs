@@ -19,13 +19,13 @@ public class SecurityCameraModel : MonoBehaviour
         controller.OnAlert += OnAlertHandler;
     }
 
-    private void OnAlertHandler(Vector3 targetPosition)
+    private void OnAlertHandler(Node targetPositionNode)
     {
         Debug.Log("Alerted");
         
         //Get closest enemies, top 2
 
-        var enemiesToAlert = new List<IAlertable>();
+        List<IAlertable> enemiesToAlert;
         enemiesToAlert = EnemyManager.Instance.GetCloseEnemies(transform.position, _data.alertRadius, _data.maxEnemiesToAlert);
 
         if (enemiesToAlert.Count == 0) return;
@@ -33,12 +33,9 @@ public class SecurityCameraModel : MonoBehaviour
         for (int i = 0; i < enemiesToAlert.Count; i++)
         {
             Debug.Log($"Alerted an enemy");
-            enemiesToAlert [i].OnAlertedHandler(targetPosition);
+            enemiesToAlert [i].OnAlertedHandler(targetPositionNode);
         }
-        
-        //SONIDO RANCIO
-        
-        
+        //Sonido de alerta
     }
     public void BakeReferences()
     {

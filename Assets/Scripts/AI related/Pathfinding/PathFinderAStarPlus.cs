@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFinderAStar : MonoBehaviour
+public class PathFinderAStarPlus : MonoBehaviour
 {
 
     private List<Node> _pathToReturn;
@@ -16,16 +16,17 @@ public class PathFinderAStar : MonoBehaviour
     {
         _aStar = new AStar<Node>();
     }
-
-   
+    
     private AStar<Node> _aStar;
-    private Dijkstra<Node> _dijkstra;
+  
 
-    public PathFinderAStar(Node startNode, Node finishNode,)
+    public List<Node> GetPathAStarPlus(Node startNode, Node finishNode)
     {
         _startNode = startNode;
         _finishNode = finishNode;
-        _pathToReturn = _aStar.GetPath()
+        _pathToReturn = _aStar.GetPath(_startNode, SatisfiesNode, GetNeighbours, GetCost, Heuristics, 500);
+        _pathToReturn = _aStar.CleanPath(_pathToReturn, InView);
+        return _pathToReturn;
     }
 
     private bool SatisfiesNode(Node node)
@@ -37,6 +38,24 @@ public class PathFinderAStar : MonoBehaviour
     {
         return node.neighbours;
     }
+    
+    private float GetCost(Node parent, Node child)
+    {
+        float cost = 0;
+        float distanceMultiplier = 1;
+        cost += Vector3.Distance(parent.transform.position, child.transform.position) * distanceMultiplier;
+
+        return cost;
+    }
+
+    private float Heuristics(Node node)
+    {
+        float cost = 0;
+        float distanceMultiplier = 1;
+        cost += Vector3.Distance(node.transform.position, _finishNode.transform.position) * distanceMultiplier;
+        return cost;
+    }
+    
 
     private bool InView(Node from, Node to)
     {

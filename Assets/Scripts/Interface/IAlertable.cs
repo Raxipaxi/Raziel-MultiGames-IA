@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IAlertable
 {
-   void OnAlertedHandler(Vector3 targetPos);
+   void OnAlertedHandler(Node targetPosNode);
    GameObject Owner { get; }
 
 }

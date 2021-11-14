@@ -16,12 +16,19 @@ public class MRIController : MonoBehaviour, IAlertable
     private bool _previousInSightState;
     private bool _isAlerted;
 
+    [SerializeField] private PathFinderAStarPlus _pathFinder;
+
+    [SerializeField] private NodesChanceController nodesChanceController;
+
     [SerializeField] private float minimumWaypointDistance;
     [SerializeField] private float timeToCheckOnChase;
-    
+
+    [SerializeField] private LayerMask nodesMask;
+    [SerializeField] private float radiusToCheckNodes;
     
 
     private Node _lastSeenPlayer;
+    private Collider[] _closeNodes;
     
     [SerializeField] private PlayerModel target;
     private bool _waitForIdleState;
@@ -30,8 +37,8 @@ public class MRIController : MonoBehaviour, IAlertable
     public event Action OnIdleSpin;
     public event Action<Vector3> OnMove;
     public event Action OnEnterFastState;
-
     public event Action OnChaseEnter;
+    public event Action OnPatrolEnter;
     private void EnterIdle()
     {
         OnIdleEnter?.Invoke();
@@ -56,17 +63,44 @@ public class MRIController : MonoBehaviour, IAlertable
         OnMove?.Invoke(dir);
     }
 
-    private List<Node> GetWaypointsToCertainNode(Node node)
+    private void OnPatrol()
     {
-        var list = new List<Node>();
-        return list;
+        OnPatrolEnter?.Invoke();
     }
 
+    private Node GetClosestNodeToController(Transform user)
+    {
+        var nodesAmount = Physics.OverlapSphereNonAlloc(user.position, radiusToCheckNodes, _closeNodes, nodesMask);
+
+        if (nodesAmount == 0) return default;
+        Node nodeToReturn;
+        var index = 0;
+        
+        if (nodesAmount > 1)
+        {
+            var distance = float.MaxValue;
+            
+            for (int i = 0; i < nodesAmount; i++)
+            {
+                var currNodeCollider = _closeNodes[i];
+                var currDistance = Vector3.Distance(user.position, currNodeCollider.transform.position);
+                if (currDistance > distance) continue;
+                distance = currDistance;
+                index = i;
+            }
+        }
+        nodeToReturn = _closeNodes[index].GetComponent<Node>();
+        return nodeToReturn;
+    }
+    private List<Node> GetWaypointsToCertainNode(Node targetNode)
+    {
+        var closeNode = GetClosestNodeToController(transform);
+        var list = _pathFinder.GetPathAStarPlus(closeNode, targetNode);
+        return list;
+    }
     private Node GetRandomNode()
     {
-        Node n = new Node();
-
-        return n;
+        return nodesChanceController.GetRandomNode();
     }
 
     private enum MriStates
@@ -145,7 +179,7 @@ public class MRIController : MonoBehaviour, IAlertable
         var chaseState = new MrIChaseState<MriStates>(LastInSightState, _root, SetIdleStateCooldown, Move, Behaviour,
             timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
         var goToSighSpotState = new MrIGoToSpotState<MriStates>(_root, Move, GetWaypointsToCertainNode, Behaviour,
-            EnterGoToSpotState, () => target.LifeControler.IsAlive, minimumWaypointDistance, _model);
+            EnterGoToSpotState, () => target.LifeControler.IsAlive, minimumWaypointDistance, _model, LastSeenPlayerNode);
 
         //Transitions
         
@@ -164,16 +198,15 @@ public class MRIController : MonoBehaviour, IAlertable
         _fsm = new FSM<MriStates>(idleState);
     }
 
-    private Node LastSeenPlayer()
+    private Node LastSeenPlayerNode()
     {
         return _lastSeenPlayer;
     }
-    public void OnAlertedHandler(Vector3 targetPos)
+
+    public void OnAlertedHandler(Node targetPosNode)
     {
-        //Sets Nearest Node
         _isAlerted = true;
-        Node nearestNode = new Node();
-        _lastSeenPlayer = nearestNode;
+        _lastSeenPlayer = targetPosNode;
     }
 
     public GameObject Owner { get; private set; }

@@ -19,7 +19,7 @@ public class MrIGoToSpotState<T> : State<T>
     private MRIModel _model;
     private int _waypointIndex;
     public MrIGoToSpotState(INode root, Action<Vector3> onMove, Func<Node, List<Node>> getWaypoints,
-        ObstacleAvoidance obstacleAvoidance, Action onEnterFastCheck, Func<bool> checkPlayerAlive, float minimumWaypointDistance, MRIModel model)
+        ObstacleAvoidance obstacleAvoidance, Action onEnterFastCheck, Func<bool> checkPlayerAlive, float minimumWaypointDistance, MRIModel model, Func<Node> getClosestNodeToPlayer)
     {
         _root = root;
         _onMove = onMove;
@@ -29,6 +29,7 @@ public class MrIGoToSpotState<T> : State<T>
         _checkPlayerAlive = checkPlayerAlive;
         _minimumWaypointDistance = minimumWaypointDistance;
         _model = model;
+        _getClosestNodeToPlayer = getClosestNodeToPlayer;
     }
 
     public override void Awake()

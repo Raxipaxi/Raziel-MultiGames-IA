@@ -30,7 +30,7 @@ public class EnemyChaseState<T> : State<T>
     }
 
 
-    void Execute()
+    public override void Execute()
     {
         //TODO  AGREGAR EL PARAMETRO DE DISTANCIA DE ATAQUE  
       
