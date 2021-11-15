@@ -100,7 +100,7 @@ public class EnemyModel : MonoBehaviour, IVel
 
             if (isPlayer == null) continue;
             
-            isPlayer.LifeControler.GetDamage(10,true);
+            isPlayer.LifeController.GetDamage(10,true);
             break;
         }
     }

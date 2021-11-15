@@ -80,7 +80,7 @@ public class SecurityCameraController : MonoBehaviour
         var isInSight = new QuestionNode(CheckSightState, goToAlert, goToSurveillance); 
         
         //Root 
-        var isPlayerAlive = new QuestionNode(() => _playerModel.LifeControler.IsAlive, isInSight, goToSurveillance);
+        var isPlayerAlive = new QuestionNode(() => _playerModel.LifeController.IsAlive, isInSight, goToSurveillance);
         _root = isPlayerAlive;
        
     }

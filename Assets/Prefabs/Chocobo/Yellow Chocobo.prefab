@@ -1029,7 +1029,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _flocksight: {fileID: 11400000, guid: 3e42ba2e96622414c8f4a98eba6a8f6a, type: 2}
-  actors:
+  possibleLeaders:
+  - {fileID: 0}
   - {fileID: 0}
   followCheck: 0
 --- !u!114 &535955501

@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyDeadState<T> : State<T>
 {
 
-    public EnemyDeadState()
+    private Action _onDead;
+    public EnemyDeadState(Action onDead)
     {
-        
+        _onDead = onDead;
     }
 
-   
-    void Execute()
+    public override void Awake()
     {
-        
+        _onDead?.Invoke();
     }
 }

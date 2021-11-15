@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: JodidChocobo
   m_EditorClassIdentifier: 
   secondsToFollow: 3
-  chocoboFollowSpeed: 1
+  chocoboFollowSpeed: 3
   flockingRadius: 3

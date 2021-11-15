@@ -14,9 +14,9 @@ public class PlayerView : MonoBehaviour
 
     public void SubscribeToEvents(PlayerModel model)
     {
-        model.LifeControler.OnDead += Death;
+        model.LifeController.OnDead += Death;
         model.OnMove += SetWalkAnimation;
-        model.LifeControler.onRevive += (float n)=>Revive();
+        model.LifeController.onRevive += (float n)=>Revive();
     }
     public void BakeReferences ()
     { 

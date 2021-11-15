@@ -182,7 +182,7 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
         var didSightChangeToFalse = new QuestionNode(SightStateChanged, goToIdle, checkIdleStateCooldown);
         var isInSight = new QuestionNode(LastInSightState, goToChase, didSightChangeToFalse);
         var isAlerted = new QuestionNode(IsAlerted, goToSightSpot, isInSight);
-        var isPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, isAlerted, goToIdle);
+        var isPlayerAlive = new QuestionNode(() => target.LifeController.IsAlive, isAlerted, goToIdle);
 
         _root = isPlayerAlive;
     }
@@ -195,9 +195,9 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
         var patrolState = new MrIPatrolState<MriStates>(IsPlayerOnSight, _root, GetWaypointsToCertainNode,
             SetIdleStateCooldown, GetRandomNode, _model, data.minimumWaypointDistance, Behaviour, Move,OnPatrol);
         var chaseState = new MrIChaseState<MriStates>(IsPlayerOnSight, _root, SetIdleStateCooldown, Move, Behaviour,
-            data.timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
+            data.timeToCheckOnChase, EnterChase, target, () => target.LifeController.IsAlive);
         var goToSighSpotState = new MrIGoToSpotState<MriStates>(_root, Move, GetWaypointsToCertainNode, Behaviour,
-            EnterGoToSpotState, () => target.LifeControler.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode,SetIsAlerted,SetIdleStateCooldown);
+            EnterGoToSpotState, () => target.LifeController.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode,SetIsAlerted,SetIdleStateCooldown);
 
         //Transitions
         

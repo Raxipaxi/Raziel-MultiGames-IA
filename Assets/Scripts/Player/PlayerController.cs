@@ -118,6 +118,7 @@ public class PlayerController : MonoBehaviour,IReseteable
 
     public void OnLevelReset()
     {
+        Debug.Log("Reset player controller");
         OnReset?.Invoke();
         _fsm.Transition(PlayerStatesConstants.Idle);
     }

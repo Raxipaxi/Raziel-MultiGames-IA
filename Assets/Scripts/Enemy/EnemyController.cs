@@ -148,7 +148,7 @@ public class EnemyController : MonoBehaviour,IReseteable
         var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
 
          //Root 
-         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsInSight, goToPatrol);
+         var IsPlayerAlive = new QuestionNode(() => target.LifeController.IsAlive, IsInSight, goToPatrol);
          
          Debug.Log("Init tree");   
           _root = IsPlayerAlive;
@@ -183,7 +183,7 @@ public class EnemyController : MonoBehaviour,IReseteable
     // Update is called once per frame
     void Update()
     {
-        if (!target.LifeControler.IsAlive || GameManager.Instance.IsPaused) return;
+        if (!target.LifeController.IsAlive || GameManager.Instance.IsPaused) return;
         
         _fsm.UpdateState();
     }

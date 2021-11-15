@@ -18,7 +18,7 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
 
     private float _lastMoveMagnitude;
     
-    public LifeController LifeControler { get; private set; }
+    public LifeController LifeController { get; private set; }
 
     private Transform _selfTransform;
     private float _jumpCooldownCounter;
@@ -37,11 +37,10 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
     {
         controller.OnMove += Move;
         controller.OnJump += OnJumpHandler;
-        controller.OnReset += OnResetHandler; 
+        controller.OnReset += OnResetHandler;
         
         //Makes controller subscribe to death
-
-        LifeControler.OnDead += controller.DeadBrain;
+        LifeController.OnDead += controller.DeadBrain;
     }
 
     private void OnDeadHandler()
@@ -51,8 +50,9 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
 
     private void OnResetHandler()
     {
+        Debug.Log("Reset handler");
         transform.position = _startingPoint;
-        LifeControler.Revive();
+        LifeController.Revive();
     }
     private void OnJumpHandler()
     {
@@ -71,16 +71,14 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         BakeReferences();
         _startingPoint = transform.position;
         ResetState();
-        LifeControler.OnDead += OnDeadHandler;
+        LifeController.OnDead += OnDeadHandler;
     }
 
-
-  
     private void ResetState()
     {
         _currentSpeed = playerData.walkSpeed;
         _jumpCooldownCounter = playerData.jumpCooldown;
-        LifeControler = new LifeController(playerData.maxLifes,gameObject);
+        LifeController = new LifeController(playerData.maxLifes,gameObject);
     }
     public bool IsGrounded()
     {
@@ -124,7 +122,6 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg + GameManager.Instance.MainCamera.transform.eulerAngles.y;
         var rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref _rotationVelocity, playerData.rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-
     }
 
     public void Move(Vector3 dir)
@@ -157,14 +154,13 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(interactPoint.position, playerData.tryInteractRadius);
-       
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            LifeControler.GetDamage(10,true);
+            LifeController.GetDamage(10,true);
             return;
         }
     }
