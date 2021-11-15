@@ -9,7 +9,7 @@ public class ChocoboFlockingActive : MonoBehaviour
 
 
 
-    public void Subscribe(ChocoboController _controller)
+    public void SubscribeToEvents(ChocoboController _controller)
     {
         _controller.OnFollow += SetActiveFlocking;
     }
@@ -23,12 +23,17 @@ public class ChocoboFlockingActive : MonoBehaviour
     public void BakeReferences()
     {
         _flocking = GetComponent<FlockingManager>();
+        Debug.Log("Si");
     }
 
     private void Start()
     {
         _active = false;
+        
+        
         _naranaranaraliiiider = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
+        ActivateorDisableFlock();
+        Debug.Log("Te apague ñery");
     }
 
 
@@ -37,15 +42,18 @@ public class ChocoboFlockingActive : MonoBehaviour
         if (_active && !_flocking.gameObject.activeSelf) 
         {
             
-               _flocking.gameObject.SetActive(_active);
+               ActivateorDisableFlock();
         }
         else if (!_active)
         {
-            _flocking.gameObject.SetActive(_active);
+           ActivateorDisableFlock();
         }
     }
-    
-    
+
+    void ActivateorDisableFlock()
+    {
+        _flocking.enabled = _active;
+    }
     
 
     public void SetActiveFlocking(Transform dir)
