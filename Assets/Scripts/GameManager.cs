@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
 
     public SceneManagement _sceneManagement;
 
+    public float timeLeft;
+
+    private bool _timeIsRunning;
+
     [HideInInspector]public LevelResetHandler resetHandler;
     public MainCanvas MainCanvas { get; private set; }
     //Camera is cached for no overhead cost
@@ -27,6 +31,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public event Action OnLose;
+    public event Action OnWin;
+    public void SetTimeRunning(bool newState)
+    {
+        _timeIsRunning = newState;
+    }
     private void Awake()
     {
         if (GameManager.Instance != null) Destroy(gameObject);
@@ -75,6 +85,17 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
+        
+        if (!_timeIsRunning) return;
+
+        timeLeft -= Time.deltaTime;
+
+        if (timeLeft <= 0)
+        {
+            OnLose?.Invoke();
+        }
+
+
     }
 
     public void PauseGame()

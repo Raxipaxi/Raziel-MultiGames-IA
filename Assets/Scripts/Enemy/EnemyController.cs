@@ -178,9 +178,8 @@ public class EnemyController : MonoBehaviour, IStunable
     {      
         //Checks distance to player. If within kill range, kill the player. Else starts pursuit state
         float rawDistance = (target.transform.position - transform.position).magnitude;
-        //float rawDistance = (_player.transform.position - transform.position).sqrMagnitude;        
-        return rawDistance <= minDistance; //_enemyModel.EnemyData.attemptToKillDistance; //HACER EL SCRIPTABLE OBJECT
-        //return rawDistance <=_enemyModel.EnemyData.attemptToKillDistance * _enemyModel.EnemyData.attemptToKillDistance;
+        return rawDistance <= minDistance;
+       
     }   
     public void BakeReferences()
     {

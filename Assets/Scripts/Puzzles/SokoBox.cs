@@ -6,13 +6,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class SokoBox : MonoBehaviour
+public class SokoBox : MonoBehaviour,IReseteable
 {
     [SerializeField] private SokoBoxDat data;
 
     private Coroutine _moveTask;
 
     private Rigidbody _rb;
+
+    private Vector3 _initialPosition;
 
     [SerializeField] private LayerMask goalLayerMask;
 
@@ -26,6 +28,7 @@ public class SokoBox : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         OnGoalReach.AddListener(() => _unmovable = true);
+        _initialPosition = transform.position;
     }
 
 
@@ -82,6 +85,13 @@ public class SokoBox : MonoBehaviour
             dir = dir.normalized;
             InitiateMove(dir);
         }
+    }
+
+    public void OnLevelReset()
+    {
+        StopAllCoroutines();
+        _moveTask = null;
+        transform.position = _initialPosition;
     }
 }
 
