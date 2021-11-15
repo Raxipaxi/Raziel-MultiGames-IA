@@ -10,7 +10,10 @@ public class PlayerControllerData : ScriptableObject
   public KeyCode jump;
   public KeyCode run;
   public KeyCode interact;
-  
+
+  [Header("Data")] 
+  public float waitToRevive;
+
 
 
 }

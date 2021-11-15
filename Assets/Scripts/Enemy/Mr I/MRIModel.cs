@@ -13,6 +13,7 @@ public class MRIModel : MonoBehaviour
     public LineOfSightAI LineOfSightAI => lineOfSight;
 
 
+    private Vector3 _initialPos;
     private float _currentSpeed;
 
     private Transform _selfTransform;
@@ -20,6 +21,7 @@ public class MRIModel : MonoBehaviour
     private void Awake()
     {
         BakeReferences();
+        _initialPos = transform.position;
     }
 
     public void BakeReferences()
@@ -36,6 +38,12 @@ public class MRIModel : MonoBehaviour
         controller.OnIdleSpin += OnIdleSpinHandler;
         controller.OnEnterFastState += OnEnterFastStateHandler;
         controller.OnPatrolEnter += OnPatrolEnterHandler;
+        controller.OnResetLevel += OnResetLevel;
+    }
+
+    private void OnResetLevel()
+    {
+        transform.position = _initialPos;
     }
 
     private void OnIdleEnterHandler()

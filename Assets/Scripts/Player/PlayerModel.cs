@@ -22,27 +22,60 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
 
     private Transform _selfTransform;
     private float _jumpCooldownCounter;
+
+    private Vector3 _startingPoint;
+
+  
+
+    public event Action<float> OnMove;
+    public float Vel
+    {
+        get => _lastMoveMagnitude;
+        private set => _lastMoveMagnitude = value;
+    }
     public void SubscribeToEvents(PlayerController controller)
     {
         controller.OnMove += Move;
         controller.OnJump += OnJumpHandler;
+        controller.OnReset += OnResetHandler; 
         
+        //Makes controller subscribe to death
+
+        LifeControler.OnDead += controller.DeadBrain;
+    }
+
+    private void OnDeadHandler()
+    {
+        GameManager.Instance.ResetLevelState();
+    }
+
+    private void OnResetHandler()
+    {
+        transform.position = _startingPoint;
+        LifeControler.Revive();
     }
     private void OnJumpHandler()
     {
-       
         if (_jumpCooldownCounter > 0 || !IsGrounded()) return;
         _jumpCooldownCounter = playerData.jumpCooldown;
         _rb.AddForce(Vector3.up * playerData.jumpHeight, ForceMode.Impulse);
     }
-   
-    
-    private void Awake()
+
+    private void Start()
     {
-        BakeReferences(); 
-        ResetState();
+        _playerView.SubscribeToEvents(this);
     }
 
+    private void Awake()
+    {
+        BakeReferences();
+        _startingPoint = transform.position;
+        ResetState();
+        LifeControler.OnDead += OnDeadHandler;
+    }
+
+
+  
     private void ResetState()
     {
         _currentSpeed = playerData.walkSpeed;
@@ -99,11 +132,10 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
         var normalizedDir = dir.normalized;
         CorrectRotation(normalizedDir);
         transform.position += normalizedDir * Time.deltaTime * _currentSpeed;
-     
         var dirMagnitude = normalizedDir.magnitude;
         var moveMagnitude = _currentSpeed * dirMagnitude;
         Vel = moveMagnitude;
-        _playerView.SetWalkAnimation(moveMagnitude);
+        OnMove?.Invoke(moveMagnitude);
     }
 
     private void Update()
@@ -128,9 +160,14 @@ public class PlayerModel : MonoBehaviour, IMove,IVel
        
     }
 
-    public float Vel
+    private void OnTriggerEnter(Collider other)
     {
-        get => _lastMoveMagnitude;
-        private set => _lastMoveMagnitude = value;
+        if (other.CompareTag("Enemy"))
+        {
+            LifeControler.GetDamage(10,true);
+            return;
+        }
     }
+
+    
 }

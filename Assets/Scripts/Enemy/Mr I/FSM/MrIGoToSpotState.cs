@@ -81,7 +81,7 @@ public class MrIGoToSpotState<T> : State<T>
         if (waypointAvailable) return;
 
         _setIdleStateCooldown?.Invoke(true);
+        _setIsAlerted?.Invoke(false);
         _root.Execute();
-
     }
 }

@@ -10,12 +10,10 @@ public class MainCanvas : MonoBehaviour
 {
    
     [SerializeField] private GameObject pauseMenu;
-    //[SerializeField] private GameObject enemiesLeftMenu;
-    //[SerializeField] private TextMeshProUGUI  enemiesLeftText;
 
     [SerializeField] private float timeToFadeMissionCanvas;
     private WaitForSeconds _waitForSeconds;
-    [SerializeField] private TextMeshProUGUI _missionTextComponent;
+    [SerializeField] private TextMeshProUGUI missionTextComponent;
 
     [SerializeField] private GameObject hintCanvas;
     [SerializeField] private Text hintText;
@@ -31,7 +29,6 @@ public class MainCanvas : MonoBehaviour
     [SerializeField] private Image _playerHealth;
    
 
-    
     private void Start()
     {       
         InitialState();
@@ -40,8 +37,7 @@ public class MainCanvas : MonoBehaviour
 
     private void InitialState()
     {
-        _missionCanvas.SetActive(false);     
-        //ActivateEnemiesLeftCanvas(false);
+        _missionCanvas.SetActive(false);
         _waitForSeconds = new WaitForSeconds(timeToFadeMissionCanvas);        
         GameManager.Instance.GetcanvasRef(this);  
         SetActiveHintCanvas(false);
@@ -53,7 +49,7 @@ public class MainCanvas : MonoBehaviour
     }
     public void ChangeCurrentMission(string newMission)
     {
-        _missionTextComponent.text = newMission;
+        missionTextComponent.text = newMission;
         _missionCanvas.SetActive(true);
     }
 
@@ -90,10 +86,10 @@ public class MainCanvas : MonoBehaviour
         switch (state)
         {
             case TransitionStates.ToBlack:
-                transition.SetTrigger("Fade");
+                transition.Play("ToBlack");
                 break;
             case TransitionStates.FromBlack:
-                transition.SetTrigger("FromBlack");
+                transition.Play( "FromBlack");
                 break;
             default:
                 throw new System.Exception("Transition state not implemented");              
@@ -109,7 +105,6 @@ public class MainCanvas : MonoBehaviour
     public void RestartScene()
     {
         GameManager.Instance._sceneManagement.ReloadScene();
-     //   SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ExitGame()
@@ -117,29 +112,13 @@ public class MainCanvas : MonoBehaviour
         Application.Quit();
     }
 
-  
-
     public void SetActiveHintCanvas(bool newState)
     {
         hintCanvas.SetActive(newState);
         //Maybe play sound
     }
 
-    /*
-    public void ActivateEnemiesLeftCanvas(bool isActive)
-    {
-        enemiesLeftMenu.SetActive(isActive);
-    }
-    public void UpdateEnemiesLeft(int newAmountOfEnemies)
-    {
-        if (newAmountOfEnemies <= 0)
-        {
-            ActivateEnemiesLeftCanvas(false);
-        }
-
-        enemiesLeftText.text = "Enemies left: " + newAmountOfEnemies.ToString();
-    }
-    */
+  
     private void OnDestroy()
     {
         Debug.Log("DestroyedCanvas");

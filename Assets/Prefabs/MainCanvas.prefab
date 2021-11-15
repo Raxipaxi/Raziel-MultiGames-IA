@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 4827269464376945286}
   timeToFadeMissionCanvas: 0.5
-  _missionTextComponent: {fileID: 4827269464207334200}
+  missionTextComponent: {fileID: 4827269464207334200}
   hintCanvas: {fileID: 4827269463339816554}
   hintText: {fileID: 4827269463996249778}
   transition: {fileID: 4827269463878294273}
@@ -614,7 +614,7 @@ Animator:
   m_GameObject: {fileID: 4827269463878294397}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 45ef5e6e148ace24bb5a2da9c445cfb8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 28ea493c0afe3974589d560b8a21e22a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

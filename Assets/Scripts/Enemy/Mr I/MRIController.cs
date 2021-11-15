@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MRIController : MonoBehaviour, IAlertable
+public class MRIController : MonoBehaviour, IAlertable,IReseteable
 {
     private MRIModel _model;
     
@@ -19,6 +19,8 @@ public class MRIController : MonoBehaviour, IAlertable
     private bool _isAlerted;
 
     [SerializeField] private PathFinderAStarPlus _pathFinder;
+    
+    
 
     [SerializeField] private NodesChanceController nodesChanceController;
 
@@ -37,6 +39,8 @@ public class MRIController : MonoBehaviour, IAlertable
     public event Action OnEnterFastState;
     public event Action OnChaseEnter;
     public event Action OnPatrolEnter;
+
+    public event Action OnResetLevel;
     private void EnterIdle()
     {
         OnIdleEnter?.Invoke();
@@ -59,7 +63,6 @@ public class MRIController : MonoBehaviour, IAlertable
     private void Move(Vector3 dir)
     {
         OnMove?.Invoke(dir);
-       
     }
 
     private void OnPatrol()
@@ -201,7 +204,7 @@ public class MRIController : MonoBehaviour, IAlertable
         patrolState.AddTransition(MriStates.GoToSightSpot,goToSighSpotState);
         
         chaseState.AddTransition(MriStates.Idle,idleState);
-        
+
         goToSighSpotState.AddTransition(MriStates.Idle,idleState);
         goToSighSpotState.AddTransition(MriStates.Chase, chaseState);
         goToSighSpotState.AddTransition(MriStates.Patrol,patrolState);
@@ -223,8 +226,16 @@ public class MRIController : MonoBehaviour, IAlertable
 
     public void Update()
     {
+        if (GameManager.Instance.IsPaused) return;
         _fsm.UpdateState();
     }
 
     public GameObject Owner { get; private set; }
+    public void OnLevelReset()
+    {
+        SetIdleStateCooldown(true);
+        OnResetLevel?.Invoke();
+        _root.Execute();
+        
+    }
 }

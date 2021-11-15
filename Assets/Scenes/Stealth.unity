@@ -3342,6 +3342,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2d5428f370f545f408a70421faf7d18c, type: 3}
+--- !u!1 &1272771448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1272771450}
+  - component: {fileID: 1272771449}
+  m_Layer: 0
+  m_Name: NewResetHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1272771449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272771448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c87b30e1488264494a3e0df31791f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resetableObjects:
+  - {fileID: 2014529572}
+  - {fileID: 2113795035}
+  timeToReset: 4
+--- !u!4 &1272771450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272771448}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1314517941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3665,7 +3712,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1788284480}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2113795035}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: abef27e677ff43f19ea7dd78c738e19a, type: 3}
@@ -5560,10 +5607,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1358644586, guid: b169b6cda729c5444a3c42521c5c2ea9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.662013
-      objectReference: {fileID: 0}
     - target: {fileID: 2064325514133432677, guid: b169b6cda729c5444a3c42521c5c2ea9,
         type: 3}
       propertyPath: target
@@ -6294,6 +6337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a9e5325155a584e836bf57be51286a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resetHandler: {fileID: 0}
 --- !u!4 &2097275424
 Transform:
   m_ObjectHideFlags: 0
@@ -6367,6 +6411,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2113795035 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7632177521886138224, guid: 66b4aa3f666679e469b93951d0d02142,
+    type: 3}
+  m_PrefabInstance: {fileID: 1788284480}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2120129525
 GameObject:
   m_ObjectHideFlags: 0
@@ -6546,11 +6596,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 635415540127414386, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 635415540127414386, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 250567834}
@@ -6631,11 +6676,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 8563238439522847960, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8563238439522847960, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 615742323}
@@ -6644,11 +6684,6 @@ PrefabInstance:
       propertyPath: _playerModel
       value: 
       objectReference: {fileID: 1444867454}
-    - target: {fileID: 8563238439766211861, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 8563238439766211861, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
@@ -6686,11 +6721,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 8563238440004655484, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8563238440004655484, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 1916284236}
@@ -6704,11 +6734,6 @@ PrefabInstance:
       propertyPath: _playerModel
       value: 
       objectReference: {fileID: 1444867454}
-    - target: {fileID: 8563238440048280728, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 8563238440048280728, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
@@ -6741,11 +6766,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 8563238440264512486, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8563238440264512486, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 29426487}
@@ -6754,11 +6774,6 @@ PrefabInstance:
       propertyPath: _playerModel
       value: 
       objectReference: {fileID: 1444867454}
-    - target: {fileID: 8563238440264595274, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 8563238440264595274, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
@@ -6791,11 +6806,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 8563238440303355971, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8563238440303355971, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 1657149779}
@@ -6816,11 +6826,6 @@ PrefabInstance:
       objectReference: {fileID: 1444867454}
     - target: {fileID: 8563238440464739600, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8563238440464739600, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]
       value: 
       objectReference: {fileID: 1920748401}
@@ -6834,11 +6839,6 @@ PrefabInstance:
       propertyPath: _playerModel
       value: 
       objectReference: {fileID: 1444867454}
-    - target: {fileID: 8563238440671772760, guid: bc6dba06dd0dbea4391496b3d60f5438,
-        type: 3}
-      propertyPath: closeWaypointNodes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8563238440671772760, guid: bc6dba06dd0dbea4391496b3d60f5438,
         type: 3}
       propertyPath: closeWaypointNodes.Array.data[0]

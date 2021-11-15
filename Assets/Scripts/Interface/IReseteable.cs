@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MRIView : MonoBehaviour
+public interface IReseteable
 {
-  
+  void OnLevelReset();
 }

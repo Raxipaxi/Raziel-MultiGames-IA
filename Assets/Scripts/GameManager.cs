@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public SceneManagement _sceneManagement;
 
+    [HideInInspector]public LevelResetHandler resetHandler;
     public MainCanvas MainCanvas { get; private set; }
     //Camera is cached for no overhead cost
     private Camera _mainCamera;
@@ -43,9 +44,14 @@ public class GameManager : MonoBehaviour
     //Mainly, reset variables that need to be reset on different levels
     private void OnLevelLoadHandler()
     {
-
+       _sceneManagement.Initialize();
     }
 
+    public void ResetLevelState()
+    {
+        Debug.Log("Reset the level pls");
+        resetHandler.HandleResetOfLevel();
+    }
 
     public void GetcanvasRef(MainCanvas canvas)
     {
@@ -53,6 +59,11 @@ public class GameManager : MonoBehaviour
         OnPause += canvas.OnPauseHandler;
     }
 
+    public void GetResetLevelHandler(LevelResetHandler levelResetHandler)
+    {
+        Debug.Log("level reset data obtained");
+        resetHandler = levelResetHandler;
+    }
     public void EliminateCanvasRef(MainCanvas canvas)
     {
         OnPause -= canvas.OnPauseHandler;

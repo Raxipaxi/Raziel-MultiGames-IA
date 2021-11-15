@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour,IReseteable
 {
     private PlayerModel _playerModel;
     private FSM<PlayerStatesConstants> _fsm;
@@ -13,10 +13,18 @@ public class PlayerController : MonoBehaviour
     public event Action<Vector3> OnMove;
     public event Action OnJump;
 
+    public event Action OnReset;
+
 
     private void Awake()
     {
         BakeReferences();
+    }
+    
+    public void DeadBrain()
+    {
+        Debug.Log("Dead brain");
+        _fsm.Transition(PlayerStatesConstants.Dead);
     }
 
     private void Start()
@@ -63,7 +71,7 @@ public class PlayerController : MonoBehaviour
         var move = new PlayerMoveState<PlayerStatesConstants>(OnMoveCommand, PlayerStatesConstants.Idle, PlayerStatesConstants.Jump, PlayerStatesConstants.Interact, TryInteraction, IsRunning,_controllerData);
         var interact = new PlayerInteractAndWait<PlayerStatesConstants>(GetInteractable, PlayerStatesConstants.Idle, OnMoveCommand);
         var jump = new PlayerJumpState<PlayerStatesConstants>(PlayerStatesConstants.Idle, PlayerStatesConstants.Move, OnJumpCommand, IsGrounded, OnMoveCommand, IsRunning);
-        var dead = new PlayerDeadState<PlayerStatesConstants>();
+        var dead = new PlayerDeadState<PlayerStatesConstants>(_controllerData.waitToRevive, PlayerStatesConstants.Idle,OnMoveCommand);
 
         // Idle State
         idle.AddTransition(PlayerStatesConstants.Move, move);
@@ -87,11 +95,13 @@ public class PlayerController : MonoBehaviour
         jump.AddTransition(PlayerStatesConstants.Move, move);
         jump.AddTransition(PlayerStatesConstants.Dead, dead);
 
-        
+        dead.AddTransition(PlayerStatesConstants.Idle,idle);
 
         _fsm = new FSM<PlayerStatesConstants>(idle);
 
     }
+    
+    
 
     public void BakeReferences()
     {
@@ -104,6 +114,11 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance.IsPaused) return;
         
         _fsm.UpdateState();
+    }
+
+    public void OnLevelReset()
+    {
+        OnReset?.Invoke();
     }
 }
 

@@ -22,6 +22,7 @@ public class SceneManagement
         Level4,
     }
 
+    
     public SceneManagement(Action lockCursor, Action unlockCursor)
     {      
         _scenes = new Dictionary<Scenes, string>
@@ -39,7 +40,7 @@ public class SceneManagement
     {
         {
             if (GameManager.Instance.MainCanvas != null)
-            GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.FromBlack);
+                GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.FromBlack);
 
             //It's the main menu
 
@@ -57,7 +58,7 @@ public class SceneManagement
     public void  MakeChangeScene(Scenes newScene)
     {
         if (GameManager.Instance.MainCanvas != null)
-        GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.ToBlack);
+            GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.ToBlack);
                     
         while (counter < 1.5f)
         {
@@ -78,14 +79,4 @@ public class SceneManagement
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-
-
-
-
-
-
-
-
-
 }
