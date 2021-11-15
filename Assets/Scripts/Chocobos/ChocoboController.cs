@@ -8,13 +8,14 @@ public class ChocoboController : MonoBehaviour
     private ChocoboModel _chocoModel;
    [SerializeField] private ChocoboData data;
 
-    [SerializeField] private List<Transform> actors;
+    [SerializeField]private List<Transform> actors;
     private ChocoboFlockingActive _flockingActive;
     private FSM<ChocoboStatesConstants> _fsm;
     private INode _root;
   
 
-    public event Action<Transform> OnFollow;
+    public event Action<Vector3> OnFollowDir;
+    public event Action<Transform> OnFollowTr;
     public event Action OnIdle;
 
     private Transform _potentialLeader;
@@ -28,11 +29,14 @@ public class ChocoboController : MonoBehaviour
     private void OnIdleCommand()
     {
         OnIdle?.Invoke();
+        
     }
 
-    private void OnFollowCommand(Transform dir)
+    private void OnFollowCommand(Vector3 dir, Transform tr)
     {
-        OnFollow?.Invoke(dir);
+        OnFollowDir?.Invoke(dir);
+        OnFollowTr?.Invoke(tr);
+        
     }
 
     void Start()
@@ -59,14 +63,12 @@ public class ChocoboController : MonoBehaviour
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>(_chocoModel.LineOfSightAI, data.secondsToFollow, OnIdleCommand, _root);
-        var follow = new ChocoboFollowState<ChocoboStatesConstants>(actors, OnFollow,_chocoModel.LineOfSightAI, _root);
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, data.secondsToFollow, OnIdleCommand, _root);
+        var follow = new ChocoboFollowState<ChocoboStatesConstants>(actors, OnFollowCommand,_chocoModel.LineOfSightAI, _root);
         
         // Transitions
         // Idle
         idle.AddTransition(ChocoboStatesConstants.Follow,follow);
-        
-        
         //Follow
         follow.AddTransition(ChocoboStatesConstants.Idle, idle);
 
@@ -76,14 +78,29 @@ public class ChocoboController : MonoBehaviour
 
     private bool PotentialLeader()
     {
-        actors = _chocoModel.LineOfSightAI.LineOfSightMultiTarget();
-        return actors.Count > 0;
+        
+        var closest =  float.MaxValue;
+        _potentialLeader = null;
+        foreach (var seen in actors)
+        {
+            if (!_chocoModel.LineOfSightAI.SingleTargetInSight(seen)) continue;
+
+            var currDis = Vector3.Distance(seen.position, transform.position);
+            if (closest > currDis)
+            {
+                closest = currDis;
+                _potentialLeader = seen;
+            }
+        }
+       // Debug.Log("potential leader");
+        return _potentialLeader!=null;
     }
     public void BakeReferences()
     {
         _chocoModel = GetComponent<ChocoboModel>();
         _flockingActive = GetComponent<ChocoboFlockingActive>();
     }
+
     
     void Update()
     {

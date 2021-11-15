@@ -6,15 +6,12 @@ public class ChocoboFlockingActive : MonoBehaviour
     private bool _active;
     private FlockingManager _flocking;
     private Leader _naranaranaraliiiider;
-
-
-
+    
     public void SubscribeToEvents(ChocoboController _controller)
     {
-        _controller.OnFollow += SetActiveFlocking;
+        _controller.OnFollowTr += SetActiveFlocking;
     }
-    
-    
+
     private void Awake()
     {
         BakeReferences();
@@ -23,17 +20,15 @@ public class ChocoboFlockingActive : MonoBehaviour
     public void BakeReferences()
     {
         _flocking = GetComponent<FlockingManager>();
-        Debug.Log("Si");
     }
 
     private void Start()
     {
         _active = false;
         
-        
         _naranaranaraliiiider = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
         ActivateorDisableFlock();
-        Debug.Log("Te apague ñery");
+
     }
 
 

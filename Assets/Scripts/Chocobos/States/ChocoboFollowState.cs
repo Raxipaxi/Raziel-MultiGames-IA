@@ -10,8 +10,8 @@ public class ChocoboFollowState<T> : State<T>
     private List<Transform> Leaders;
     private INode _root;
     private LineOfSightAI _lineOfSightAI;
-    private Action<Transform> _onFollow;
-    public ChocoboFollowState(List<Transform> leaders, Action<Transform> onFollow,LineOfSightAI lineOfSightAI, INode root)
+    private Action<Vector3, Transform> _onFollow;
+    public ChocoboFollowState(List<Transform> leaders, Action<Vector3, Transform> onFollow,LineOfSightAI lineOfSightAI, INode root)
     {
         Leaders = leaders;
         _onFollow = onFollow;
@@ -31,6 +31,6 @@ public class ChocoboFollowState<T> : State<T>
             _root.Execute();
             return;
         }
-        _onFollow?.Invoke(_leader);
+        _onFollow?.Invoke(_leader.position,_leader);
     }
 }

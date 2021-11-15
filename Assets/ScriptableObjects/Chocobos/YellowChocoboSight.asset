@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da89391ed95dd6046ad14407e974c444, type: 3}
   m_Name: YellowChocoboSight
   m_EditorClassIdentifier: 
-  range: 10
+  range: 3.69
   angle: 90
   obstaclesMask:
     serializedVersion: 2
