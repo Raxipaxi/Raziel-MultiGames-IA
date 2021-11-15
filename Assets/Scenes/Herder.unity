@@ -412,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 535955500, guid: 2f6c1c81567360340bffa93597dfabe4, type: 3}
       propertyPath: minDistance
-      value: 0.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 535955500, guid: 2f6c1c81567360340bffa93597dfabe4, type: 3}
       propertyPath: possibleLeaders.Array.data[0]
