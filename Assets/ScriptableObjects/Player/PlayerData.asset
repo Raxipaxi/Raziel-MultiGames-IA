@@ -24,5 +24,5 @@ MonoBehaviour:
   isGroundedRadius: 0.15
   groundMask:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 6145
   maxLifes: 1

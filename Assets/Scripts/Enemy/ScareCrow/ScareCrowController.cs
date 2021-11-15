@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScareCrowController : MonoBehaviour, IReseteable
+public class ScareCrowController : MonoBehaviour, IReseteable,IStunable
 {
      private ScareCrowModel _model;
     private FSM<ScareCrowStates> _fsm;
@@ -90,6 +90,12 @@ public class ScareCrowController : MonoBehaviour, IReseteable
         _isStunned = newState;
     }
 
+    public void GetStun()
+    {
+        SetStun(true);
+        _root.Execute();
+    }
+
     private bool IsStunned()
     {
         return _isStunned;
@@ -164,4 +170,6 @@ public class ScareCrowController : MonoBehaviour, IReseteable
         SetIdleStateCooldown(true);
         _root.Execute();
     }
+
+  
 }
