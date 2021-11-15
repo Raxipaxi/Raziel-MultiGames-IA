@@ -7,9 +7,9 @@ public class ChocoboModel : MonoBehaviour, IMove
 {
    public LineOfSightAI LineOfSightAI => _lineOfSightAI;
    private LineOfSightAI _lineOfSightAI;
-   [SerializeField] private LineOfSightDataScriptableObject _flockSight; 
+  // [SerializeField] private LineOfSightDataScriptableObject _flockSight; 
    private ChocoboView _chocoboView;
-   [SerializeField] private ChocoboData _data;
+   [SerializeField] public ChocoboData _data;
 
    private Rigidbody _rb;
    

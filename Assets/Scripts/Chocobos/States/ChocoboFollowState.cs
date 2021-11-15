@@ -11,12 +11,16 @@ public class ChocoboFollowState<T> : State<T>
     private LineOfSightAI _lineOfSightAI;
     private LineOfSightDataScriptableObject _newLineOfSightAI;
     private Action<Transform> _onFollow;
-    public ChocoboFollowState(Func<Transform> potentialLeader, Action<Transform> onFollow,LineOfSightAI lineOfSightAI,LineOfSightDataScriptableObject newLineOfSight, INode root)
+    private float _leaderCheck;
+    private float _followCheck;
+    
+    public ChocoboFollowState(Func<Transform> potentialLeader, Action<Transform> onFollow,LineOfSightAI lineOfSightAI,LineOfSightDataScriptableObject newLineOfSight, float leaderCheck, INode root)
     {
         _potentialLeader = potentialLeader;
         _onFollow = onFollow;
         _lineOfSightAI = lineOfSightAI;
         _newLineOfSightAI = newLineOfSight;
+        _leaderCheck = leaderCheck;
         _root = root;
     }
 
@@ -24,16 +28,25 @@ public class ChocoboFollowState<T> : State<T>
     {
       
         _lineOfSightAI.SwapLineOfSightData(_newLineOfSightAI);
-        
+        AddCooldown();
+
     }
 
     public override void Execute()
     {
+        _onFollow?.Invoke(_potentialLeader?.Invoke());
+        if (!(_followCheck < Time.time)) return;
+        AddCooldown();
+        
         if (!_lineOfSightAI.SingleTargetInSight(_potentialLeader?.Invoke()))
         {
             _root.Execute();
-            return;
         }
-        _onFollow?.Invoke(_potentialLeader?.Invoke());
+        
+    }
+
+    private void AddCooldown()
+    {
+        _followCheck = _leaderCheck + Time.time;
     }
 }
