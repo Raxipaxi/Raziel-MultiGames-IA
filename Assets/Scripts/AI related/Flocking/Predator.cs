@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Predator : MonoBehaviour, IFlocking
+public class Predator : MonoBehaviour, IFlockingBehavior
 {
     public float radius;
     public float multiplier;

@@ -17,7 +17,10 @@ public class MainCanvas : MonoBehaviour
 
     [SerializeField] private GameObject hintCanvas;
     [SerializeField] private Text hintText;
-    [SerializeField] private Animator transition; 
+    [SerializeField] private Animator transition;
+    [SerializeField] private Text gameCounter;
+
+
 
     public enum TransitionStates
     {

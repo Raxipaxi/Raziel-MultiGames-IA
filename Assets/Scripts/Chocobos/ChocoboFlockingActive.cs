@@ -9,7 +9,7 @@ public class ChocoboFlockingActive : MonoBehaviour
     
     public void SubscribeToEvents(ChocoboController _controller)
     {
-        _controller.OnFollowTr += SetActiveFlocking;
+        _controller.OnFollow += SetActiveFlocking;
     }
 
     private void Awake()
@@ -24,35 +24,29 @@ public class ChocoboFlockingActive : MonoBehaviour
 
     private void Start()
     {
-        _active = false;
         
         _LeaderBehaviour = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
-        ActivateorDisableFlock();
 
     }
     
-    private void Update()
+    private void EnableDisable()
     {
-        if (_active && !_flocking.enabled) 
+        if (_LeaderBehaviour.leader!=null && !_flocking.enabled)
         {
+            _flocking.enabled = true;
             
-               ActivateorDisableFlock();
         }
-        else if (!_active)
+        else if (_LeaderBehaviour.leader==null)
         {
-           ActivateorDisableFlock();
+            _flocking.enabled = false;
         }
     }
 
-    void ActivateorDisableFlock()
-    {
-        _flocking.enabled = _active;
-    }
     
 
     public void SetActiveFlocking(Transform dir)
     {
         _LeaderBehaviour.leader = dir;
-        _active = !_active;
+        EnableDisable();
     }
 }

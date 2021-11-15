@@ -15,8 +15,7 @@ public class ChocoboController : MonoBehaviour
     private INode _root;
   
 
-    public event Action<Vector3> OnFollowDir;
-    public event Action<Transform> OnFollowTr;
+    public event Action<Transform> OnFollow;
     public event Action OnIdle;
 
     private Transform _potentialLeader;
@@ -37,7 +36,7 @@ public class ChocoboController : MonoBehaviour
     private void OnFollowCommand(Transform tr)
     {
        // OnFollowDir?.Invoke(dir);
-        OnFollowTr?.Invoke(tr);
+        OnFollow?.Invoke(tr);
         
     }
 
@@ -65,7 +64,7 @@ public class ChocoboController : MonoBehaviour
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, data.secondsToFollow, OnIdleCommand,_chocoModel.LineOfSightAI, _root);
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, data.secondsToFollow, OnIdleCommand, OnFollowCommand ,_chocoModel.LineOfSightAI, _root);
         var follow = new ChocoboFollowState<ChocoboStatesConstants>(()=>_potentialLeader, OnFollowCommand,_chocoModel.LineOfSightAI, _flocksight, _root);
         
         // Transitions

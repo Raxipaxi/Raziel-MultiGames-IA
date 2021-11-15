@@ -8,7 +8,7 @@ public class FlockingManager : MonoBehaviour
     public float timeToGetBoids;
     public int maxBoids;
     public LayerMask mask;
-    IFlocking[] _behaviours;
+    IFlockingBehavior[] _behaviours;
     List<Transform> _boids = new List<Transform>();
     Collider[] _colls;
     IMove _move;
@@ -16,7 +16,7 @@ public class FlockingManager : MonoBehaviour
     {
         _colls = new Collider[maxBoids];
         _move = GetComponent<IMove>();
-        _behaviours = GetComponents<IFlocking>();
+        _behaviours = GetComponents<IFlockingBehavior>();
     }
     void Start()
     {

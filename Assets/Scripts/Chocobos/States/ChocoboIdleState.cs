@@ -10,17 +10,20 @@ public class ChocoboIdleState<T> : State<T>
     private LineOfSightAI _lineOfSightAI;
     private INode _root;
     private Action _idleCommand;
+    private Action<Transform> _onFollow;
     
-    public ChocoboIdleState(Func<bool> potentialLeader, float counterToFollow, Action idleCommand,LineOfSightAI lineOfSightAI, INode root )
+    public ChocoboIdleState(Func<bool> potentialLeader, float counterToFollow, Action idleCommand,Action<Transform> onFollow,LineOfSightAI lineOfSightAI, INode root )
     {
         _potentialLeader = potentialLeader;
         _counterToFollow = counterToFollow;
         _lineOfSightAI = lineOfSightAI;
         _root = root;
         _idleCommand = idleCommand;
+        _onFollow = onFollow;
     }
     public override void Awake()
     {
+        _onFollow?.Invoke(null);
         _idleCommand?.Invoke();
         _lineOfSightAI.SwapLineOfSightData(_lineOfSightAI.OriginalData);
         ResetCounter();
