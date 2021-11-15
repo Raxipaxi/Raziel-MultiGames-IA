@@ -11,44 +11,44 @@ public class EnemyPatrolState<T> : State<T>
     private Action<Vector3> _onWalk;
     private float _minDistance;
     
-    private LineOfSightAI _lineOfSightAI;
+    private Func<bool> _attemptSeePlayer;
     private ObstacleAvoidance _obstacleAvoidance;
     private INode _root;
     private Transform _currpatrolPoint =null;
     private HashSet<Transform> visitedWP = new HashSet<Transform>();
     private Action<bool> _setIdleCommand;
-    
-    public EnemyPatrolState(EnemyModel enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk , float minDistance,ObstacleAvoidance obstacleAvoidance, INode root, Action<bool> setIdleCommand)
+    private Action _onStartPatrol;
+    public EnemyPatrolState(EnemyModel enemyModel, Transform target, Transform[] waypoints, Action<Vector3> OnWalk , float minDistance,ObstacleAvoidance obstacleAvoidance, INode root, Action<bool> setIdleCommand, Func<bool> attemptSeePlayer, Action onStartPatrol)
     {
         _enemyModel = enemyModel.transform;
         _target = target;
         _waypoints = waypoints;
-        _lineOfSightAI = enemyModel.LineOfSightAI;
+        _attemptSeePlayer = attemptSeePlayer;
         _onWalk = OnWalk;
         _minDistance = minDistance;
         _root = root;
         _obstacleAvoidance = obstacleAvoidance;
         _setIdleCommand = setIdleCommand;
+        _onStartPatrol = onStartPatrol;
     }
 
     public override void Awake()
     {
-        Debug.Log("Patrol");
         if (_currpatrolPoint == null)
         {
-            Debug.Log("Patrol point null");
             _currpatrolPoint = NearestPatPoint();
         }    
         _obstacleAvoidance.SetNewBehaviour(ObstacleAvoidance.DesiredBehaviour.Seek);
         _obstacleAvoidance.SetNewTarget(_currpatrolPoint);
         _setIdleCommand?.Invoke(false);
+        _onStartPatrol?.Invoke();
     }
     private Transform NearestPatPoint()
     {
-        float minDist= float.MaxValue;
+        var minDist= float.MaxValue;
         float currDist;
         Transform nearestPatrolpt= null;
-        int index = 0;
+        var index = 0;
         
         for (int i = 0; i < _waypoints.Length; i++)
         {
@@ -78,13 +78,14 @@ public class EnemyPatrolState<T> : State<T>
 
     public override void Execute()
     {
-        Vector3 dir = _obstacleAvoidance.GetDir();
+        var dir = _obstacleAvoidance.GetDir();
         dir.y = 0;
         _onWalk?.Invoke(dir);
 
-        if (_lineOfSightAI.SingleTargetInSight(_target))
+        var seePlayer = _attemptSeePlayer.Invoke();
+
+        if (seePlayer)
         {
-            Debug.Log("See player");
             _root.Execute();
             return;
         }

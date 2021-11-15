@@ -141,8 +141,8 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
 
     private bool LastInSightState()
     {     
-        _previousInSightState = _currentInSightState;    
-        _currentInSightState = _model.LineOfSightAI.SingleTargetInSight(target.transform);
+        _previousInSightState = _currentInSightState;
+        _currentInSightState = IsPlayerOnSight();
         return _currentInSightState;
     }
 
@@ -159,6 +159,12 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
     private bool IsIdleStateCooldown()
     {
         return _waitForIdleState;
+    }
+
+    private bool IsPlayerOnSight()
+    {
+        var isPlayerInSight = _model.LineOfSightAI.SingleTargetInSight(target.transform);
+        return isPlayerInSight;
     }
 
     private void SetIdleStateCooldown(bool newState)
@@ -185,10 +191,10 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
     {
         //States
 
-        var idleState = new MrIIdleState<MriStates>(EnterIdle, Spin, LastInSightState, _root, SetIdleStateCooldown, data.timeToOutOfIdle);
-        var patrolState = new MrIPatrolState<MriStates>(LastInSightState, _root, GetWaypointsToCertainNode,
+        var idleState = new MrIIdleState<MriStates>(EnterIdle, Spin, IsPlayerOnSight, _root, SetIdleStateCooldown, data.timeToOutOfIdle);
+        var patrolState = new MrIPatrolState<MriStates>(IsPlayerOnSight, _root, GetWaypointsToCertainNode,
             SetIdleStateCooldown, GetRandomNode, _model, data.minimumWaypointDistance, Behaviour, Move,OnPatrol);
-        var chaseState = new MrIChaseState<MriStates>(LastInSightState, _root, SetIdleStateCooldown, Move, Behaviour,
+        var chaseState = new MrIChaseState<MriStates>(IsPlayerOnSight, _root, SetIdleStateCooldown, Move, Behaviour,
             data.timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
         var goToSighSpotState = new MrIGoToSpotState<MriStates>(_root, Move, GetWaypointsToCertainNode, Behaviour,
             EnterGoToSpotState, () => target.LifeControler.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode,SetIsAlerted,SetIdleStateCooldown);
@@ -236,6 +242,5 @@ public class MRIController : MonoBehaviour, IAlertable,IReseteable
         SetIdleStateCooldown(true);
         OnResetLevel?.Invoke();
         _root.Execute();
-        
     }
 }

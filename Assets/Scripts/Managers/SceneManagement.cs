@@ -19,7 +19,9 @@ public class SceneManagement
         Level1,
         Level2,
         Level3,
-        Level4,
+        Room1,
+        Room2,
+        Room3
     }
 
     
@@ -28,8 +30,12 @@ public class SceneManagement
         _scenes = new Dictionary<Scenes, string>
         {
             { Scenes.MainMenu, "MainMenu" },
-            { Scenes.Level1, "Demo_Main" },
-            { Scenes.Level2, "Level2" }
+            {Scenes.Room1,"MainRoom1"},
+            { Scenes.Level1, "Sokoban" },
+            { Scenes.Level2, "Herder" },
+            {Scenes.Level3, "Stealth"},
+            {Scenes.Room2, "MainRoom2"},
+            {Scenes.Room3,"MainRoom3"}
         };
 
         _lockCursor = lockCursor;

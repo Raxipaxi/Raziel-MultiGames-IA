@@ -121,7 +121,6 @@ public class MainCanvas : MonoBehaviour
   
     private void OnDestroy()
     {
-        Debug.Log("DestroyedCanvas");
         GameManager.Instance.EliminateCanvasRef(this);
     }
 }

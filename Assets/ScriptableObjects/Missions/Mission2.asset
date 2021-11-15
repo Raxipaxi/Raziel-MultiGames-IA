@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33beaea0b618c9443b4844861894b1bf, type: 3}
+  m_Name: Mission2
+  m_EditorClassIdentifier: 
+  message:
+  - Excellent. That was step 1 of 256.
+  - Just kidding, next up you'll face a familar buddy from the...Last daydreaming
+    series.
+  - Escort them to the safe spot located on the far right.
+  - But be careful, there's lava and a special wooden guest trying to steal your
+    victory.
+  finalMessageTimeToDissapear: 0.5
+  hint: '-Escort the chocobos to the safe spot.
+
+    -Avoid the oncoming Scarecrow,
+    he''ll steal your chocobos.'

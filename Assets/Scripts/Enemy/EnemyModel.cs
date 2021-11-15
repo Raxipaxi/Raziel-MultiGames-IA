@@ -1,75 +1,114 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class EnemyModel : MonoBehaviour, IVel
 {
     private EnemyView _enemyView;
     private Rigidbody _rb;
-    public float Vel { get; }
+    public float Vel => _rb.velocity.magnitude;
     
-    private float _currSpeed = 2f;
+    private float _currSpeed = 0f;
 
-    private LineOfSightAI _lineOfSightAI;
+  [SerializeField] private LineOfSightAI _lineOfSightAI;
 
+  [SerializeField] private Transform hitboxPoint;
 
+  [SerializeField] private BrollaChanData data;
+
+  private Collider[] _hitPlayerHitbox = new Collider[10];
+  private Vector3 _startingPosition;
     public LineOfSightAI LineOfSightAI => _lineOfSightAI;
 
-    //TODO Hace el escriptabel
-    [SerializeField] private PlayerData _enemyData;
+
+    public event Action<float> onMove;
+    public event Action OnAttack;
 
     private void Awake()
     {
         BakeReferences();
+        _startingPosition = transform.position;
     }
 
     public void SubscribeToEvents(EnemyController controller)
     {
-        controller.OnWalk += Move;
-        controller.OnChase += Chase;
-        controller.OnIdle += Idle;
+        controller.OnMove += Move;
+        controller.OnChase += OnChaseHandler;
+        controller.OnIdle += OnIdleHandler;
         controller.OnAttack += Attack;
+        controller.OnPatrol += OnPatrolHandler;
+        controller.OnReset += OnResetHandler;
 
     }
 
-    void BakeReferences()
+    private void OnResetHandler()
+    {
+        transform.position = _startingPosition;
+        Move(Vector3.zero);
+    }
+
+    private void BakeReferences()
     {
         _enemyView = GetComponent<EnemyView>();
         _rb = GetComponent<Rigidbody>();
-        _lineOfSightAI = GetComponent<LineOfSightAI>();
+    }
 
+    private void Start()
+    {
+        _enemyView.SubscribeToEvents(this);
     }
 
     private void Move(Vector3 dir)
     {
-        
+        dir = dir.normalized;
         _rb.velocity = dir * _currSpeed;
-        transform.forward = dir.normalized;
-        _enemyView.SetWalkAnimation();
-        
+        onMove?.Invoke(Vel);
+        if (dir == Vector3.zero) return;
+        transform.forward = Vector3.Lerp(transform.forward, dir, Time.deltaTime * data.rotationSpeed);
     }   
-    private void Chase(Vector3 dir)
+    private void OnChaseHandler()
     {
-        //TODO Ver lo del scriptable object con la data del enemigo
-        _rb.velocity = dir * _currSpeed;
-        transform.forward = dir.normalized;
-        _enemyView.SetRunAnimation();
-        
+        _currSpeed = data.chaseSpeed;
     }
 
-    private void Idle()
+    private void OnPatrolHandler()
+    {
+        _currSpeed = data.patrolSpeed;
+    }
+
+    private void OnIdleHandler()
     {
         _rb.velocity = Vector3.zero;
-        _enemyView.SetIdleAnimation();
-    }
-
-    private void Die()
-    {
-        
+        Move(Vector3.zero);
     }
 
     private void Attack()
     {
-        _enemyView.SetAttackAnimation();
+        OnAttack?.Invoke();
     }
 
+    private void HitboxAgainstPlayer()
+    {
+        //To be used by animation component
+        var playerHitAmount = Physics.OverlapSphereNonAlloc(hitboxPoint.position, data.hitboxSize, _hitPlayerHitbox, data.playerLayer);
 
+        if (playerHitAmount == 0) return;
+
+        for (int i = 0; i < playerHitAmount; i++)
+        {
+            var curr = _hitPlayerHitbox[i];
+            var isPlayer = curr.GetComponent<PlayerModel>();
+
+            if (isPlayer == null) continue;
+            
+            isPlayer.LifeControler.GetDamage(10,true);
+            break;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (hitboxPoint == null) return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(hitboxPoint.position,data.hitboxSize);
+    }
 }

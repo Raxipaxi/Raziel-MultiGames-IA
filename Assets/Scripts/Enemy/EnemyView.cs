@@ -7,9 +7,17 @@ public class EnemyView : MonoBehaviour
 {
 
     private Animator _animator;
+    private static readonly int Velocity = Animator.StringToHash("Velocity");
+
     private void Awake()
     {
         BakeReferences();
+    }
+
+    public void SubscribeToEvents(EnemyModel model)
+    {
+        model.onMove += SetMoveAnimation;
+        model.OnAttack += SetAttackAnimation;
     }
 
     public void BakeReferences()
@@ -17,25 +25,13 @@ public class EnemyView : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void SetWalkAnimation()
+    public void SetMoveAnimation(float velocity)
     {
-        
+        _animator.SetFloat(Velocity, velocity);
     }
-    
-    public void SetStunAnimation()
-    {
-        
-    } 
-    public void SetRunAnimation()
-    {
-        
-    }    
-    public void SetIdleAnimation()
-    {
-        _animator.Play("Idle");
-    }    
+
     public void SetAttackAnimation()
     {
-        
+        _animator.Play("Attack");   
     }
 }

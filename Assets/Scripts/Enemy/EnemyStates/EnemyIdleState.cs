@@ -4,19 +4,17 @@ using UnityEngine;
 public class EnemyIdleState<T> : State<T>
 {
     private INode _root;
-    private LineOfSightAI _lineOfSightAI;
-    private Transform _target;
+    private Func<bool> _attemptSeePlayer;
     private float _idleLenght;
     private float _cooldown;
     private Action<bool> _setIdleCommand;
-  
-
+    private float _counter;
     private Action _onIdle;
-    public EnemyIdleState(float idleLenght,LineOfSightAI lineOfSightAI, Transform target,Action onIdle, INode root, Action <bool> setIdleCommand)
+
+    public EnemyIdleState(float idleLenght,Func<bool> attemptSeePlayer,Action onIdle, INode root, Action <bool> setIdleCommand)
     {
         _root = root;
-        _lineOfSightAI = lineOfSightAI;
-        _target = target;
+        _attemptSeePlayer = attemptSeePlayer;
         _idleLenght = idleLenght;
         _onIdle = onIdle;
         _setIdleCommand = setIdleCommand;
@@ -31,19 +29,21 @@ public class EnemyIdleState<T> : State<T>
 
     public override void Execute()
     {
-        if (Time.time > _cooldown || _lineOfSightAI.SingleTargetInSight(_target))
-        {          
-            ResetCd();
+        _counter -= Time.deltaTime;
+        var seePlayer = _attemptSeePlayer.Invoke();
+
+        if (_counter <= 0 || seePlayer)
+        {
+           
             _setIdleCommand?.Invoke(false);
             _root.Execute();
-        }   
+            ResetCd();
+        }
     }
 
 
     private void ResetCd()
     {
-        _cooldown = Time.time + _idleLenght;
+        _counter = _idleLenght;
     }
-    
-    
 }

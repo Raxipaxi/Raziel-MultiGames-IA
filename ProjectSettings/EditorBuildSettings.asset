@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainRoom1.unity
+    guid: 2c1c3c3377401644f8060ceee626b824
+  - enabled: 1
+    path: Assets/Scenes/DemoScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Herder.unity
+    guid: aa23055d8c3942b449e638ed12976867
+  - enabled: 1
+    path: Assets/Scenes/MainRoom2.unity
+    guid: 35c7ac19afdcf8f46b8a325c1a44cdaa
+  - enabled: 1
+    path: Assets/Scenes/MainRoom3.unity
+    guid: 938d2fd6db92da045bc19ae55bcc1a48
+  - enabled: 1
+    path: Assets/Scenes/Sokoban.unity
+    guid: 5edf72cbc38d3b148a1f7abce5c3352f
+  - enabled: 1
+    path: Assets/Scenes/Stealth.unity
+    guid: c7ff452c4537d8c4b92d10d00eba9f8a
   m_configObjects: {}

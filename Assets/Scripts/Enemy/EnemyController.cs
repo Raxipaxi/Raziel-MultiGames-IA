@@ -1,23 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour, IStunable
+public class EnemyController : MonoBehaviour,IReseteable
 {
     private EnemyModel _enemyModel;
     private FSM<EnemyStatesConstants> _fsm;
     private INode _root;
 
-    //Try and serialize with scriptable Object
-    [SerializeField] private float idleLenght;
     
+    [SerializeField] private BrollaChanData data;
 
     #region Steering Properties
     [SerializeField] private PlayerModel target;
     [SerializeField] private Transform[] waypoints;
-    [SerializeField] private float minDistance;
+    
     [SerializeField] private ObstacleAvoidanceScriptableObject obstacleAvoidance;
     private bool _waitForIdleState;
-    private bool _isStunned;
+
+   
     public ObstacleAvoidance Behaviour { get; private set; }
 
     #endregion
@@ -27,11 +27,15 @@ public class EnemyController : MonoBehaviour, IStunable
     private bool _currentInSightState;
 
     #region Actions
-    public event Action<Vector3> OnWalk;
-    public event Action<Vector3> OnChase;
+    public event Action<Vector3> OnMove;
+    public event Action OnChase;
     public event Action OnIdle;
     public event Action OnAttack;
-    public event Action OnStun;
+
+    public event Action OnPatrol;
+
+    public event Action OnReset;
+    //public event Action OnStun;
     #endregion
 
     // Start is called before the first frame update
@@ -42,9 +46,9 @@ public class EnemyController : MonoBehaviour, IStunable
 
     #region Commands
 
-    private void OnWalkCommand(Vector3 moveDir)
+    private void OnMoveCommand(Vector3 moveDir)
     {
-        OnWalk?.Invoke(moveDir);
+        OnMove?.Invoke(moveDir);
     }    
     private void OnIdleCommand()
     {
@@ -52,9 +56,9 @@ public class EnemyController : MonoBehaviour, IStunable
         SetIdleStateCooldown(true);
     }
 
-    private void OnChaseCommand(Vector3 chaseDir)
+    private void OnChaseCommand()
     {
-        OnChase?.Invoke(chaseDir);
+        OnChase?.Invoke();
     }
 
     private void OnAttackCommand()
@@ -62,33 +66,20 @@ public class EnemyController : MonoBehaviour, IStunable
         OnAttack?.Invoke();
     }
 
-    private void OnStunCommand()
+    private void OnPatrolCommand()
     {
-        OnStun?.Invoke();
+        OnPatrol?.Invoke();
     }
+   
     #endregion
     private void Start()
     {
         _enemyModel.SubscribeToEvents(this);
         InitDecisionTree();
-        InitFSM();
+        InitFsm();
         //Events subs??
     }
 
-    public void GetStun()
-    {
-        OnStunCommand();
-    }
-
-    private void SetStun(bool newState)
-    {
-        _isStunned = newState;
-    }
-
-    private bool IsStunned()
-    {
-        return _isStunned;
-    }
     private bool IsIdleStateCooldown()
     {
         return _waitForIdleState;
@@ -99,45 +90,47 @@ public class EnemyController : MonoBehaviour, IStunable
         _waitForIdleState = newState;
     }
 
-    void InitFSM()
+    private bool IsCloseEnoughToAttack()
+    {
+        var distance = Vector3.Distance(transform.position, target.transform.position);
+
+        return distance <= data.distanceToAttack;
+    }
+
+    private void InitFsm()
     {
         //--------------- FSM Creation -------------------//                
         // States Creation
-        var idle = new EnemyIdleState<EnemyStatesConstants>(idleLenght, _enemyModel.LineOfSightAI, target.transform, OnIdleCommand, _root,SetIdleStateCooldown);
-        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel,target.transform,waypoints, OnWalkCommand,minDistance,Behaviour,_root,SetIdleStateCooldown);
-        var chase = new EnemyChaseState<EnemyStatesConstants>(transform,target.transform, _root,Behaviour, _enemyModel.LineOfSightAI, OnChaseCommand);
-        var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand);
-        var stun = new EnemyStunState<EnemyStatesConstants>();
+        var idle = new EnemyIdleState<EnemyStatesConstants>(data.idleLenght, CheckPlayerInSight,
+            OnIdleCommand, _root, SetIdleStateCooldown);
+        var patrol = new EnemyPatrolState<EnemyStatesConstants>(_enemyModel, target.transform, waypoints, OnMoveCommand,
+            data.minDistance, Behaviour, _root, SetIdleStateCooldown, CheckPlayerInSight,OnPatrolCommand);
+        var chase = new EnemyChaseState<EnemyStatesConstants>(target.transform, _root, Behaviour, OnChaseCommand,
+            data.timeToAttemptAttack, OnMoveCommand,SetIdleStateCooldown);
+        var attack = new EnemyAttackState<EnemyStatesConstants>(_root,OnAttackCommand, data.timeToOutOfAttack,SetIdleStateCooldown);
+      
         
         //Idle State
         idle.AddTransition(EnemyStatesConstants.Patrol,patrol);
-        idle.AddTransition(EnemyStatesConstants.Attack,attack);
         idle.AddTransition(EnemyStatesConstants.Chase,chase);
-        idle.AddTransition(EnemyStatesConstants.Stun,stun);
+        
         
         //Patrol
         patrol.AddTransition(EnemyStatesConstants.Chase,chase);
         patrol.AddTransition(EnemyStatesConstants.Idle,idle);
-        patrol.AddTransition(EnemyStatesConstants.Stun,stun);
-        
-        //Stun
-        stun.AddTransition(EnemyStatesConstants.Idle,idle);
 
         //Chase 
         chase.AddTransition(EnemyStatesConstants.Idle,idle);
-        chase.AddTransition(EnemyStatesConstants.Stun,stun);
         chase.AddTransition(EnemyStatesConstants.Attack,attack);
         
         //Attack
         attack.AddTransition(EnemyStatesConstants.Chase,chase);
-        attack.AddTransition(EnemyStatesConstants.Stun,stun);
         attack.AddTransition(EnemyStatesConstants.Idle,idle);
         
         _fsm = new FSM<EnemyStatesConstants>(idle);
-        
     }
 
-    void InitDecisionTree()
+    private void InitDecisionTree()
     {
         // Actions
 
@@ -145,19 +138,17 @@ public class EnemyController : MonoBehaviour, IStunable
         var goToPatrol = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Patrol));
         var goToAttack = new ActionNode(()=> _fsm.Transition(EnemyStatesConstants.Attack));
         var goToIdle = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Idle));
-        var goToStun = new ActionNode(() => _fsm.Transition(EnemyStatesConstants.Stun));
+        
         
         //Questions
         var CheckIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
-         var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, CheckIdleStateCooldown);
-         var attemptPlayerKill = new QuestionNode(DistanceToPlayerEnoughToKill, goToAttack, goToFollow);
-         var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
-      
-         var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
-         var CheckStunned = new QuestionNode(IsStunned, goToStun, IsInSight);
-         
+        var DidSightChangeToLose = new QuestionNode(SightStateChanged, goToIdle, CheckIdleStateCooldown);
+        var attemptPlayerKill = new QuestionNode(IsCloseEnoughToAttack, goToAttack, goToFollow);
+        var DidSightChangeToAttack = new QuestionNode(SightStateChanged, goToFollow, attemptPlayerKill);
+        var IsInSight = new QuestionNode(LastInSightState, DidSightChangeToAttack, DidSightChangeToLose);
+
          //Root 
-         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, CheckStunned, goToPatrol);
+         var IsPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, IsInSight, goToPatrol);
          
          Debug.Log("Init tree");   
           _root = IsPlayerAlive;
@@ -174,13 +165,13 @@ public class EnemyController : MonoBehaviour, IStunable
         _currentInSightState = _enemyModel.LineOfSightAI.SingleTargetInSight(target.transform);
         return _currentInSightState;
     }
-    private bool DistanceToPlayerEnoughToKill()
-    {      
-        //Checks distance to player. If within kill range, kill the player. Else starts pursuit state
-        float rawDistance = (target.transform.position - transform.position).magnitude;
-        return rawDistance <= minDistance;
-       
-    }   
+
+    private bool CheckPlayerInSight()
+    {
+        var playerIsInSight = _enemyModel.LineOfSightAI.SingleTargetInSight(target.transform);
+        return playerIsInSight;
+    }
+   
     public void BakeReferences()
     {
         _enemyModel = GetComponent<EnemyModel>();
@@ -192,7 +183,16 @@ public class EnemyController : MonoBehaviour, IStunable
     // Update is called once per frame
     void Update()
     {
-        if(target!=null) _fsm.UpdateState();
+        if (!target.LifeControler.IsAlive || GameManager.Instance.IsPaused) return;
+        
+        _fsm.UpdateState();
+    }
 
+    public void OnLevelReset()
+    {
+        Debug.Log("Reset enemy");
+        OnReset?.Invoke();
+        SetIdleStateCooldown(true);
+        _root.Execute();
     }
 }

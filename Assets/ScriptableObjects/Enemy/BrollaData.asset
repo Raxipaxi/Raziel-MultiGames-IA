@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ed66b2c8aaa93f45bf61122f0a5522b, type: 3}
+  m_Name: BrollaData
+  m_EditorClassIdentifier: 
+  rotationSpeed: 10
+  patrolSpeed: 2
+  chaseSpeed: 3.5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  hitboxSize: 0.7
+  distanceToAttack: 5
+  timeToAttemptAttack: 1
+  idleLenght: 4.9
+  minDistance: 0.5
+  timeToOutOfAttack: 1

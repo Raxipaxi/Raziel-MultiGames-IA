@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: IntroductionMission
   m_EditorClassIdentifier: 
   message:
-  - This is a test text.
-  - Hheheheh, that rhymes.
+  - Hey, you! You've been selected to participate in an escape room...Kinda thing.
+  - Every room takes to a different dimension, with slightly different rules.
+  - Everything is explained on this boards. Which takes us to...
+  - Familar with Sokoban, the japanese game? Well, just push the box by touching
+    it.
+  - After placing it in the correct place, you'll get further instructions. Good
+    luck!
   finalMessageTimeToDissapear: 0.5
-  hint: '-Test Text
+  hint: '-Push box to destination
 
-    -Don''t forget you goodies, fucker.'
+    -Avoid place guardian '
