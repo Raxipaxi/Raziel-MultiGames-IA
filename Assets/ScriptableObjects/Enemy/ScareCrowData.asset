@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ScareCrowData
   m_EditorClassIdentifier: 
   rotationSpeed: 10
-  chaseSpeed: 4
+  chaseSpeed: 1.5
   timeToCheckOnPlayer: 2
   idleLenght: 4.9
   timeToOutOfStun: 5

@@ -37,6 +37,7 @@ public class ScareCrowModel : MonoBehaviour, IVel
     {
         dir = dir.normalized;
         Vel = dir.magnitude * data.chaseSpeed;
+        dir.y = 0;
         transform.position += dir * data.chaseSpeed * Time.deltaTime;
         OnMove?.Invoke(Vel);
         if (dir == Vector3.zero) return;
