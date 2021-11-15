@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3199c38690194db41814f816e495897f, type: 3}
   m_Name: StealthLevelCameraData
   m_EditorClassIdentifier: 
-  alertRadius: 30
+  alertRadius: 300
   playerVelocityThreshold: 3
   timeToResumeAlert: 3
   checkPlayerMovementTime: 1.5
   maxEnemiesToAlert: 2
+  nodesGetRadius: 10
+  nodesMask:
+    serializedVersion: 2
+    m_Bits: 131072

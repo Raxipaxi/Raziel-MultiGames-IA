@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (menuName = "ScriptableObjects/CameraData", fileName = "NewCameraData", order = 1)]
 public class CameraData : ScriptableObject
 {
-   public float alertRadius = 10;
+   public float alertRadius = 300;
    public float playerVelocityThreshold = 3;
    public float timeToResumeAlert = 3;
    public float checkPlayerMovementTime = 1.5f;

@@ -11,7 +11,7 @@ public class MrIPatrolState<T> : State<T>
 
     private Func<Node,List<Node>> _getWaypoints;
     private Action<bool> _setIdleCooldown;
-    private Action<Vector3> onMove;
+    private Action<Vector3> _onMove;
     private ObstacleAvoidance _obstacleAvoidance;
 
     private Func<Node> _getRandomNode;
@@ -20,8 +20,9 @@ public class MrIPatrolState<T> : State<T>
     private List<Node> _waypointsToPatrol;
     private float _minimumWaypointDistance;
     private int _patrolSpotIndex;
+    private Action _onPatrolEnter;
 
-    public MrIPatrolState(Func<bool> attemptSeePlayer, INode root, Func<Node,List<Node>> getWaypoints, Action <bool> setIdleCooldown, Func<Node> getRandomNode, MRIModel model, float minimumWaypointDistance)
+    public MrIPatrolState(Func<bool> attemptSeePlayer, INode root, Func<Node,List<Node>> getWaypoints, Action <bool> setIdleCooldown, Func<Node> getRandomNode, MRIModel model, float minimumWaypointDistance, ObstacleAvoidance obstacleAvoidance, Action <Vector3> onMove, Action onPatrolEnter)
     {
         _attemptSeePlayer = attemptSeePlayer;
         _root = root;
@@ -30,6 +31,9 @@ public class MrIPatrolState<T> : State<T>
         _getRandomNode = getRandomNode;
         _model = model;
         _minimumWaypointDistance = minimumWaypointDistance;
+        _obstacleAvoidance = obstacleAvoidance;
+        _onMove = onMove;
+        _onPatrolEnter = onPatrolEnter;
     }
 
     
@@ -37,6 +41,7 @@ public class MrIPatrolState<T> : State<T>
     {
         _setIdleCooldown?.Invoke(false);
         _patrolSpotIndex = 0;
+        _onPatrolEnter?.Invoke();
         SetNextRandomNodeAndPath();
     }
 
@@ -66,11 +71,13 @@ public class MrIPatrolState<T> : State<T>
         return true;
 
     }
+    
+    
     public override void Execute()
     {
         var dir = _obstacleAvoidance.GetDir();
         
-        onMove?.Invoke(dir);
+        _onMove?.Invoke(dir);
 
         if (_attemptSeePlayer.Invoke())
         {
@@ -78,9 +85,10 @@ public class MrIPatrolState<T> : State<T>
             return;
         }
 
+        var pointPosition = _waypointsToPatrol[_patrolSpotIndex].transform.position;
         var distanceToDestination = Vector3.Distance(_model.transform.position,
-            _waypointsToPatrol[_patrolSpotIndex].transform.position);
-        
+            pointPosition);
+
         if (distanceToDestination > _minimumWaypointDistance) return;
         
         var waypointAvailable = NextWaypointAvailable();

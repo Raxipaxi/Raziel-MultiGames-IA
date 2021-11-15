@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1358644585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1358644586}
+  m_Layer: 9
+  m_Name: ObstacleAvoidanceCenter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1358644586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358644585}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.612173, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5589093578106873193}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1773736067567724742
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773736067567724742}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.48, y: -0.04, z: -0.19}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5589093578106873193}
@@ -145,6 +175,7 @@ Transform:
   m_Children:
   - {fileID: 5395111291476609615}
   - {fileID: 8066344825323586930}
+  - {fileID: 1358644586}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 183.456, z: 0}
@@ -165,6 +196,7 @@ MonoBehaviour:
     type: 2}
   _pathFinder: {fileID: 2495677781672746257}
   nodesChanceController: {fileID: 2064325514133432677}
+  obstacleAvoidancePivot: {fileID: 1358644586}
   target: {fileID: 0}
 --- !u!114 &8963629875121962961
 MonoBehaviour:
@@ -206,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstaclesMask:
     serializedVersion: 2
-    m_Bits: 2049
+    m_Bits: 84993
 --- !u!114 &2064325514133432677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +251,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3953a4b3817ce0c44855154ac744f6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneNodes: []
+  sceneNodes:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   timeToUpdate: 6
   target: {fileID: 0}
 --- !u!114 &6568661133388577816
@@ -236,15 +325,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sightData: {fileID: 11400000, guid: 8eefdf335fd9da842afc65afd11cb018, type: 2}
   lineOfSightOrigin: {fileID: 8066344825323586930}
---- !u!114 &2014529573
-MonoBehaviour:
+--- !u!135 &2014529573
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5105853082634977235}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11263e258f3005048878d7a85c67a3e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Radius: 1.6121733
+  m_Center: {x: 0, y: 1.662013, z: -0}

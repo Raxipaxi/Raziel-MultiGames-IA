@@ -14,13 +14,14 @@ public class MrIIdleState<T> : State<T>
     private float _counter;
     private float _timeToOutOfIdle;
 
-    public MrIIdleState(Action onStateEnter, Action onStateStay, Func<bool> attemptSeePlayer, INode root, Action<bool> setIdleCooldown)
+    public MrIIdleState(Action onStateEnter, Action onStateStay, Func<bool> attemptSeePlayer, INode root, Action<bool> setIdleCooldown, float timeToOutOfIdle)
     {
         _onStateEnter = onStateEnter;
         _onStateStay = onStateStay;
         _attemptSeePlayer = attemptSeePlayer;
         _root = root;
         _setIdleCooldown = setIdleCooldown;
+        _timeToOutOfIdle = timeToOutOfIdle;
     }
 
     public override void Awake()

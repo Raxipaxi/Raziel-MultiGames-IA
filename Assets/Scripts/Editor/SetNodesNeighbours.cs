@@ -16,12 +16,15 @@ public class SetNodesNeighboursWindow : EditorWindow
     }
 
     private int neighboursGenerated;
+    private float distance;
 
     private void OnGUI()
     {
         //Layer mask selection
         LayerMask tempMask = EditorGUILayout.MaskField("ObstaclesMask",InternalEditorUtility.LayerMaskToConcatenatedLayersMask(obstaclesLayerMask), InternalEditorUtility.layers);
         obstaclesLayerMask = InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(tempMask);
+
+        distance = EditorGUILayout.FloatField("Max distance for neighbours", distance);
 
         
         if (GUILayout.Button("Generate Node Neighbours"))
@@ -38,6 +41,7 @@ public class SetNodesNeighboursWindow : EditorWindow
     public void GenerateSceneNodeNeighbours()
     {
         var nodes = FindObjectsOfType<Node>();
+        Debug.Log($"Got {nodes.Length} nodes");
         neighboursGenerated = 0;
 
         for (int i = 0; i < nodes.Length; i++)
@@ -57,7 +61,8 @@ public class SetNodesNeighboursWindow : EditorWindow
 
     private void GetNeighbours(Node n, Vector3 dir)
     {
-        if (!Physics.Raycast(n.transform.position, dir, out var hit, 2.2f)) return;
+        if (!Physics.Raycast(n.transform.position, dir, out var hit, distance)) return;
+        
         
         var node = hit.collider.GetComponent<Node>();
         

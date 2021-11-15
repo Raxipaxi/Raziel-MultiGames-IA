@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4f25621fd6aa1f4b926abd1ce8397fc, type: 3}
   m_Name: MrIData
   m_EditorClassIdentifier: 
-  patrolSpeed: 1
-  chaseSpeed: 5
-  goToSpotSpeed: 8
+  patrolSpeed: 4
+  chaseSpeed: 6
+  goToSpotSpeed: 15
   rotationalInput: 0.12
   rotationsPerSecond: 90
   minimumWaypointDistance: 0.6
+  nodesMask:
+    serializedVersion: 2
+    m_Bits: 131072
+  radiusToCheckNodes: 30
+  timeToCheckOnChase: 3
+  timeToOutOfIdle: 3

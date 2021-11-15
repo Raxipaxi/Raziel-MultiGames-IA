@@ -52,6 +52,7 @@ public class NodesChanceController : MonoBehaviour
 
     public void GetSceneNodes()
     {
+        sceneNodes = new List<Node>();
         var nodes = FindObjectsOfType<Node>();
         for (int i = 0; i < nodes.Length; i++)
         {

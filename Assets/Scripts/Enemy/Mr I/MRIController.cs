@@ -22,11 +22,11 @@ public class MRIController : MonoBehaviour, IAlertable
 
     [SerializeField] private NodesChanceController nodesChanceController;
 
-    
-    
+
+    [SerializeField] private Transform obstacleAvoidancePivot;
 
     private Node _lastSeenPlayer;
-    private Collider[] _closeNodes;
+    private Collider[] _closeNodes = new Collider[5];
     
     [SerializeField] private PlayerModel target;
     private bool _waitForIdleState;
@@ -59,6 +59,7 @@ public class MRIController : MonoBehaviour, IAlertable
     private void Move(Vector3 dir)
     {
         OnMove?.Invoke(dir);
+       
     }
 
     private void OnPatrol()
@@ -108,11 +109,17 @@ public class MRIController : MonoBehaviour, IAlertable
         Chase,
         GoToSightSpot
     }
+
+    private void Awake()
+    {
+        BakeReferences();
+    }
+
     public void BakeReferences()
     {
         _model = GetComponent<MRIModel>();
         Owner = gameObject;
-        Behaviour = new ObstacleAvoidance(transform, null, obstacleAvoidanceData.radius, obstacleAvoidanceData.maxObjs,
+        Behaviour = new ObstacleAvoidance(obstacleAvoidancePivot, null, obstacleAvoidanceData.radius, obstacleAvoidanceData.maxObjs,
             obstacleAvoidanceData.obstaclesMask, obstacleAvoidanceData.multiplier, target,
             obstacleAvoidanceData.timePrediction, obstacleAvoidanceData._defaultBehaviour);
     }
@@ -141,6 +148,11 @@ public class MRIController : MonoBehaviour, IAlertable
         return _isAlerted;
     }
 
+    private void SetIsAlerted(bool newState)
+    {
+        _isAlerted = newState;
+    }
+
     private bool IsIdleStateCooldown()
     {
         return _waitForIdleState;
@@ -159,7 +171,6 @@ public class MRIController : MonoBehaviour, IAlertable
         
         var checkIdleStateCooldown = new QuestionNode(IsIdleStateCooldown, goToIdle, goToPatrol);
         var didSightChangeToFalse = new QuestionNode(SightStateChanged, goToIdle, checkIdleStateCooldown);
-
         var isInSight = new QuestionNode(LastInSightState, goToChase, didSightChangeToFalse);
         var isAlerted = new QuestionNode(IsAlerted, goToSightSpot, isInSight);
         var isPlayerAlive = new QuestionNode(() => target.LifeControler.IsAlive, isAlerted, goToIdle);
@@ -171,13 +182,13 @@ public class MRIController : MonoBehaviour, IAlertable
     {
         //States
 
-        var idleState = new MrIIdleState<MriStates>(EnterIdle, Spin, LastInSightState, _root, SetIdleStateCooldown);
+        var idleState = new MrIIdleState<MriStates>(EnterIdle, Spin, LastInSightState, _root, SetIdleStateCooldown, data.timeToOutOfIdle);
         var patrolState = new MrIPatrolState<MriStates>(LastInSightState, _root, GetWaypointsToCertainNode,
-            SetIdleStateCooldown, GetRandomNode, _model, data.minimumWaypointDistance);
+            SetIdleStateCooldown, GetRandomNode, _model, data.minimumWaypointDistance, Behaviour, Move,OnPatrol);
         var chaseState = new MrIChaseState<MriStates>(LastInSightState, _root, SetIdleStateCooldown, Move, Behaviour,
             data.timeToCheckOnChase, EnterChase, target, () => target.LifeControler.IsAlive);
         var goToSighSpotState = new MrIGoToSpotState<MriStates>(_root, Move, GetWaypointsToCertainNode, Behaviour,
-            EnterGoToSpotState, () => target.LifeControler.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode);
+            EnterGoToSpotState, () => target.LifeControler.IsAlive, data.minimumWaypointDistance, _model, LastSeenPlayerNode,SetIsAlerted,SetIdleStateCooldown);
 
         //Transitions
         
@@ -192,6 +203,8 @@ public class MRIController : MonoBehaviour, IAlertable
         chaseState.AddTransition(MriStates.Idle,idleState);
         
         goToSighSpotState.AddTransition(MriStates.Idle,idleState);
+        goToSighSpotState.AddTransition(MriStates.Chase, chaseState);
+        goToSighSpotState.AddTransition(MriStates.Patrol,patrolState);
 
         _fsm = new FSM<MriStates>(idleState);
     }
@@ -203,8 +216,14 @@ public class MRIController : MonoBehaviour, IAlertable
 
     public void OnAlertedHandler(Node targetPosNode)
     {
-        _isAlerted = true;
+        SetIsAlerted(true);
         _lastSeenPlayer = targetPosNode;
+        _root.Execute();
+    }
+
+    public void Update()
+    {
+        _fsm.UpdateState();
     }
 
     public GameObject Owner { get; private set; }

@@ -14,12 +14,15 @@ public class MrIGoToSpotState<T> : State<T>
     private Func<bool> _checkPlayerAlive;
     private Func<Node> _getClosestNodeToPlayer;
 
+    private Action<bool> _setIdleStateCooldown;
+
     private List<Node> _waypoints;
     private float _minimumWaypointDistance;
     private MRIModel _model;
     private int _waypointIndex;
+    private Action<bool> _setIsAlerted;
     public MrIGoToSpotState(INode root, Action<Vector3> onMove, Func<Node, List<Node>> getWaypoints,
-        ObstacleAvoidance obstacleAvoidance, Action onEnterFastCheck, Func<bool> checkPlayerAlive, float minimumWaypointDistance, MRIModel model, Func<Node> getClosestNodeToPlayer)
+        ObstacleAvoidance obstacleAvoidance, Action onEnterFastCheck, Func<bool> checkPlayerAlive, float minimumWaypointDistance, MRIModel model, Func<Node> getClosestNodeToPlayer, Action<bool> setIsAlerted, Action <bool> setIdleStateCooldown)
     {
         _root = root;
         _onMove = onMove;
@@ -30,11 +33,14 @@ public class MrIGoToSpotState<T> : State<T>
         _minimumWaypointDistance = minimumWaypointDistance;
         _model = model;
         _getClosestNodeToPlayer = getClosestNodeToPlayer;
+        _setIsAlerted = setIsAlerted;
+        _setIdleStateCooldown = setIdleStateCooldown;
     }
 
     public override void Awake()
     {
         _onEnterFastCheck?.Invoke();
+        _setIsAlerted?.Invoke(false);
         var node = _getClosestNodeToPlayer.Invoke();
         _waypoints = _getWaypoints.Invoke(node);
         _waypointIndex = 0;
@@ -73,7 +79,8 @@ public class MrIGoToSpotState<T> : State<T>
         var waypointAvailable = NextWaypoint();
 
         if (waypointAvailable) return;
-        
+
+        _setIdleStateCooldown?.Invoke(true);
         _root.Execute();
 
     }

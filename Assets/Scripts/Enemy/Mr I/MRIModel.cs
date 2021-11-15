@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ public class MRIModel : MonoBehaviour
     private float _currentSpeed;
 
     private Transform _selfTransform;
+
+    private void Awake()
+    {
+        BakeReferences();
+    }
 
     public void BakeReferences()
     {
@@ -59,8 +65,9 @@ public class MRIModel : MonoBehaviour
     private void OnMoveHandler(Vector3 dir)
     {
         dir.y = 0;
-        _selfTransform.position += dir * _currentSpeed * Time.deltaTime;
-        transform.forward = Vector3.Lerp(_selfTransform.forward, dir,Time.deltaTime * data.rotationalInput);
+        transform.position += dir * _currentSpeed * Time.deltaTime;
+        if (dir == Vector3.zero) return;
+        transform.forward = dir;
     }
 
 }

@@ -20,4 +20,5 @@ public class MrIData : ScriptableObject
     public LayerMask nodesMask;
     public float radiusToCheckNodes;
     public float timeToCheckOnChase;
+    public float timeToOutOfIdle;
 }
