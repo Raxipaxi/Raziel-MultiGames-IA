@@ -7,27 +7,17 @@ public class ChocoboModel : MonoBehaviour, IMove
 {
    public LineOfSightAI LineOfSightAI => _lineOfSightAI;
    private LineOfSightAI _lineOfSightAI;
-  // [SerializeField] private LineOfSightDataScriptableObject _flockSight; 
    private ChocoboView _chocoboView;
    [SerializeField] public ChocoboData _data;
-
-   private Rigidbody _rb;
    
-
-
     private void Awake()
     {
         BakeReferences();
     }
 
-    // public void Move(Transform dir)
-    // {
-    //     _chocoboView.MoveAnimation();
-    //}
-
     public void Idle()
     {
-        _rb.velocity = Vector3.zero;
+ 
          _chocoboView.IdleAnimation();   
     }
 
@@ -40,16 +30,15 @@ public class ChocoboModel : MonoBehaviour, IMove
          _lineOfSightAI = GetComponent<LineOfSightAI>();
      
          _chocoboView = GetComponent<ChocoboView>();
-         _rb = GetComponent<Rigidbody>();
+
     }
 
     public void Move(Vector3 dir)
     {
-
-
         dir.y = 0;
-        
-        _rb.velocity =  dir * _data.chocoboFollowSpeed;
+     //  var currDir = dir.normalized;
+        transform.position += dir * Time.deltaTime * _data.chocoboFollowSpeed;
+     //   _rb.velocity =  dir * _data.chocoboFollowSpeed;
         if (dir==Vector3.zero)return;
         transform.forward = dir.normalized;
         _chocoboView.MoveAnimation();

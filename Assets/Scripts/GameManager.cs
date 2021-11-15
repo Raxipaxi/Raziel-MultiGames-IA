@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetLevelState()
     {
-        Debug.Log("Reset the level pls");
+        //Debug.Log("Reset the level pls");
         resetHandler.HandleResetOfLevel();
     }
 
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
 
     public void GetResetLevelHandler(LevelResetHandler levelResetHandler)
     {
-        Debug.Log("level reset data obtained");
+       // Debug.Log("level reset data obtained");
         resetHandler = levelResetHandler;
     }
     public void EliminateCanvasRef(MainCanvas canvas)

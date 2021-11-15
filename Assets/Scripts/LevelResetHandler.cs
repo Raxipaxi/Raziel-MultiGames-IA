@@ -23,7 +23,7 @@ public class LevelResetHandler : MonoBehaviour
              if (reseteable == null) continue;
              
              _resetables.Add(reseteable);
-             Debug.Log($"Added {obj.name}");
+//             Debug.Log($"Added {obj.name}");
         }
     }
 
@@ -40,7 +40,7 @@ public class LevelResetHandler : MonoBehaviour
 
     private IEnumerator ResetLevelCoroutine()
     {
-        Debug.Log($"Resetables is {_resetables.Count}");
+      //  Debug.Log($"Resetables is {_resetables.Count}");
         GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.ToBlack);
         yield return new WaitForSeconds(timeToReset);
         GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.FromBlack);

@@ -20,12 +20,12 @@ public class ChocoboView : MonoBehaviour
 
         public void IdleAnimation()
         {
-                _animator.Play("ChocoboIdle");
+              // _animator.Play("ChocoboIdle");
         }
 
 
         public void MoveAnimation()
         {
-                _animator.Play("ChocoboWalk");
+               // _animator.Play("ChocoboWalk");
         }
 }

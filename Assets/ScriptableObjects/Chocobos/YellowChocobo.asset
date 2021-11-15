@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: YellowChocobo
   m_EditorClassIdentifier: 
   secondsToFollow: 2
-  chocoboFollowSpeed: 2.5
+  chocoboFollowSpeed: 2
   flockingRadius: 5

@@ -6,6 +6,8 @@ using UnityEngine;
 public class ChocoboController : MonoBehaviour, IReseteable
 {
     private ChocoboModel _chocoModel;
+    [Header("Minima distancia con el lider")]
+    [SerializeField]public float minDistance;
 
     [SerializeField] private LineOfSightDataScriptableObject _flocksight;
 
@@ -101,13 +103,18 @@ public class ChocoboController : MonoBehaviour, IReseteable
             if (!_chocoModel.LineOfSightAI.SingleTargetInSight(seen)) continue;
 
             var currDis = Vector3.Distance(seen.position, transform.position);
-            if (closest > currDis)
+            Debug.Log("MinDistance : " + currDis);
+            if (closest > currDis && currDis > minDistance)
             {
                 closest = currDis;
                 _potentialLeader = seen;
             }
         }
 
+        if (_potentialLeader==null)
+        {
+            _flockingActive.SetActiveFlocking(null); //No me gusta pero puede arreglar
+        }
         return _potentialLeader!=null;
     }
 
@@ -128,7 +135,8 @@ public class ChocoboController : MonoBehaviour, IReseteable
         if (!_reachedGoal)
         {
             OnReset?.Invoke();
-            //_root.Execute();
+            _root.Execute();
+            Debug.Log(_potentialLeader);
         }
        
     }
