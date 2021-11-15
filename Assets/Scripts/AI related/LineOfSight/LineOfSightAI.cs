@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,14 @@ public class LineOfSightAI : MonoBehaviour
 {   
     [SerializeField] private LineOfSightDataScriptableObject _sightData;
     [SerializeField] private Transform lineOfSightOrigin;
+    private LineOfSightDataScriptableObject _originalData;
+    public LineOfSightDataScriptableObject OriginalData => _originalData;
+
+    private void Awake()
+    {
+        _originalData = _sightData;
+    }
+
     public bool SingleTargetInSight(Transform target)
     {       
 
@@ -55,7 +64,11 @@ public class LineOfSightAI : MonoBehaviour
     {
         return !Physics.Raycast(lineOfSightOrigin.position, normalizedDirection, distance, obstacleMask);      
     }
-
+    
+    public void SwapLineOfSightData(LineOfSightDataScriptableObject newSightData)
+    {
+        _sightData = newSightData;
+    }
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {

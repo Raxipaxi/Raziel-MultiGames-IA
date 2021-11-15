@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Separation : MonoBehaviour, IFlocking
+public class Separation : MonoBehaviour, IFlockingBehavior
 {
     public float radius = 1;
     public float multiplier;

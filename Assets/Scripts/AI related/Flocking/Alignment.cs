@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Alignment : MonoBehaviour, IFlocking
+public class Alignment : MonoBehaviour, IFlockingBehavior
 {
     public float multiplier;
     public Vector3 GetDir(Transform entity, List<Transform> boids)

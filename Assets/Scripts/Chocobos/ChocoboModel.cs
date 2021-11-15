@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class ChocoboModel : MonoBehaviour, IMove
 {
-    public LineOfSightAI LineOfSightAI => _lineOfSightAI;
-    private LineOfSightAI _lineOfSightAI;
-    private ChocoboView _chocoboView;
-    [SerializeField] private ChocoboData _data;
+   public LineOfSightAI LineOfSightAI => _lineOfSightAI;
+   private LineOfSightAI _lineOfSightAI;
+  // [SerializeField] private LineOfSightDataScriptableObject _flockSight; 
+   private ChocoboView _chocoboView;
+   [SerializeField] public ChocoboData _data;
+
+   private Rigidbody _rb;
+   
 
 
     private void Awake()
@@ -23,24 +27,31 @@ public class ChocoboModel : MonoBehaviour, IMove
 
     public void Idle()
     {
-        _chocoboView.IdleAnimation();   
+        _rb.velocity = Vector3.zero;
+         _chocoboView.IdleAnimation();   
     }
 
     public void SubscribeToEvents(ChocoboController controller)
     {
         controller.OnIdle += Idle;
-        controller.OnFollowDir += Move;
     }
     public void BakeReferences()
     {
-        _lineOfSightAI = GetComponent<LineOfSightAI>();
-        _chocoboView = GetComponent<ChocoboView>();
+         _lineOfSightAI = GetComponent<LineOfSightAI>();
+     
+         _chocoboView = GetComponent<ChocoboView>();
+         _rb = GetComponent<Rigidbody>();
     }
 
     public void Move(Vector3 dir)
     {
-        transform.position += Time.deltaTime * dir * _data.chocoboFollowSpeed;
-        transform.forward = Vector3.Lerp(transform.forward, dir, _data.chocoboFollowSpeed * Time.deltaTime);
+
+
+        dir.y = 0;
+        
+        _rb.velocity =  dir * _data.chocoboFollowSpeed;
+        if (dir==Vector3.zero)return;
+        transform.forward = dir.normalized;
         _chocoboView.MoveAnimation();
     }
 }

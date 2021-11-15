@@ -6,19 +6,22 @@ using UnityEngine;
 public class ChocoboController : MonoBehaviour
 {
     private ChocoboModel _chocoModel;
-   [SerializeField] private ChocoboData data;
+
+    [SerializeField] private LineOfSightDataScriptableObject _flocksight;
 
     [SerializeField]private List<Transform> actors;
+
+    [SerializeField] private float followCheck;
     private ChocoboFlockingActive _flockingActive;
     private FSM<ChocoboStatesConstants> _fsm;
     private INode _root;
   
 
-    public event Action<Vector3> OnFollowDir;
-    public event Action<Transform> OnFollowTr;
+    public event Action<Transform> OnFollow;
     public event Action OnIdle;
 
     private Transform _potentialLeader;
+    
 
 
     private void Awake()
@@ -32,16 +35,16 @@ public class ChocoboController : MonoBehaviour
         
     }
 
-    private void OnFollowCommand(Vector3 dir, Transform tr)
+    private void OnFollowCommand(Transform tr)
     {
-        OnFollowDir?.Invoke(dir);
-        OnFollowTr?.Invoke(tr);
+       // OnFollowDir?.Invoke(dir);
+        OnFollow?.Invoke(tr);
         
     }
 
     void Start()
     {
-        _flockingActive.SubscribeToEvents(this);
+         _flockingActive.SubscribeToEvents(this);
         _chocoModel.SubscribeToEvents(this);
         DecisionTreeInit();
         FSMInit();
@@ -63,8 +66,8 @@ public class ChocoboController : MonoBehaviour
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, data.secondsToFollow, OnIdleCommand, _root);
-        var follow = new ChocoboFollowState<ChocoboStatesConstants>(actors, OnFollowCommand,_chocoModel.LineOfSightAI, _root);
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, _chocoModel._data.secondsToFollow, OnIdleCommand, OnFollowCommand ,_chocoModel.LineOfSightAI, _root);
+        var follow = new ChocoboFollowState<ChocoboStatesConstants>(()=>_potentialLeader, OnFollowCommand,_chocoModel.LineOfSightAI, _flocksight, followCheck, _root);
         
         // Transitions
         // Idle
@@ -78,7 +81,6 @@ public class ChocoboController : MonoBehaviour
 
     private bool PotentialLeader()
     {
-        
         var closest =  float.MaxValue;
         _potentialLeader = null;
         foreach (var seen in actors)
@@ -92,7 +94,7 @@ public class ChocoboController : MonoBehaviour
                 _potentialLeader = seen;
             }
         }
-       // Debug.Log("potential leader");
+
         return _potentialLeader!=null;
     }
     public void BakeReferences()

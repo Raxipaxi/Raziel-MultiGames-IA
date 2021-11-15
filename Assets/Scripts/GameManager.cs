@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]public LevelResetHandler resetHandler;
     public MainCanvas MainCanvas { get; private set; }
+    
     //Camera is cached for no overhead cost
     private Camera _mainCamera;
     public Camera MainCamera

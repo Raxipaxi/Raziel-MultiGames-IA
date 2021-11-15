@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cohesion : MonoBehaviour, IFlocking
+public class Cohesion : MonoBehaviour, IFlockingBehavior
 {
     public float multiplier;
     public Vector3 GetDir(Transform entity, List<Transform> boids)

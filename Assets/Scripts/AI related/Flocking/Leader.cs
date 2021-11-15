@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Leader : MonoBehaviour, IFlocking
+public class Leader : MonoBehaviour, IFlockingBehavior
 {
     public Transform leader;
     public float multiplier;
