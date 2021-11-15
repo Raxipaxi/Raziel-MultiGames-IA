@@ -9,9 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f32d59552fa14f6282eb7bc7f2c95f83, type: 3}
-  m_Name: YellowChocobo
+  m_Script: {fileID: 11500000, guid: da89391ed95dd6046ad14407e974c444, type: 3}
+  m_Name: YellowChocoboSight
   m_EditorClassIdentifier: 
-  secondsToFollow: 2
-  chocoboFollowSpeed: 2
-  floackingRadius: 2
+  range: 10
+  angle: 90
+  obstaclesMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 768

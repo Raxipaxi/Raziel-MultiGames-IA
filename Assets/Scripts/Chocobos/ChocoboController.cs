@@ -6,10 +6,10 @@ using UnityEngine;
 public class ChocoboController : MonoBehaviour
 {
     private ChocoboModel _chocoModel;
-    [SerializeField] private ChocoboData _data;
+   [SerializeField] private ChocoboData data;
 
-    [SerializeField] private List<Transform> _actors;
-
+    [SerializeField] private List<Transform> actors;
+    private ChocoboFlockingActive _flockingActive;
     private FSM<ChocoboStatesConstants> _fsm;
     private INode _root;
   
@@ -37,7 +37,7 @@ public class ChocoboController : MonoBehaviour
 
     void Start()
     {
-        
+        _flockingActive.SubscribeToEvents(this);
         _chocoModel.SubscribeToEvents(this);
         DecisionTreeInit();
         FSMInit();
@@ -50,21 +50,17 @@ public class ChocoboController : MonoBehaviour
         var goToFollow = new ActionNode(() => _fsm.Transition(ChocoboStatesConstants.Follow));
 
         //Questions
-        var IsAnyLeader = new QuestionNode(PotentialLeader, goToFollow, goToIdle);
+        var isAnyLeader = new QuestionNode(PotentialLeader, goToFollow, goToIdle);
         
         //Root
-        _root = IsAnyLeader;
+        _root = isAnyLeader;
 
     }
-    
-    
-
-
     void FSMInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>(_chocoModel.LineOfSightAI, _data.secondsToFollow, OnIdleCommand, _root);
-        var follow = new ChocoboFollowState<ChocoboStatesConstants>(_actors, OnFollow,_chocoModel.LineOfSightAI, _root);
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(_chocoModel.LineOfSightAI, data.secondsToFollow, OnIdleCommand, _root);
+        var follow = new ChocoboFollowState<ChocoboStatesConstants>(actors, OnFollow,_chocoModel.LineOfSightAI, _root);
         
         // Transitions
         // Idle
@@ -73,25 +69,25 @@ public class ChocoboController : MonoBehaviour
         
         //Follow
         follow.AddTransition(ChocoboStatesConstants.Idle, idle);
-        
+
+        _fsm = new FSM<ChocoboStatesConstants>(idle);
+
     }
 
     private bool PotentialLeader()
     {
-        _actors = _chocoModel.LineOfSightAI.LineOfSightMultiTarget();
-        return _actors.Count > 0;
+        actors = _chocoModel.LineOfSightAI.LineOfSightMultiTarget();
+        return actors.Count > 0;
     }
     public void BakeReferences()
     {
         _chocoModel = GetComponent<ChocoboModel>();
-
+        _flockingActive = GetComponent<ChocoboFlockingActive>();
     }
-
-
+    
     void Update()
     {
         _fsm.UpdateState();
     }
-
-
+    
 }
