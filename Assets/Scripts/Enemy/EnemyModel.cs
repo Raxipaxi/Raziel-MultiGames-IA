@@ -37,7 +37,6 @@ public class EnemyModel : MonoBehaviour, IVel
         controller.OnAttack += Attack;
         controller.OnPatrol += OnPatrolHandler;
         controller.OnReset += OnResetHandler;
-
     }
 
     private void OnResetHandler()
@@ -45,13 +44,11 @@ public class EnemyModel : MonoBehaviour, IVel
         transform.position = _startingPosition;
         Move(Vector3.zero);
     }
-
     private void BakeReferences()
     {
         _enemyView = GetComponent<EnemyView>();
         _rb = GetComponent<Rigidbody>();
     }
-
     private void Start()
     {
         _enemyView.SubscribeToEvents(this);

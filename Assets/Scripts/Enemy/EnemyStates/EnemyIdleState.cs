@@ -19,14 +19,12 @@ public class EnemyIdleState<T> : State<T>
         _onIdle = onIdle;
         _setIdleCommand = setIdleCommand;
     }
-
     public override void Awake()
     {
         ResetCd();
         _onIdle?.Invoke();
         _setIdleCommand?.Invoke(true);
     }
-
     public override void Execute()
     {
         _counter -= Time.deltaTime;
@@ -34,13 +32,11 @@ public class EnemyIdleState<T> : State<T>
 
         if (_counter <= 0 || seePlayer)
         {
-           
             _setIdleCommand?.Invoke(false);
             _root.Execute();
             ResetCd();
         }
     }
-
 
     private void ResetCd()
     {
