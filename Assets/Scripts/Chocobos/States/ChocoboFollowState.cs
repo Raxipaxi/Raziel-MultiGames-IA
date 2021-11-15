@@ -6,31 +6,34 @@ using UnityEngine;
 
 public class ChocoboFollowState<T> : State<T>
 {
-    private Transform _leader;
-    private List<Transform> Leaders;
+    private Func<Transform> _potentialLeader;
     private INode _root;
     private LineOfSightAI _lineOfSightAI;
-    private Action<Vector3, Transform> _onFollow;
-    public ChocoboFollowState(List<Transform> leaders, Action<Vector3, Transform> onFollow,LineOfSightAI lineOfSightAI, INode root)
+    private LineOfSightDataScriptableObject _newLineOfSightAI;
+    private Action<Transform> _onFollow;
+    public ChocoboFollowState(Func<Transform> potentialLeader, Action<Transform> onFollow,LineOfSightAI lineOfSightAI,LineOfSightDataScriptableObject newLineOfSight, INode root)
     {
-        Leaders = leaders;
+        _potentialLeader = potentialLeader;
         _onFollow = onFollow;
         _lineOfSightAI = lineOfSightAI;
+        _newLineOfSightAI = newLineOfSight;
         _root = root;
     }
 
     public override void Awake()
     {
-        _leader = Leaders.First();
+      
+        _lineOfSightAI.SwapLineOfSightData(_newLineOfSightAI);
+        
     }
 
     public override void Execute()
     {
-        if (!_lineOfSightAI.SingleTargetInSight(_leader))
+        if (!_lineOfSightAI.SingleTargetInSight(_potentialLeader?.Invoke()))
         {
             _root.Execute();
             return;
         }
-        _onFollow?.Invoke(_leader.position,_leader);
+        _onFollow?.Invoke(_potentialLeader?.Invoke());
     }
 }

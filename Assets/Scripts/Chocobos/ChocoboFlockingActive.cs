@@ -5,7 +5,7 @@ public class ChocoboFlockingActive : MonoBehaviour
 {
     private bool _active;
     private FlockingManager _flocking;
-    private Leader _naranaranaraliiiider;
+    private Leader _LeaderBehaviour;
     
     public void SubscribeToEvents(ChocoboController _controller)
     {
@@ -26,15 +26,14 @@ public class ChocoboFlockingActive : MonoBehaviour
     {
         _active = false;
         
-        _naranaranaraliiiider = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
+        _LeaderBehaviour = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
         ActivateorDisableFlock();
 
     }
-
-
+    
     private void Update()
     {
-        if (_active && !_flocking.gameObject.activeSelf) 
+        if (_active && !_flocking.enabled) 
         {
             
                ActivateorDisableFlock();
@@ -53,7 +52,7 @@ public class ChocoboFlockingActive : MonoBehaviour
 
     public void SetActiveFlocking(Transform dir)
     {
-        _naranaranaraliiiider.leader = dir;
+        _LeaderBehaviour.leader = dir;
         _active = !_active;
     }
 }

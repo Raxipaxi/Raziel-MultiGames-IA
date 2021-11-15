@@ -7,7 +7,8 @@ public class ChocoboModel : MonoBehaviour, IMove
 {
     public LineOfSightAI LineOfSightAI => _lineOfSightAI;
     private LineOfSightAI _lineOfSightAI;
-    private ChocoboView _chocoboView;
+    [SerializeField] private LineOfSightDataScriptableObject _flockSight; 
+   // private ChocoboView _chocoboView;
     [SerializeField] private ChocoboData _data;
 
 
@@ -23,7 +24,7 @@ public class ChocoboModel : MonoBehaviour, IMove
 
     public void Idle()
     {
-        _chocoboView.IdleAnimation();   
+        //  _chocoboView.IdleAnimation();   
     }
 
     public void SubscribeToEvents(ChocoboController controller)
@@ -34,13 +35,17 @@ public class ChocoboModel : MonoBehaviour, IMove
     public void BakeReferences()
     {
         _lineOfSightAI = GetComponent<LineOfSightAI>();
-        _chocoboView = GetComponent<ChocoboView>();
+     
+        // _chocoboView = GetComponent<ChocoboView>();
     }
 
     public void Move(Vector3 dir)
     {
+        Debug.Log("Me muevo");
+        
         transform.position += Time.deltaTime * dir * _data.chocoboFollowSpeed;
-        transform.forward = Vector3.Lerp(transform.forward, dir, _data.chocoboFollowSpeed * Time.deltaTime);
-        _chocoboView.MoveAnimation();
+        if (dir==Vector3.zero)return;
+        transform.forward = dir.normalized;
+      //  _chocoboView.MoveAnimation();
     }
 }

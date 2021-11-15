@@ -6,6 +6,6 @@ public class ChocoboData : ScriptableObject
 {
     public float secondsToFollow;
     public float chocoboFollowSpeed;
-    public float floackingRadius;
+    public float flockingRadius;
     
 }

@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1053934836
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1053934837}
+  m_Layer: 18
+  m_Name: Lineofsight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1053934837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053934836}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.238, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6787612399450672091}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1552630455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1552630456}
+  m_Layer: 18
+  m_Name: Lineofsight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1552630456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552630455}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.238, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6787612399450672091}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &433666189791694327
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +819,7 @@ GameObject:
   - component: {fileID: 3365345427639244041}
   - component: {fileID: 3315317113696035082}
   - component: {fileID: 3976667894913085949}
-  - component: {fileID: 3971692388509094397}
+  - component: {fileID: 919132147581163986}
   m_Layer: 18
   m_Name: Yellow Chocobo
   m_TagString: Untagged
@@ -781,6 +841,8 @@ Transform:
   - {fileID: 4292340408577257143}
   - {fileID: 1349773840693548980}
   - {fileID: 4978683171408565243}
+  - {fileID: 1552630456}
+  - {fileID: 1053934837}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -827,6 +889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8319999ee8bda0843b19c2464c64020d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flockSight: {fileID: 11400000, guid: 3e42ba2e96622414c8f4a98eba6a8f6a, type: 2}
+  _data: {fileID: 11400000, guid: 7f017692105b53f4e9a43106f2afd358, type: 2}
 --- !u!114 &1947342230740243257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,7 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leader: {fileID: 0}
-  multiplier: 1
+  multiplier: 2
 --- !u!114 &3625299392064423536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,8 +929,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e8cdb906344d24d8a6138cad2ec9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
-  multiplier: 0.5
+  radius: 1.75
+  multiplier: 1
 --- !u!114 &2399547480947331811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -879,7 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68c97c5f9ec55246b5ed29ccf2686ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 0.5
+  multiplier: 1
 --- !u!114 &3365345427639244041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb20752e94c2144295799a87194ddc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  multiplier: 0.5
+  multiplier: 1
 --- !u!114 &3315317113696035082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,12 +964,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6159131189932921185}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 496f2d8a7a136264e83e5076244b6e50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 3
+  radius: 2.47
   timeToGetBoids: 0.5
   maxBoids: 4
   mask:
@@ -924,8 +988,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7f017692105b53f4e9a43106f2afd358, type: 2}
-  actors: []
---- !u!114 &3971692388509094397
+  _flocksight: {fileID: 0}
+  actors:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &919132147581163986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -938,7 +1005,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sightData: {fileID: 11400000, guid: e0d049c4b0fa7bb4d8b2af86f6ed13f1, type: 2}
-  lineOfSightOrigin: {fileID: 6787612399450672091}
+  lineOfSightOrigin: {fileID: 1053934837}
 --- !u!1 &6475073583103371286
 GameObject:
   m_ObjectHideFlags: 0
