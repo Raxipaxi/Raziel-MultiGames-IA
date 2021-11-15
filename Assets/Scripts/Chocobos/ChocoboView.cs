@@ -5,27 +5,37 @@ using UnityEngine;
 
 public class ChocoboView : MonoBehaviour
 {
-        private Animator _animator;
+    private Animator _animator;
 
 
-        private void Awake()
-        {
-                BakeReferences();
-        }
+    private void Awake()
+    {
+        BakeReferences();
+    }
 
-        void BakeReferences()
-        {
-                _animator = GetComponent<Animator>();
-        }
+    public void SubscribeToEvents(ChocoboModel model)
+    {
+        model.OnIdle += IdleAnimation;
+        model.OnStartFollow += MoveAnimation;
+        model.OnReachGoal += OnReachGoalHandler;
+    }
+    void BakeReferences()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
-        public void IdleAnimation()
-        {
-              // _animator.Play("ChocoboIdle");
-        }
+    private void OnReachGoalHandler()
+    {
+        Debug.Log("Dance");
+    }
 
+    private void IdleAnimation()
+    {
+        _animator.Play("ChocoboIdle");
+    }
 
-        public void MoveAnimation()
-        {
-               // _animator.Play("ChocoboWalk");
-        }
+    private void MoveAnimation()
+    {
+        _animator.Play("ChocoboWalk");
+    }
 }

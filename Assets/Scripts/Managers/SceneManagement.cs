@@ -12,6 +12,7 @@ public class SceneManagement
     private Action _lockCursor;
     private Action _unlockCursor;
 
+    public Action<bool> OnNewSceneLoad;
     private float counter;
     public enum Scenes
     {
@@ -21,7 +22,9 @@ public class SceneManagement
         Level3,
         Room1,
         Room2,
-        Room3
+        Room3,
+        Win,
+        Lose
     }
 
     
@@ -35,11 +38,15 @@ public class SceneManagement
             { Scenes.Level2, "Herder" },
             {Scenes.Level3, "Stealth"},
             {Scenes.Room2, "MainRoom2"},
-            {Scenes.Room3,"MainRoom3"}
+            {Scenes.Room3,"MainRoom3"},
+            {Scenes.Win, "WinGame"},
+            {Scenes.Lose,"LoseGame"}
         };
 
         _lockCursor = lockCursor;
         _unlockCursor = unlockCursor;
+
+        OnNewSceneLoad += GameManager.Instance.OnLevelLoadHandler;
     }
 
     public void Initialize()
@@ -50,14 +57,17 @@ public class SceneManagement
 
             //It's the main menu
 
-            if (CheckIfMainMenu()) _unlockCursor();
-            else _lockCursor();          
+            //if (CheckIfMainMenu()) _unlockCursor();
+            //else _lockCursor();          
         }
     }
 
     public bool CheckIfMainMenu()
     {
-        return SceneManager.GetActiveScene().name == _scenes[Scenes.MainMenu];
+        var sceneName = SceneManager.GetActiveScene().name;
+        var isMenuScene = sceneName == _scenes[Scenes.MainMenu] || sceneName == _scenes[Scenes.Win] ||
+                          sceneName == _scenes[Scenes.Lose];
+        return isMenuScene;
     }
 
     
@@ -74,13 +84,20 @@ public class SceneManagement
 
         counter = 0;
         SceneManager.LoadScene(_scenes[newScene]);
+        
+        OnNewSceneLoad?.Invoke(isSceneWithTime(newScene));
         if (GameManager.Instance.MainCanvas != null)
             GameManager.Instance.MainCanvas.TransitionSet(MainCanvas.TransitionStates.FromBlack);
 
-        if (CheckIfMainMenu()) _unlockCursor();
-        else _lockCursor();
-    }   
+       // if (CheckIfMainMenu()) _unlockCursor();
+        //else _lockCursor();
+    }
 
+    private bool isSceneWithTime(Scenes newScene)
+    {
+        if (newScene == Scenes.Level1 || newScene == Scenes.Level2 || newScene == Scenes.Level3) return true;
+        return false;
+    }
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

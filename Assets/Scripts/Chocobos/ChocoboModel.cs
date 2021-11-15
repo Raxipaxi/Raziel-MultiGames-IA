@@ -5,42 +5,63 @@ using UnityEngine;
 
 public class ChocoboModel : MonoBehaviour, IMove
 {
-   public LineOfSightAI LineOfSightAI => _lineOfSightAI;
-   private LineOfSightAI _lineOfSightAI;
    private ChocoboView _chocoboView;
    [SerializeField] public ChocoboData _data;
-   
+
+
+   private Vector3 _startingPosition;
+   public event Action OnStartFollow;
+   public event Action OnIdle;
+   public event Action OnReachGoal;
     private void Awake()
     {
         BakeReferences();
     }
 
-    public void Idle()
+    private void Start()
     {
- 
-         _chocoboView.IdleAnimation();   
+        _chocoboView.SubscribeToEvents(this);
     }
 
+    private void Idle()
+    {
+        OnIdle?.Invoke();
+    }
+
+    private void OnResetHandler()
+    {
+        transform.position = _startingPosition;
+    }
+
+    private void OnReachGoalHandler()
+    {
+        OnReachGoal?.Invoke();
+    }
     public void SubscribeToEvents(ChocoboController controller)
     {
         controller.OnIdle += Idle;
+        controller.OnStartFollow += OnStartFollowHandler;
+        controller.OnReset += OnResetHandler;
     }
-    public void BakeReferences()
-    {
-         _lineOfSightAI = GetComponent<LineOfSightAI>();
-     
-         _chocoboView = GetComponent<ChocoboView>();
 
+    private void OnStartFollowHandler()
+    {
+        OnStartFollow?.Invoke();
+    }
+
+    private void BakeReferences()
+    {
+        _chocoboView = GetComponent<ChocoboView>();
+        _startingPosition = transform.position;
     }
 
     public void Move(Vector3 dir)
     {
+        dir = dir.normalized;
         dir.y = 0;
-     //  var currDir = dir.normalized;
         transform.position += dir * Time.deltaTime * _data.chocoboFollowSpeed;
-     //   _rb.velocity =  dir * _data.chocoboFollowSpeed;
+   
         if (dir==Vector3.zero)return;
-        transform.forward = dir.normalized;
-        _chocoboView.MoveAnimation();
+        transform.forward = dir;
     }
 }

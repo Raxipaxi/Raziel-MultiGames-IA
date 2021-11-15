@@ -18,7 +18,7 @@ public class MainCanvas : MonoBehaviour
     [SerializeField] private GameObject hintCanvas;
     [SerializeField] private Text hintText;
     [SerializeField] private Animator transition;
-    [SerializeField] private Text gameCounter;
+    [SerializeField] private TextMeshProUGUI gameCounter;
 
 
 
@@ -78,7 +78,11 @@ public class MainCanvas : MonoBehaviour
         Debug.Log("On Pause handled");
         pauseMenu.SetActive(state);
     }
-    
+
+    public void UpdateGameCounter(int timeLeft)
+    {
+        gameCounter.text = timeLeft.ToString();
+    }
     public void ContinueGameplay()
     {
         GameManager.Instance.PauseGame();

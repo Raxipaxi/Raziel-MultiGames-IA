@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a9e5325155a584e836bf57be51286a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeLeft: 180
+  scoreMultiplier: 5.85
+  resetHandler: {fileID: 0}

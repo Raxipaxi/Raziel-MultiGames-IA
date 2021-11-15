@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
 
     public SceneManagement _sceneManagement;
 
-    public float timeLeft;
+    public float timeLeft = 180f;
+
+    [SerializeField] private float scoreMultiplier;
 
     private bool _timeIsRunning;
 
@@ -32,15 +34,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public int GetTotalScore()
+    {
+        if (timeLeft <= 0) timeLeft = 0;
+        var score = timeLeft * scoreMultiplier;
+        return (int) score;
+    }
+    
+    
+
     public event Action OnLose;
-    public event Action OnWin;
     public void SetTimeRunning(bool newState)
     {
         _timeIsRunning = newState;
     }
     private void Awake()
     {
-        if (GameManager.Instance != null) Destroy(gameObject);
+        if (GameManager.Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
         else
         {
             Instance = this;
@@ -50,12 +64,20 @@ public class GameManager : MonoBehaviour
             Application.targetFrameRate = 144;
             PauseForce(false);
         }
+        
+        
     }
 
     //Mainly, reset variables that need to be reset on different levels
-    private void OnLevelLoadHandler()
+    public void OnLevelLoadHandler(bool sceneWithTime)
     {
-       _sceneManagement.Initialize();
+        _sceneManagement.Initialize();
+
+        _timeIsRunning = sceneWithTime;
+        
+        if (sceneWithTime) LockCursor();
+        else UnlockCursor();
+        
     }
 
     public void ResetLevelState()
@@ -68,6 +90,8 @@ public class GameManager : MonoBehaviour
     {
         MainCanvas = canvas;
         OnPause += canvas.OnPauseHandler;
+        
+        canvas.UpdateGameCounter((int)timeLeft);
     }
 
     public void GetResetLevelHandler(LevelResetHandler levelResetHandler)
@@ -91,12 +115,15 @@ public class GameManager : MonoBehaviour
 
         timeLeft -= Time.deltaTime;
 
+        if (MainCanvas != null)
+        {
+            MainCanvas.UpdateGameCounter((int)timeLeft);
+        }
+        
         if (timeLeft <= 0)
         {
-            OnLose?.Invoke();
+            _sceneManagement.MakeChangeScene(SceneManagement.Scenes.Lose);
         }
-
-
     }
 
     public void PauseGame()

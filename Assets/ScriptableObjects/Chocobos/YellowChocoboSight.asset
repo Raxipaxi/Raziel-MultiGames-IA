@@ -19,4 +19,4 @@ MonoBehaviour:
     m_Bits: 0
   targetMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 256

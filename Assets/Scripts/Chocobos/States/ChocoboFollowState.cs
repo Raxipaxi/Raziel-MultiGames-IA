@@ -6,47 +6,49 @@ using UnityEngine;
 
 public class ChocoboFollowState<T> : State<T>
 {
-    private Func<Transform> _potentialLeader;
     private INode _root;
-    private LineOfSightAI _lineOfSightAI;
-    private LineOfSightDataScriptableObject _newLineOfSightAI;
     private Action<Transform> _onFollow;
-    private float _leaderCheck;
-    private float _followCheck;
-    
-    public ChocoboFollowState(Func<Transform> potentialLeader, Action<Transform> onFollow,LineOfSightAI lineOfSightAI,LineOfSightDataScriptableObject newLineOfSight, float leaderCheck, INode root)
+    private float _followCheckTime;
+    private float _counter;
+    private Func<bool> _checkForPlayer;
+    private Action _onStartFollow;
+    private Transform _player;
+
+    public ChocoboFollowState(Action<Transform> onFollow,float followCheckTime, INode root, Func<bool> checkForPlayer, Action onStartFollow, Transform player)
     {
-        _potentialLeader = potentialLeader;
         _onFollow = onFollow;
-        _lineOfSightAI = lineOfSightAI;
-        _newLineOfSightAI = newLineOfSight;
-        _leaderCheck = leaderCheck;
         _root = root;
+        _followCheckTime = followCheckTime;
+        _checkForPlayer = checkForPlayer;
+        _onStartFollow = onStartFollow;
+        _player = player;
     }
 
     public override void Awake()
     {
-      
-        _lineOfSightAI.SwapLineOfSightData(_newLineOfSightAI);
-        AddCooldown();
-
+        _onStartFollow?.Invoke();
     }
 
     public override void Execute()
     {
-        _onFollow?.Invoke(_potentialLeader?.Invoke());
-        if (!(_followCheck < Time.time)) return;
-        AddCooldown();
         
-        if (!_lineOfSightAI.SingleTargetInSight(_potentialLeader?.Invoke()))
-        {
-            _root.Execute();
-        }
+        _onFollow?.Invoke(_player);
         
+        _counter -= Time.deltaTime;
+
+        if (_counter > 0) return;
+        
+        ResetCounter();
+        var playerIsNear = _checkForPlayer.Invoke();
+
+        if (playerIsNear) return;
+        
+        _root.Execute();
+
     }
 
-    private void AddCooldown()
+    private void ResetCounter()
     {
-        _followCheck = _leaderCheck + Time.time;
+        _counter = _followCheckTime;
     }
 }

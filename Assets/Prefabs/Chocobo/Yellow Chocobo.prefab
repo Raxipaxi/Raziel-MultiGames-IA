@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1527038414}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: Lineofsight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,36 +30,6 @@ Transform:
   m_Father: {fileID: 6787612399450672091}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1552630455
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1552630456}
-  m_Layer: 18
-  m_Name: Lineofsight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1552630456
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1552630455}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.024, y: 0.238, z: 0.224}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6787612399450672091}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &433666189791694327
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2030353653327234518}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftToeBase'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2018028140332906544}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftHandIndex2'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +101,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6418647576542423211}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightFoot'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5749745922160560433}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Head'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4116675598186329132}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftArm'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1209184610945380034}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftHandIndex4'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7483331892315396223}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightUpLeg'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4821984802704539803}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightHand'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 240668178043531331}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftHandIndex3'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2836047285208113581}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightToeBase'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +368,7 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 6787612399450672091}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &9191539273865635350
 SpriteRenderer:
@@ -459,7 +429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 878732784384832562}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Spine1'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1125353794915853515}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Neck'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -521,7 +491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 904145822904282023}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightHandIndex4'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +521,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 683062727848061560}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftToe_End'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,7 +551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9195777956905602302}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftHand'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7728205954321724629}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftForeArm'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -643,7 +613,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 838621008143439033}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Spine'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3748798041330523322}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftHandIndex1'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -705,7 +675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6873624246680242724}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightHandIndex2'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -736,7 +706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 832883303189305072}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightShoulder'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4956601563306816120}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightToe_End'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -797,7 +767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5528676247720035665}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftLeg'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,7 +798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2833664929659110205}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightArm'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -859,7 +829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2411140679446559267}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftShoulder'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -901,7 +871,6 @@ GameObject:
   - component: {fileID: 535955509}
   - component: {fileID: 535955510}
   - component: {fileID: 535955511}
-  - component: {fileID: 6060966838146002335}
   m_Layer: 18
   m_Name: Yellow Chocobo
   m_TagString: Untagged
@@ -924,8 +893,6 @@ Transform:
   - {fileID: 1349773840693548980}
   - {fileID: 4978683171408565243}
   - {fileID: 1527038414}
-  - {fileID: 1552630456}
-  - {fileID: 6471645570501209500}
   - {fileID: 5119114847795731739}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -982,9 +949,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 496f2d8a7a136264e83e5076244b6e50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 7
+  radius: 3
   timeToGetBoids: 0.2
-  maxBoids: 10
+  maxBoids: 4
   mask:
     serializedVersion: 2
     m_Bits: 262144
@@ -1027,11 +994,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 107c5d9882367134f877f22a7facd2bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minDistance: 0.5
-  _flocksight: {fileID: 11400000, guid: 3e42ba2e96622414c8f4a98eba6a8f6a, type: 2}
-  possibleLeaders:
-  - {fileID: 0}
   followCheck: 4
+  data: {fileID: 11400000, guid: 7f017692105b53f4e9a43106f2afd358, type: 2}
+  player: {fileID: 0}
+  checkForPlayerPoint: {fileID: 1527038414}
 --- !u!114 &535955501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1089,101 +1055,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6060966838146002335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6159131189932921185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8402e808287d5843b5e5abe77b332b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sightData: {fileID: 11400000, guid: e0d049c4b0fa7bb4d8b2af86f6ed13f1, type: 2}
-  lineOfSightOrigin: {fileID: 1552630456}
---- !u!1 &6364867831090247085
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6471645570501209500}
-  - component: {fileID: 5886281364113792688}
-  m_Layer: 13
-  m_Name: Chocobo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6471645570501209500
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6364867831090247085}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6787612399450672091}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!212 &5886281364113792688
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6364867831090247085}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c5c7821d4092aa548b6af7b037696dab, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 8.4, y: 5.414062}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &6475073583103371286
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,7 +1064,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3133302779869206277}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftUpLeg'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1224,7 +1095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3763541410675041569}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightLeg'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1255,7 +1126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8337741139555554885}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Spine2'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1289,7 +1160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1349773840693548980}
   - component: {fileID: 4180225423395249393}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: 1, MAT: 0)'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1372,7 +1243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2602884611458012430}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightForeArm'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1403,7 +1274,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8852667450507410445}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightHandIndex1'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1434,7 +1305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7306383788479450850}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :RightHandIndex3'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1465,7 +1336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2399418102080286651}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :LeftFoot'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1496,7 +1367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7435113738282895296}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :HeadTop_End'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1527,7 +1398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4292340408577257143}
   - component: {fileID: 4444124295187931344}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: 0, MAT: 0)'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1636,7 +1507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4978683171408565243}
-  m_Layer: 18
+  m_Layer: 0
   m_Name: 'mo006_02 (LOD: -1, VIS: :Hips'
   m_TagString: Untagged
   m_Icon: {fileID: 0}

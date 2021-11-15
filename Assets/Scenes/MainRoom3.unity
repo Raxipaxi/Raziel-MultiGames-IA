@@ -461,6 +461,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2763839806844999880, guid: 2987f0d515746814dab8c4a0a55380b6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2763839806844999886, guid: 2987f0d515746814dab8c4a0a55380b6,
         type: 3}
       propertyPath: m_RootOrder
@@ -597,12 +602,12 @@ PrefabInstance:
     - target: {fileID: 5411233473701285173, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.25
+      value: -7.625
       objectReference: {fileID: 0}
     - target: {fileID: 5411233473701285173, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5411233473701285173, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
@@ -612,12 +617,12 @@ PrefabInstance:
     - target: {fileID: 5411233474403457106, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.25
+      value: -7.625
       objectReference: {fileID: 0}
     - target: {fileID: 5411233474403457106, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5411233474403457106, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
@@ -642,7 +647,7 @@ PrefabInstance:
     - target: {fileID: 5411233474690990068, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5411233474690990068, guid: 2d5428f370f545f408a70421faf7d18c,
         type: 3}

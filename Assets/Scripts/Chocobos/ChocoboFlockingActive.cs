@@ -5,11 +5,14 @@ public class ChocoboFlockingActive : MonoBehaviour
 {
     private bool _active;
     private FlockingManager _flocking;
-    private Leader _LeaderBehaviour;
+    private Leader _leaderBehaviour;
     
-    public void SubscribeToEvents(ChocoboController _controller)
+    public void SubscribeToEvents(ChocoboController controller)
     {
-        _controller.OnFollow += SetActiveFlocking;
+        controller.OnStartFollow += () => EnableDisable(true);
+        controller.OnFollow += SetActiveLeader;
+        controller.OnIdle += () => EnableDisable(false);
+        controller.OnReachGoal+= ()=> EnableDisable(false);
     }
 
     private void Awake()
@@ -17,36 +20,23 @@ public class ChocoboFlockingActive : MonoBehaviour
         BakeReferences();
     }
 
-    public void BakeReferences()
+    private void BakeReferences()
     {
         _flocking = GetComponent<FlockingManager>();
     }
-
     private void Start()
     {
+        _leaderBehaviour = _flocking.GetComponent<Leader>();
+    }
+
+    private void EnableDisable(bool newState)
+    {
+        _flocking.enabled = newState;
+    }
+
+    private void SetActiveLeader(Transform newLeader)
+    {
+        _leaderBehaviour.leader = newLeader;
         
-        _LeaderBehaviour = _flocking.GetComponent<Leader>(); //Mmm creo que mande frula
-
-    }
-    
-    private void EnableDisable()
-    {
-        if (_LeaderBehaviour.leader!=null && !_flocking.enabled)
-        {
-            _flocking.enabled = true;
-            
-        }
-        else if (_LeaderBehaviour.leader==null)
-        {
-            _flocking.enabled = false;
-        }
-    }
-
-    
-
-    public void SetActiveFlocking(Transform dir)
-    {
-        _LeaderBehaviour.leader = dir;
-        EnableDisable();
     }
 }

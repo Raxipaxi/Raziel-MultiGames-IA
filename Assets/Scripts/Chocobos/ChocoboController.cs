@@ -7,31 +7,32 @@ public class ChocoboController : MonoBehaviour, IReseteable
 {
     private ChocoboModel _chocoModel;
     [Header("Minima distancia con el lider")]
-    [SerializeField]public float minDistance;
-
-    [SerializeField] private LineOfSightDataScriptableObject _flocksight;
-
-    [SerializeField]private List<Transform> possibleLeaders;
-
     [SerializeField] private float followCheck;
     private ChocoboFlockingActive _flockingActive;
     private FSM<ChocoboStatesConstants> _fsm;
     private INode _root;
 
+    [SerializeField] private ChocoboData data;
+    [SerializeField] private Transform player;
+    [SerializeField] private Transform checkForPlayerPoint;
+    private Collider[] _playerAsLeader;
+
     private bool _reachedGoal;
     public event Action<Transform> OnFollow;
     public event Action OnIdle;
     public event Action OnReset;
+    public event Action OnStartFollow;
     public event Action OnReachGoal;
-    private Transform _potentialLeader;
-    
-
 
     private void Awake()
     {
         BakeReferences();
     }
 
+    private void OnStartFollowCommand()
+    {
+        OnStartFollow?.Invoke();
+    }
     private void OnIdleCommand()
     {
         OnIdle?.Invoke();
@@ -56,9 +57,10 @@ public class ChocoboController : MonoBehaviour, IReseteable
         var goToIdle = new ActionNode(() => _fsm.Transition(ChocoboStatesConstants.Idle));
         var goToFollow = new ActionNode(() => _fsm.Transition(ChocoboStatesConstants.Follow));
         var goToReachedGoal = new ActionNode(() => _fsm.Transition(ChocoboStatesConstants.Dance));
+        
         //Questions
-       
-        var isAnyLeader = new QuestionNode(PotentialLeader, goToFollow, goToIdle);
+        
+        var isAnyLeader = new QuestionNode(CheckForPlayer, goToFollow, goToIdle);
         var reachedGoal = new QuestionNode(() => _reachedGoal, goToReachedGoal, isAnyLeader);
         
         //Root
@@ -67,6 +69,7 @@ public class ChocoboController : MonoBehaviour, IReseteable
 
     public void ReachedGoal()
     {
+        //Callable from outside
         _reachedGoal = true;
         _root.Execute();
     }
@@ -78,8 +81,9 @@ public class ChocoboController : MonoBehaviour, IReseteable
     private void FsmInit()
     {
         // States
-        var idle = new ChocoboIdleState<ChocoboStatesConstants>(PotentialLeader, _chocoModel._data.secondsToFollow, OnIdleCommand, OnFollowCommand ,_chocoModel.LineOfSightAI, _root);
-        var follow = new ChocoboFollowState<ChocoboStatesConstants>(()=>_potentialLeader, OnFollowCommand,_chocoModel.LineOfSightAI, _flocksight, followCheck, _root);
+        var idle = new ChocoboIdleState<ChocoboStatesConstants>(data.secondsToFollow, OnIdleCommand, OnFollowCommand , _root,player,CheckForPlayer);
+        var follow = new ChocoboFollowState<ChocoboStatesConstants>(OnFollowCommand, followCheck, _root, CheckForPlayer,
+            OnStartFollowCommand, player);
         var reachedGoal = new EnemyDeadState<ChocoboStatesConstants>(ReachGoal);
         
         // Transitions
@@ -91,37 +95,19 @@ public class ChocoboController : MonoBehaviour, IReseteable
         follow.AddTransition(ChocoboStatesConstants.Dance,reachedGoal);
 
         _fsm = new FSM<ChocoboStatesConstants>(idle);
-
     }
 
-    private bool PotentialLeader()
+    private bool CheckForPlayer()
     {
-        var closest =  float.MaxValue;
-        _potentialLeader = null;
-        foreach (var seen in possibleLeaders)
-        {
-            if (!_chocoModel.LineOfSightAI.SingleTargetInSight(seen)) continue;
-
-            var currDis = Vector3.Distance(seen.position, transform.position);
-            Debug.Log("MinDistance : " + currDis);
-            if (closest > currDis && currDis > minDistance)
-            {
-                closest = currDis;
-                _potentialLeader = seen;
-            }
-        }
-
-        if (_potentialLeader==null)
-        {
-            _flockingActive.SetActiveFlocking(null); //No me gusta pero puede arreglar
-        }
-        return _potentialLeader!=null;
+        var playerIsNear = Physics.OverlapSphereNonAlloc(checkForPlayerPoint.position, data.checkForPlayerRadius,
+            _playerAsLeader, data.playerMask);
+        return playerIsNear != 0;
     }
-
     private void BakeReferences()
     {
         _chocoModel = GetComponent<ChocoboModel>();
         _flockingActive = GetComponent<ChocoboFlockingActive>();
+        _playerAsLeader = new Collider[1];
     }
 
     private void Update()
@@ -136,8 +122,15 @@ public class ChocoboController : MonoBehaviour, IReseteable
         {
             OnReset?.Invoke();
             _root.Execute();
-            Debug.Log(_potentialLeader);
         }
-       
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (checkForPlayerPoint != null)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(checkForPlayerPoint.position,data.checkForPlayerRadius);
+        }
     }
 }
